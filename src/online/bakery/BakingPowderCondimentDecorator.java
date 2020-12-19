@@ -37,7 +37,7 @@ public class BakingPowderCondimentDecorator extends CondimentDecorator {
         this.COST = builder.COST;
         TOTAL_Grams = builder.sweets.TOTAL_Grams.add(builder.grams);
         TOTAL_COST=cost();
-        description = builder.sweets.description + " + " + this.grams + "BackingPowder ";
+        description = builder.sweets.description + " + " + this.grams + " BackingPowder ";
     }
 
 
