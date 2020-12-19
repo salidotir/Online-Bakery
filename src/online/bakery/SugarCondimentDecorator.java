@@ -1,24 +1,28 @@
 package online.bakery;
 
+import java.math.BigDecimal;
+
 public class SugarCondimentDecorator extends CondimentDecorator {
     private final Sweets sweets;
-    double COST ;
+    BigDecimal COST;
 
-    public SugarCondimentDecorator(Sweets sweets,double grams,double cost) {
+    public SugarCondimentDecorator(Sweets sweets, BigDecimal grams, BigDecimal cost) {
         this.sweets = sweets;
-        this.COST=cost;
+        this.COST = cost;
         setGrams(grams);
-        description=sweets.description + " + " + getGrams() + " Sugar";
+        description = sweets.description + " + " + getGrams() + " Sugar";
 
     }
+
     @Override
     public String getDescription() {
 
-        this.description=sweets.description + " + " + getGrams() + " Sugar";
+        this.description = sweets.description + " + " + getGrams() + " Sugar";
         return sweets.description + " + " + getGrams() + " Sugar";
     }
+
     @Override
-    public Double cost() {
-        return sweets.cost() + getGrams() * COST;
+    public BigDecimal cost() {
+        return sweets.cost().add(COST.multiply(getGrams()));
     }
 }

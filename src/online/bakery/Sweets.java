@@ -1,10 +1,14 @@
 package online.bakery;
 
+
+import java.math.BigDecimal;
+
 public abstract class Sweets {
     protected String description = "Unknown Sweets";
-    protected double Grams=0.0;
+    protected BigDecimal Grams = new BigDecimal(0);
+
     //todo id,score,producerId,designerId
-    public abstract Double cost();
+    public abstract BigDecimal cost();
 
     public String getDescription() {
         return description;
