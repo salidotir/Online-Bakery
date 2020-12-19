@@ -36,7 +36,8 @@ public class SugarCondimentDecorator extends CondimentDecorator {
         this.grams = builder.grams;
         this.COST = builder.COST;
         TOTAL_Grams = builder.sweets.TOTAL_Grams.add(builder.grams);
-        TOTAL_COST=cost();
+        TOTAL_COST = cost();
+        SweetId = atomicInteger.decrementAndGet();
         description = builder.sweets.description + " + " + this.grams + "Sugar ";
     }
 
