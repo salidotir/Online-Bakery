@@ -8,19 +8,19 @@ import java.util.List;
 public class Wallet {
     private int Amount;
     private final String WalletID;
-    private List<String> Transaction;
+    private List<String> Transaction; //should decide when to set later
     
     public Wallet(String WalletID) {
         this.WalletID = WalletID;
     }
-    
-    
+        
     public int getAmount() {
         return Amount;
     }
 
-    public void setAmount(int Amount) {
-        this.Amount = Amount;
+    public void addAmount(int Amount) {
+        this.Amount += Amount;
     }   
+    
     
 }

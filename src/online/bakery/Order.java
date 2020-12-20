@@ -12,6 +12,8 @@ public class Order {
     private final String customerId;
     private final String orderId;
     private final List<String> SweetsId;
+
+    
     private final String StaffId;
     private String paymentId;
 
@@ -22,6 +24,10 @@ public class Order {
         this.orderId = orderId;
         this.SweetsId = SweetsId;
         this.StaffId = StaffId;
+    }
+    
+    public List<String> getSweetsId() {
+        return SweetsId;
     }
     
     public OrderStatus getOrderStatus() {
