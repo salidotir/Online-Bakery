@@ -1,4 +1,6 @@
 
+import java.util.List;
+
 /**
  *
  * @author melika
@@ -9,13 +11,13 @@ public class Order {
     
     private final String customerId;
     private final String orderId;
-    private final String SweetsId;
+    private final List<String> SweetsId;
     private final String StaffId;
     private String paymentId;
 
     
     
-    public Order(String customerId, String orderId, String SweetsId, String StaffId) {
+    public Order(String customerId, String orderId, List<String> SweetsId, String StaffId) {
         this.customerId = customerId;
         this.orderId = orderId;
         this.SweetsId = SweetsId;
