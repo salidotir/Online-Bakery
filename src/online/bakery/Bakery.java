@@ -1,6 +1,7 @@
 package online.bakery;
 
 import java.util.concurrent.atomic.AtomicInteger;
+import java.math.BigDecimal;
 
 public class Bakery implements Confectioner {
 
@@ -11,6 +12,10 @@ public class Bakery implements Confectioner {
     private String number;
     private String address;
     private int score;
+    private BigDecimal sweetsId[];
+    private int lenSweets;
+    private BirthdayItems items[];
+    private int lenItems;
 
 
 
@@ -22,6 +27,8 @@ public class Bakery implements Confectioner {
         this.number = number;
         this.address = address;
         this.score = 0;
+        this.lenSweets = 0;
+        this.lenItems = 0;
     }
 
 
@@ -66,6 +73,8 @@ public class Bakery implements Confectioner {
     }
 
     public void setAddress(String address) { this.address = address; }
+
+    public void addSweet(BigDecimal id){this.sweetsId[lenSweets]= id; lenSweets +=1;}
 
 
     public int getScore() {

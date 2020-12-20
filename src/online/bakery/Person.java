@@ -11,6 +11,8 @@ public class Person implements Confectioner{
     private String number;
     private int score;
 
+
+
     public Person( String firstName, String lastName,String number) {
         atomicInteger.incrementAndGet();
         this.id=atomicInteger.incrementAndGet();
