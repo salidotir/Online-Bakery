@@ -4,10 +4,11 @@ import java.math.BigDecimal;
 
 public interface BirthdayItems {
 
-
-    BigDecimal cost();
-
     String getDescription();
 
-    BigDecimal getTOTAL_COST() ;
+    void setDescription(String description);
+
+    BigDecimal getCost() ;
+    void setCost(BigDecimal cost) ;
+
 }

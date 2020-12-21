@@ -5,27 +5,40 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class Candle implements BirthdayItems {
 
-    int ItemId ;
+    int itemId ;
     static AtomicInteger atomicInteger = new AtomicInteger(2);
     String description;
-    BigDecimal TOTAL_COST = new BigDecimal(0);
+    String number;
+    String color;
+    BigDecimal cost ;
 
-    public Candle(){
-        this.description = "Candle: ";
+    public Candle(String description,BigDecimal cost,String number,String color){
+        this.description = description;
+        this.cost = cost;
+        this.number = number;
+        this.color = color;
         atomicInteger.incrementAndGet();
-        this.ItemId=atomicInteger.incrementAndGet();
+        this.itemId=atomicInteger.incrementAndGet();
 
     }
 
-    public BigDecimal cost() {
-        return new BigDecimal(0);
-    }
     public String getDescription() {
         return description;
     }
-    public BigDecimal getTOTAL_COST() {
-        return TOTAL_COST;
+    public void setDescription(String description) {this.description = description; }
+    public BigDecimal getCost() {
+        return cost;
     }
+    public void setCost(BigDecimal cost) { this.cost = cost; }
+
+    public String getColor() {
+        return color;
+    }
+    public void setColor(String color) {this.color = color; }
+    public String getNumber() {
+        return number;
+    }
+    public void setNumber(String number) {this.number = number; }
 
 
 }
