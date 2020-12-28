@@ -1,5 +1,6 @@
 package online.bakery;
-import java.util.List;
+
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  *
@@ -7,20 +8,27 @@ import java.util.List;
  */
 public class Wallet {
     private int Amount;
-    private final String WalletID;
-    private List<String> Transaction; //should decide when to set later
+    int walletId ;
+    static AtomicInteger atomicInteger = new AtomicInteger(2);
     
-    public Wallet(String WalletID) {
-        this.WalletID = WalletID;
+    public Wallet() {
+        this.Amount = 0;
+        this.walletId=atomicInteger.incrementAndGet();
     }
         
+    public int getWalletId() {
+        return this.walletId;
+    }
+    
     public int getAmount() {
         return Amount;
     }
 
+    public void subtractAmount(int Amount) {
+        this.Amount -= Amount;
+    }
+    
     public void addAmount(int Amount) {
         this.Amount += Amount;
     }   
-    
-    
 }
