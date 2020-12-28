@@ -15,7 +15,7 @@ public class ChocolateCondimentDecorator extends CondimentDecorator {
         this.sweets = sweets;
         this.grams = grams;
         this.COST = cost;
-        this.SweetId = sweets.SweetId;
+        this.SweetId = sweets.getSweetId();
 
 
         TOTAL_Grams = sweets.TOTAL_Grams.add(grams);

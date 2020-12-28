@@ -5,13 +5,14 @@ import java.math.BigDecimal;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public abstract class Sweets {
-    public int SweetId;
+    protected int SweetId;
     public static AtomicInteger atomicInteger = new AtomicInteger(0);
     public String description = "Unknown Sweets";
     public BigDecimal TOTAL_Grams = new BigDecimal(0);
     public BigDecimal TOTAL_COST = new BigDecimal(0);
 
     public abstract BigDecimal cost();
+    public int getSweetId(){return SweetId;}
 
     public String getDescription() {
         return description;

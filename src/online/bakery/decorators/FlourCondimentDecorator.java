@@ -19,7 +19,7 @@ public class FlourCondimentDecorator extends CondimentDecorator {
         TOTAL_Grams = sweets.TOTAL_Grams.add(grams);
         TOTAL_COST = cost();
 
-        this.SweetId=sweets.SweetId;
+        this.SweetId=sweets.getSweetId();
         description = sweets.description + " + " + this.grams + " Flour";
     }
 
