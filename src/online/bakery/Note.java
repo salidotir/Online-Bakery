@@ -6,12 +6,15 @@
  */
 package online.bakery;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 /**
  *
  * @author salidotir
  */
-public class Note {
-    private final String id;
+public class Note {    
+    int noteId ;
+    static AtomicInteger atomicInteger = new AtomicInteger(2);
     
     private final String orderId;
     private final String noteSellerId;
@@ -24,12 +27,13 @@ public class Note {
     
     /**
      * 
-     * @param id
-     * @param orderId 
+     * @param orderId
+     * @param sellerId
+     * @param customerId
      * set these 2 parameters in the constructor, if customer or employee added a note, set their id fields.
      */
-    public Note(String id, String orderId, String sellerId, String customerId) {
-        this.id = id;
+    public Note(String orderId, String sellerId, String customerId) {
+        this.noteId = atomicInteger.incrementAndGet();
         
         this.orderId = orderId;
         this.noteSellerId = sellerId;
@@ -44,8 +48,8 @@ public class Note {
     /**
      * @return the id
      */
-    public String getId() {
-        return id;
+    public int getId() {
+        return noteId;
     }
 
     /**
