@@ -8,7 +8,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class Wallet {
     private int Amount;
-    int walletId ;
+    private final int walletId ;
     static AtomicInteger atomicInteger = new AtomicInteger(2);
     
     public Wallet() {

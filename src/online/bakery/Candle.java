@@ -5,7 +5,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class Candle implements BirthdayItems {
 
-    int itemId ;
+    private final int itemId ;
     static AtomicInteger atomicInteger = new AtomicInteger(2);
     String description;
     String number;

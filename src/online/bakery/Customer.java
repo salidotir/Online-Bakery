@@ -1,5 +1,7 @@
 package online.bakery;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 /**
@@ -7,23 +9,31 @@ import java.util.List;
  * @author melika
  */
 public class Customer {
-    private final String CustomerID;
-    private final String WalletID;
-    private List<String> OrdersID;
+    private final int CustomerID;
+    static AtomicInteger atomicInteger = new AtomicInteger(2);
+    private final int WalletID;
+    private List<Integer> OrdersID = new ArrayList<Integer>();
 
-    public Customer(String CustomerID, String WalletID) {
-        this.CustomerID = CustomerID;
+    public Customer(int WalletID) {
+        atomicInteger.incrementAndGet();
+        this.CustomerID=atomicInteger.incrementAndGet();
         this.WalletID = WalletID;
     }
     
-    public void setOrderID(String OrderID) {
+    public void setOrderID(int OrderID) {
         this.OrdersID.add(OrderID);
     }
-    
-    public void createNewSweet(String OrderId, String SweetsId, String StaffId){
-        List<String> SweetList = null;
-        SweetList.add(SweetsId);
-        Order order = new Order(this.CustomerID, OrderId, SweetList, StaffId);
-        this.OrdersID.add(OrderId);
+
+    public List<Integer> getOrdersID() {
+        return OrdersID;
     }
+
+    public void createNewSweet(int SweetsId, int StaffId){
+        List<Integer> SweetList = new ArrayList<Integer>();
+        SweetList.add(SweetsId);
+        Order order = new Order(this.CustomerID, SweetList, StaffId);
+        this.OrdersID.add(order.getOrderId());
+    }
+
+
 }

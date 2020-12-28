@@ -1,5 +1,7 @@
 package online.bakery;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  *
@@ -9,24 +11,30 @@ public class Order {
     private OrderStatus orderStatus;
     private PaymentStatus paymentStatus;
     
-    private final String customerId;
-    private final String orderId;
-    private final List<String> SweetsId;
+    private final int customerId;
+    private final int orderId;
+    static AtomicInteger atomicInteger = new AtomicInteger(2);
+    private final List<Integer> SweetsId ;
 
     
-    private final String StaffId;
-    private String paymentId;
+    private final int StaffId;
+    private int paymentId;
 
     
     
-    public Order(String customerId, String orderId, List<String> SweetsId, String StaffId) {
+    public Order(int customerId, List<Integer> SweetsId, int StaffId) {
         this.customerId = customerId;
-        this.orderId = orderId;
+        atomicInteger.incrementAndGet();
+        this.orderId=atomicInteger.incrementAndGet();
         this.SweetsId = SweetsId;
         this.StaffId = StaffId;
     }
-    
-    public List<String> getSweetsId() {
+
+    public int getOrderId() {
+        return orderId;
+    }
+
+    public List<Integer> getSweetsId() {
         return SweetsId;
     }
     
@@ -46,11 +54,11 @@ public class Order {
         this.paymentStatus = paymentStatus;
     }
 
-    public String getPaymentId() {
+    public int getPaymentId() {
         return paymentId;
     }
 
-    public void setPaymentId(String paymentId) {
+    public void setPaymentId(int paymentId) {
         this.paymentId = paymentId;
     }
     

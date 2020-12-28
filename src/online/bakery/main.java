@@ -8,6 +8,8 @@ import online.bakery.sweets.Sweets;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 
 public class main {
@@ -24,6 +26,36 @@ public class main {
         ss.add(s1);
         ss.add(s2);
         //System.out.println(ss);
+
+        ArrayList conf = new ArrayList<Confectioner>();
+        Bakery b1 = new Bakery("شب شیرینی","لحظات زندگی خود را با کمک ما شیرین کنید" , "07131111111" , "تاچارا");
+        b1.setScore(3);
+        System.out.printf(b1.getProfile());
+
+        Discount d1 = new Discount("تخفیف یلدایی" , 20 , new Date(1399,9,20),new Date(1399,10,1),b1.getId());
+        b1.addDiscount(d1.getId());
+
+        b1.addMenu(s1.getSweetId());
+
+        Wallet w = new Wallet();
+        Customer c = new Customer(w.getWalletId());
+
+        ConfectionerStatus cs1 = b1.sweetToOrder(s2);
+        System.out.println(cs1.toString());
+        if(cs1 == ConfectionerStatus.ACCEPT){
+            c.createNewSweet(s2.getSweetId(),b1.getId());
+
+        }
+        List<Integer> orderIdC = c.getOrdersID();
+        for (int i : orderIdC){
+            System.out.println(i+"");
+        }
+
+
+
+
+
+
 
 
     }

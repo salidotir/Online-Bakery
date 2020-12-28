@@ -1,5 +1,9 @@
 package online.bakery;
 
+import online.bakery.sweets.Sweets;
+
+import java.util.List;
+
 public interface Confectioner {
 
 
@@ -16,11 +20,17 @@ public interface Confectioner {
     int getScore();
     String getDescription();
     int getId();
+    List<Integer> getPost();
+    List<Integer> getSweetId();
+    List<Integer> getOrderList();
+    List<Integer> getBirthdayItemId();
 
     void addPost(int id);
     void addSweet(int id);
     void addOrder(int id);
-    void addItem(int id);
+    void addBirthdayItem(int id);
+    ConfectionerStatus sweetToOrder(Sweets s);
+    void addDiscount(int id);
 
 
 

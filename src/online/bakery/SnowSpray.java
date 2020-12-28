@@ -7,7 +7,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class SnowSpray implements BirthdayItems {
 
-    int itemId ;
+    private final int itemId ;
     static AtomicInteger atomicInteger = new AtomicInteger(2);
     String description;
     BigDecimal cost ;
