@@ -1,15 +1,16 @@
+package online.bakery.decorators;
 
-package online.bakery;
+import online.bakery.sweets.Sweets;
 
 import java.math.BigDecimal;
 
 
-public class MilkCondimentDecorator extends CondimentDecorator {
+public class VanillaCondimentDecorator extends CondimentDecorator {
     private Sweets sweets;
     private BigDecimal COST;
     private BigDecimal grams;
 
-    public MilkCondimentDecorator(Sweets sweets, BigDecimal grams, BigDecimal cost) {
+    public VanillaCondimentDecorator(Sweets sweets, BigDecimal grams, BigDecimal cost) {
         this.sweets = sweets;
         this.grams = grams;
 
@@ -18,15 +19,15 @@ public class MilkCondimentDecorator extends CondimentDecorator {
         TOTAL_COST = cost();
 
         this.SweetId = sweets.SweetId;
-        description = sweets.description + " + " + this.grams + "Milk ";
+        description = sweets.description + " + " + this.grams + "Vanilla ";
     }
 
 
     @Override
     public String getDescription() {
 
-        this.description = sweets.description + " + " + this.grams + " Milk";
-        return sweets.description + " + " + this.grams + " Milk";
+        this.description = sweets.description + " + " + this.grams + " Vanilla";
+        return sweets.description + " + " + this.grams + " Vanilla";
     }
 
     @Override

@@ -1,4 +1,4 @@
-package online.bakery;
+package online.bakery.decorators;
 
 public enum Decorator {
     CHOCOLATE,

@@ -1,15 +1,15 @@
-package online.bakery;
+package online.bakery.sweets;
 
 
 import java.math.BigDecimal;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public abstract class Sweets {
-    protected int SweetId;
-    protected static AtomicInteger atomicInteger = new AtomicInteger(0);
-    protected String description = "Unknown Sweets";
-    protected BigDecimal TOTAL_Grams = new BigDecimal(0);
-    protected BigDecimal TOTAL_COST = new BigDecimal(0);
+    public int SweetId;
+    public static AtomicInteger atomicInteger = new AtomicInteger(0);
+    public String description = "Unknown Sweets";
+    public BigDecimal TOTAL_Grams = new BigDecimal(0);
+    public BigDecimal TOTAL_COST = new BigDecimal(0);
 
     public abstract BigDecimal cost();
 

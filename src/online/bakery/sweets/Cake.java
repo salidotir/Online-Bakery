@@ -1,8 +1,10 @@
-package online.bakery;
+package online.bakery.sweets;
+
+import online.bakery.decorators.DecoratorToBuild;
+import online.bakery.decorators.*;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class Cake extends Sweets {
 
