@@ -6,7 +6,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public abstract class Sweets {
     protected int SweetId;
-    protected static AtomicInteger atomicInteger = new AtomicInteger(2);
+    protected static AtomicInteger atomicInteger = new AtomicInteger(0);
     protected String description = "Unknown Sweets";
     protected BigDecimal TOTAL_Grams = new BigDecimal(0);
     protected BigDecimal TOTAL_COST = new BigDecimal(0);

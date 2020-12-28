@@ -13,11 +13,11 @@ public class BackingPowderCondimentDecorator extends CondimentDecorator {
         this.sweets = sweets;
         this.grams = grams;
         this.COST = cost;
+        this.SweetId=sweets.SweetId;
 
 
         TOTAL_Grams = sweets.TOTAL_Grams.add(grams);
         TOTAL_COST = cost();
-        SweetId = atomicInteger.decrementAndGet();
         description = sweets.description + " + " + this.grams + " BackingPowder ";
     }
 
