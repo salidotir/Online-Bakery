@@ -3,35 +3,36 @@
  */
 package online.bakery;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 /**
  *
  * @author salidotir
  */
 public class Employee {
-    private String id;      // e.g. for employee the id will be 'e_idnumber'
+    int employeeId ;
+    static AtomicInteger atomicInteger = new AtomicInteger(2);
     private String firstName;
     private String lastName;
     private int score;
+    private int numOfPeopleWhoScored = 0;
     
-    public Employee(String Id, String FirstName, String LastName) {
-        this.id = Id;
+    public Employee(String FirstName, String LastName) {
         this.firstName = FirstName;
         this.lastName = LastName;
         this.score = 0;
+        this.employeeId=atomicInteger.incrementAndGet();
     }
 
+    public String getProfile() {
+        return "First name: " + firstName + " | Last name: " + lastName + " | Id: " + employeeId + " | Score: " + score;
+    }
+    
     /**
      * @return the id
      */
-    public String getId() {
-        return id;
-    }
-
-    /**
-     * @param id the id to set
-     */
-    public void setId(String id) {
-        this.id = id;
+    public int getId() {
+        return employeeId;
     }
 
     /**
@@ -70,23 +71,17 @@ public class Employee {
     }
 
     /**
-     * @param score the score to set
+     * @param newScore the score to set
      */
-    public void setScore(int score) {
-        this.score = score;
+    public void giveNewScore(int newScore) {
+        this.score = (this.score*this.numOfPeopleWhoScored + newScore) / (this.numOfPeopleWhoScored + 1);
+        this.numOfPeopleWhoScored += 1;
     }
     
-    /**
-     * @param diff the amount to be added to score of employee
+     /**
+     * @return the id
      */
-    public void increaseScore(int diff) {
-        this.score += diff;
-    }
-    
-    /**
-     * @param diff the amount to reduce from score of employee
-     */
-    public void decreaseScore(int diff) {
-        this.score -= diff;
+    public int getNumOfPeopleWhoScored() {
+        return this.numOfPeopleWhoScored;
     }
 }
