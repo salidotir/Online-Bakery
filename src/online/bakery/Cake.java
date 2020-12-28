@@ -34,23 +34,30 @@ public class Cake extends Sweets {
                     case CHOCOLATE:
                         break;
                     case BACKGROUNDER:
-                        cake=new BackingPowderCondimentDecorator(cake, decorator.germs, decorator.cost);
+                        cake = new BackingPowderCondimentDecorator(cake, decorator.germs, decorator.cost);
                         break;
                     case SUGAR:
-                        cake=new SugarCondimentDecorator(cake, decorator.germs, decorator.cost);
+                        cake = new SugarCondimentDecorator(cake, decorator.germs, decorator.cost);
                         break;
 
                     case FLOUR:
 
-                        cake=new FlourCondimentDecorator(cake, decorator.germs, decorator.cost);
+                        cake = new FlourCondimentDecorator(cake, decorator.germs, decorator.cost);
                         break;
                     case VANILLA:
+                        cake = new VanillaCondimentDecorator(cake, decorator.germs, decorator.cost);
                         break;
                     case WALNUT:
+                        cake = new WalnutCondimentDecorator(cake, decorator.germs, decorator.cost);
+
                         break;
                     case STRAWBERRY:
+                        cake = new StrawberryCondimentDecorator(cake, decorator.germs, decorator.cost);
+
                         break;
                     case MILK:
+                        cake = new MilkCondimentDecorator(cake, decorator.germs, decorator.cost);
+
                         break;
                 }
             }

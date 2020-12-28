@@ -1,31 +1,32 @@
 package online.bakery;
 
+
 import java.math.BigDecimal;
 
-public class BackingPowderCondimentDecorator extends CondimentDecorator {
+public class ChocolateCondimentDecorator extends CondimentDecorator {
     private Sweets sweets;
     private BigDecimal COST;
     private BigDecimal grams;
 
 
-    public BackingPowderCondimentDecorator(Sweets sweets, BigDecimal grams, BigDecimal cost) {
+    public ChocolateCondimentDecorator(Sweets sweets, BigDecimal grams, BigDecimal cost) {
         this.sweets = sweets;
         this.grams = grams;
         this.COST = cost;
-        this.SweetId=sweets.SweetId;
+        this.SweetId = sweets.SweetId;
 
 
         TOTAL_Grams = sweets.TOTAL_Grams.add(grams);
         TOTAL_COST = cost();
-        description = sweets.description + " + " + this.grams + " BackingPowder ";
+        description = sweets.description + " + " + this.grams + " Chocolate ";
     }
 
 
     @Override
     public String getDescription() {
 
-        this.description = sweets.description + " + " + this.grams + " BackingPowder";
-        return sweets.description + " + " + this.grams + " BackingPowder";
+        this.description = sweets.description + " + " + this.grams + " Chocolate";
+        return sweets.description + " + " + this.grams + " Chocolate";
     }
 
     @Override
