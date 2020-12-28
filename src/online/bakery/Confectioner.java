@@ -2,18 +2,25 @@ package online.bakery;
 
 public interface Confectioner {
 
-    void setFirstName(String firstName);
-    void setLastName(String lastName);
+
     void setNumber(String number);
     void setScore(int score);
     void increaseScore(int a);
     void decreaseScore(int a);
 
+    void setDescription(String description);
 
-    String getFirstName();
-    String getLastName();
+    String getProfile();
+
     String getNumber();
     int getScore();
+    String getDescription();
+    int getId();
+
+    void addPost(int id);
+    void addSweet(int id);
+    void addOrder(int id);
+    void addItem(int id);
 
 
 
