@@ -8,37 +8,15 @@ public class SugarCondimentDecorator extends CondimentDecorator {
     private BigDecimal grams;
     public static BigDecimal DEFAULT_COST = new BigDecimal(100);
 
-    public static class SugarCondimentDecoratorBuilder {
+    public SugarCondimentDecorator(Sweets sweets, BigDecimal grams,BigDecimal cost) {
+        this.sweets = sweets;
+        this.grams = grams;
 
-        private Sweets sweets;
-        private BigDecimal COST = DEFAULT_COST;
-        private BigDecimal grams;
-
-
-        public SugarCondimentDecoratorBuilder setCOST(BigDecimal cost) {
-            this.COST = cost;
-            return this;
-        }
-
-        public SugarCondimentDecoratorBuilder(Sweets sweets, BigDecimal grams) {
-            this.sweets = sweets;
-            this.grams = grams;
-
-        }
-
-        public SugarCondimentDecorator build() {
-            return new SugarCondimentDecorator(this);
-        }
-    }
-
-    private SugarCondimentDecorator(SugarCondimentDecoratorBuilder builder) {
-        this.sweets = builder.sweets;
-        this.grams = builder.grams;
-        this.COST = builder.COST;
-        TOTAL_Grams = builder.sweets.TOTAL_Grams.add(builder.grams);
+        this.COST=cost;
+        TOTAL_Grams = sweets.TOTAL_Grams.add(grams);
         TOTAL_COST = cost();
         SweetId = atomicInteger.decrementAndGet();
-        description = builder.sweets.description + " + " + this.grams + "Sugar ";
+        description = sweets.description + " + " + this.grams + "Sugar ";
     }
 
 
