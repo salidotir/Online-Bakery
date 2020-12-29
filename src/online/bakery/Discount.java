@@ -6,7 +6,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class Discount {
     private int id ;
-    static AtomicInteger atomicInteger = new AtomicInteger(2);
+    static AtomicInteger atomicInteger = new AtomicInteger(0);
     private String name;
     private int percent;
     private Date start;
@@ -15,7 +15,6 @@ public class Discount {
 
     public Discount(String name , int percent,Date start , Date end,int confectionerId) {
         atomicInteger.incrementAndGet();
-        this.id=atomicInteger.incrementAndGet();
         this.name = name;
         this.percent = percent;
         this.start = start;
@@ -23,7 +22,7 @@ public class Discount {
         this.confectionerId = confectionerId;
     }
 
-    public int getId(){return this.id;}
+    public int getID(){return this.id;}
 
     public void setName(String name) {
         this.name = name;

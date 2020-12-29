@@ -13,7 +13,7 @@ public class Order {
     
     private final int customerId;
     private final int orderId;
-    static AtomicInteger atomicInteger = new AtomicInteger(2);
+    static AtomicInteger atomicInteger = new AtomicInteger(0);
     private final List<Integer> SweetsId ;
 
     
@@ -24,7 +24,6 @@ public class Order {
     
     public Order(int customerId, List<Integer> SweetsId, int StaffId) {
         this.customerId = customerId;
-        atomicInteger.incrementAndGet();
         this.orderId=atomicInteger.incrementAndGet();
         this.SweetsId = SweetsId;
         this.StaffId = StaffId;

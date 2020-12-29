@@ -8,16 +8,14 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class SnowSpray implements BirthdayItems {
 
     private final int itemId ;
-    static AtomicInteger atomicInteger = new AtomicInteger(2);
+    static AtomicInteger atomicInteger = new AtomicInteger(0);
     String description;
     BigDecimal cost ;
 
     public SnowSpray(String description,BigDecimal cost){
+        this.itemId=atomicInteger.incrementAndGet();
         this.description = description;
         this.cost = cost;
-        atomicInteger.incrementAndGet();
-        this.itemId=atomicInteger.incrementAndGet();
-
     }
 
     public String getDescription() {

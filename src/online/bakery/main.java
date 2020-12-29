@@ -14,9 +14,9 @@ import java.util.List;
 
 public class main {
     public static void main(String[] args) {
-        //test1();
+        test1();
 
-        test2();
+        //test2();
     }
     
     // test2 -> test note & payment & delivery
@@ -35,26 +35,27 @@ public class main {
         //System.out.println(ss);
 
         ArrayList conf = new ArrayList<Confectioner>();
-        Bakery b1 = new Bakery("شب شیرینی","لحظات زندگی خود را با کمک ما شیرین کنید" , "07131111111" , "تاچارا");
+        Bakery b1 = new Bakery("شب شیرینی","علی","شریعتی","لحظات زندگی خود را با کمک ما شیرین کنید" , "07131111111" , "تاچارا");
         b1.setScore(3);
         System.out.printf(b1.getProfile());
 
-        Discount d1 = new Discount("تخفیف یلدایی" , 20 , new Date(1399,9,20),new Date(1399,10,1),b1.getId());
-        b1.addDiscount(d1.getId());
+        Discount d1 = new Discount("تخفیف یلدایی" , 20 , new Date(1399,9,20),new Date(1399,10,1),b1.getID());
+        b1.addDiscount(d1.getID());
 
         b1.addMenu(s1.getSweetId());
         
         //~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~
 
         // create customer-1 with wallet
-        Wallet w = new Wallet();
-        Customer c = new Customer(w);
+
+        Customer c = new Customer("فاطمه" ,"مسعودی" ,"۰۹۱۷۲۲۳۲۸۳۵" , "شیراز شهرک شهید باهنر");
+
 
         // customer-1 order sweet 1
         ConfectionerStatus cs1 = b1.sweetToOrder(s1);
         System.out.println(cs1.toString());
         if(cs1 == ConfectionerStatus.ACCEPT){
-            c.createNewSweet(s2.getSweetId(),b1.getId());
+            c.createNewSweet(s2.getSweetId(),b1.getID());
         }
         
         
@@ -70,11 +71,11 @@ public class main {
         Employee e1 = new Employee("سارا", "لیمویی");        
         
         // request for a delivery for customer-1 order
-        DeliveryInformation c1_delivery1 = DeliveryInformation.createNewDelivery(c.getOrdersID().get(0), e1.getId(), "معالی آباد، کوچه ی سوم", new Date(2021, 1, 15, 16, 30));
+        DeliveryInformation c1_delivery1 = DeliveryInformation.createNewDelivery(c.getOrdersID().get(0), e1.getID(), "معالی آباد، کوچه ی سوم", new Date(2021, 1, 15, 16, 30));
         System.out.println(c1_delivery1.getDeliveryInformation());
         
         // create a note for the order
-        Note order1_note = new Note(c.getOrdersID().get(0), b1.getId(), c.getID(), e1.getId());
+        Note order1_note = new Note(c.getOrdersID().get(0), b1.getID(), c.getID(), e1.getID());
         // employee add a text to note
         e1.addNote(order1_note, "تحویل داده خواهد شد توسط اینجانب");        
         System.out.println(order1_note.getNoteInformation());
@@ -120,22 +121,23 @@ public class main {
         //System.out.println(ss);
 
         ArrayList conf = new ArrayList<Confectioner>();
-        Bakery b1 = new Bakery("شب شیرینی","لحظات زندگی خود را با کمک ما شیرین کنید" , "07131111111" , "تاچارا");
+
+        Bakery b1 = new Bakery("شب شیرینی","علی","شریعتی","لحظات زندگی خود را با کمک ما شیرین کنید" , "07131111111" , "تاچارا");
         b1.setScore(3);
         System.out.printf(b1.getProfile());
 
-        Discount d1 = new Discount("تخفیف یلدایی" , 20 , new Date(1399,9,20),new Date(1399,10,1),b1.getId());
-        b1.addDiscount(d1.getId());
+        Discount d1 = new Discount("تخفیف یلدایی" , 20 , new Date(1399,9,20),new Date(1399,10,1),b1.getID());
+        b1.addDiscount(d1.getID());
 
         b1.addMenu(s1.getSweetId());
 
-        Wallet w = new Wallet();
-        Customer c = new Customer(w);
+        Customer c = new Customer("فاطمه" ,"مسعودی" ,"۰۹۱۷۲۲۳۲۸۳۵" , "شیراز شهرک شهید باهنر");
+
 
         ConfectionerStatus cs1 = b1.sweetToOrder(s2);
         System.out.println(cs1.toString());
         if(cs1 == ConfectionerStatus.ACCEPT){
-            c.createNewSweet(s2.getSweetId(),b1.getId());
+            c.createNewSweet(s2.getSweetId(),b1.getID());
 
         }
         List<Integer> orderIdC = c.getOrdersID();

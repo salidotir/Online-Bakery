@@ -22,9 +22,11 @@ public class Bakery extends Account implements Confectioner {
 
 
 
-    public Bakery(String name, String description, String number, String address) {
+    public Bakery(String name,String firstName, String lastName, String description, String number, String address) {
         super();
         this.id = super.ID;
+        super.setFirstname(firstName);
+        super.setLastname(lastName);
         this.name = name;
         this.description = description;
         super.setContactNo(number);

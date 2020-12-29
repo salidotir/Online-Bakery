@@ -6,20 +6,18 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class Candle implements BirthdayItems {
 
     private final int itemId ;
-    static AtomicInteger atomicInteger = new AtomicInteger(2);
+    static AtomicInteger atomicInteger = new AtomicInteger(0);
     String description;
     String number;
     String color;
     BigDecimal cost ;
 
     public Candle(String description,BigDecimal cost,String number,String color){
+        this.itemId=atomicInteger.incrementAndGet();
         this.description = description;
         this.cost = cost;
         this.number = number;
         this.color = color;
-        atomicInteger.incrementAndGet();
-        this.itemId=atomicInteger.incrementAndGet();
-
     }
 
     public String getDescription() {
