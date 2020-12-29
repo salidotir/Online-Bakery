@@ -107,4 +107,5 @@ public class DeliveryInformation {
     public static DeliveryInformation createNewDelivery(int orderID, int employeeId, String deliveryAddress, Date deliveryTime) {
         return new DeliveryInformation(orderID, employeeId, deliveryAddress, deliveryTime);
     }
+    
 }
