@@ -3,6 +3,7 @@
  */
 package online.bakery;
 
+import java.util.Date;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -11,7 +12,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class Employee {
     int employeeId ;
-    static AtomicInteger atomicInteger = new AtomicInteger(2);
+    static AtomicInteger atomicInteger = new AtomicInteger(0);
     private String firstName;
     private String lastName;
     private int score;
@@ -83,5 +84,17 @@ public class Employee {
      */
     public int getNumOfPeopleWhoScored() {
         return this.numOfPeopleWhoScored;
+    }
+    
+    public boolean deliverOrder(DeliveryInformation deliveryInformation) {
+        deliveryInformation.setActualDeliveryTime(new Date());
+        return true;
+    }
+    
+    public boolean addNote(Note note, String extraText) {
+        if (this.employeeId == note.getNoteEmployeeId()) {
+            note.setNoteEmployeeText(extraText);
+        }
+        return true;
     }
 }
