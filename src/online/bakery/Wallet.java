@@ -39,6 +39,6 @@ public class Wallet {
     }
     
     public void addAmount(BigDecimal Amount) {
-        this.Amount.add(Amount);
+        this.Amount = this.Amount.add(Amount);
     }   
 }
