@@ -10,6 +10,6 @@ package online.bakery;
  * @author salidotir
  */
 public enum PaymentType {
-    FROM_Wallet,        // pay the order from wallet
+    FROM_WALLET,        // pay the order from wallet
     PAY_ONLINE          // pay the order online
 }
