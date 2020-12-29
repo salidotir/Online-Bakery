@@ -4,7 +4,9 @@
 package online.bakery;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -13,6 +15,8 @@ import java.util.List;
 public class DBMS {
     
     private static DBMS dbms = new DBMS();
+    
+    private Map<String,String> usernamePasswordTable = new HashMap<String,String>(); 
     
     private List<Bakery> bakeries;
     private List<Person> bakers;
@@ -34,6 +38,27 @@ public class DBMS {
     
     public static DBMS getDBMS() {
         return DBMS.dbms;
+    }
+    
+    //~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~ 
+    
+    public static boolean signUp(String username, String password){
+        if (DBMS.getDBMS().usernamePasswordTable.containsKey(username))
+            return false;
+        else{
+            DBMS.getDBMS().usernamePasswordTable.put(username, password);
+            return true;
+        }
+    }
+    
+    public static boolean login(String username, String password){
+        String pass = DBMS.getDBMS().usernamePasswordTable.get(username);
+        if (pass != null){
+            boolean result = pass.equals(password);
+            return result;
+        }else{
+            return false;
+        }
     }
     
     //~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~ 
