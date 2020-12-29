@@ -96,8 +96,8 @@ public class DeliveryInformation {
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         String s;
         s = "**Delivery information**\n" + 
-                "delivery id: " + this.deliveryId + "\n" +
-                "order id: " + this.orderId + "\n" +
+                "delivery id: " + this.getDeliveryId() + "\n" +
+                "order id: " + this.getOrderId() + "\n" +
                 "employee id: " + this.employeeId + "\n" +
                 "delivery address: " + this.deliveryAddress + "\n" +
                 "delivery time: " + formatter.format(this.deliveryTime) + "\n";
@@ -113,5 +113,26 @@ public class DeliveryInformation {
         
     public static DeliveryInformation createNewDelivery(int orderID, int employeeId, String deliveryAddress, Date deliveryTime) {
         return new DeliveryInformation(orderID, employeeId, deliveryAddress, deliveryTime);
+    }
+
+    /**
+     * @return the deliveryId
+     */
+    public int getDeliveryId() {
+        return deliveryId;
+    }
+
+    /**
+     * @param deliveryId the deliveryId to set
+     */
+    public void setDeliveryId(int deliveryId) {
+        this.deliveryId = deliveryId;
+    }
+
+    /**
+     * @return the orderId
+     */
+    public int getOrderId() {
+        return orderId;
     }
 }
