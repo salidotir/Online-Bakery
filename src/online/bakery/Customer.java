@@ -1,6 +1,7 @@
 package online.bakery;
 import java.util.ArrayList;
 import java.util.List;
+import online.bakery.sweets.Rate;
 import online.bakery.sweets.Sweets;
 
 /**
@@ -73,7 +74,7 @@ public class Customer extends Account{
         designs.add(sweet);
     }
     
-    rateSweet(Sweets s,enum rate){
+    void rateSweet(Sweets s,Rate rate){
         s.addscore(rate,this);
     }
 }
