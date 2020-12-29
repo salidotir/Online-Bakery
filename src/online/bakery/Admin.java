@@ -37,9 +37,10 @@ public class Admin extends Account{
         return INSTANCE;
     }
     
-    String createCustomer(Customer customer){
+    boolean createCustomer(Customer customer){
         boolean result = customers.add(customer);
-        return (result == true ? "Active" : "Inactive");
+        customer.setActiveness("Active");
+        return result;
     }
     
     List<Customer> viewCustomers(){

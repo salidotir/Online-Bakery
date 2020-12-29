@@ -18,7 +18,7 @@ public class Customer extends Account{
         Wallet w = new Wallet();
         this.wallet = w;
         super.SignUp(username, password);
-        this.activeness = Admin.getInstance().createCustomer(this); 
+        Admin.getInstance().createCustomer(this); 
     }
 
     public String getActiveness() {
@@ -46,11 +46,12 @@ public class Customer extends Account{
         return personP;
     }
 
-    public void createNewSweet(int SweetsId, int StaffId){
+    public Order createNewSweet(int SweetsId, int StaffId){
         List<Integer> SweetList = new ArrayList<Integer>();
         SweetList.add(SweetsId);
         Order order = new Order(this.CustomerID, SweetList, StaffId);
         this.OrdersID.add(order.getOrderId());
+        return order;
     }
 
 }
