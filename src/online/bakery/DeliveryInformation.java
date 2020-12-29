@@ -3,6 +3,7 @@
  */
 package online.bakery;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -92,20 +93,25 @@ public class DeliveryInformation {
     }
     
     public String getDeliveryInformation() {
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         String s;
         s = "**Delivery information**\n" + 
                 "delivery id: " + this.deliveryId + "\n" +
                 "order id: " + this.orderId + "\n" +
                 "employee id: " + this.employeeId + "\n" +
                 "delivery address: " + this.deliveryAddress + "\n" +
-                "delivery time: " + this.deliveryTime + "\n" +
-                "actual delivery time: " + this.actualDeliveryTime + "\n" +
-                "____________________________\n";
+                "delivery time: " + formatter.format(this.deliveryTime) + "\n";
+        if(this.actualDeliveryTime == null) {
+            s += "actual delivery time: 'not delivered yet'" + "\n";
+        }
+        else {
+            s += "actual delivery time: " + formatter.format(this.actualDeliveryTime) + "\n";
+        }
+        s += "____________________________\n";
         return s;
     }
         
     public static DeliveryInformation createNewDelivery(int orderID, int employeeId, String deliveryAddress, Date deliveryTime) {
         return new DeliveryInformation(orderID, employeeId, deliveryAddress, deliveryTime);
     }
-    
 }
