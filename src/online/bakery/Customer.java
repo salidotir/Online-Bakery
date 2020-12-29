@@ -1,6 +1,7 @@
 package online.bakery;
 import java.util.ArrayList;
 import java.util.List;
+import online.bakery.sweets.Sweets;
 
 /**
  *
@@ -9,7 +10,8 @@ import java.util.List;
 public class Customer extends Account{
     private final int CustomerID;
     private final Wallet wallet;
-    private List<Integer> OrdersID = new ArrayList<Integer>();
+    private List<Order> Orders = new ArrayList<Order>();   
+    private List<Sweets> designs = new ArrayList<Sweets>();
     private String activeness;
     
     public Customer(String username, String password){
@@ -33,12 +35,12 @@ public class Customer extends Account{
         return wallet;
     }
     
-    public void setOrderID(int OrderID) {
-        this.OrdersID.add(OrderID);
+    public void setOrder(Order Order) {
+        this.Orders.add(Order);
     }
 
-    public List<Integer> getOrdersID() {
-        return OrdersID;
+    public List<Order> getOrders() {
+        return Orders;
     }
     
     public String getProfile() {
@@ -46,12 +48,21 @@ public class Customer extends Account{
         return personP;
     }
 
-    public Order createNewSweet(int SweetsId, int StaffId){
-        List<Integer> SweetList = new ArrayList<Integer>();
-        SweetList.add(SweetsId);
-        Order order = new Order(this.CustomerID, SweetList, StaffId);
-        this.OrdersID.add(order.getOrderId());
+    public Order createNewSweet(List<Sweets> sweetlist, int StaffId){
+        Order order = new Order(this.CustomerID, sweetlist, StaffId);
+        this.Orders.add(order);
         return order;
+    }
+    
+    public boolean addtoOrder(Sweets sweet, Order order){
+        if (this.Orders.contains(order)){
+            return this.Orders.get(this.Orders.lastIndexOf(order)).addtoOrder(sweet);
+        }else
+            return false;
+    }
+    
+    public void addtoDesigns(Sweets sweet){
+        designs.add(sweet);
     }
 
 }
