@@ -42,6 +42,7 @@ public class Login {
             return false;
         else{
             map.put(username, password);
+            lastLoginTime = new Date();
             return true;
         }
     }

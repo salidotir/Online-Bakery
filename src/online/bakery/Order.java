@@ -2,6 +2,7 @@ package online.bakery;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+import online.bakery.sweets.Sweets;
 
 /**
  *
@@ -13,28 +14,31 @@ public class Order {
     
     private final int customerId;
     private final int orderId;
-    static AtomicInteger atomicInteger = new AtomicInteger(0);
-    private final List<Integer> SweetsId ;
+    static AtomicInteger atomicInteger = new AtomicInteger(2);
+    private final List<Sweets> Sweets ;
 
     
     private final int StaffId;
     private int paymentId;
-
     
-    
-    public Order(int customerId, List<Integer> SweetsId, int StaffId) {
+    public Order(int customerId, List<Sweets> Sweets, int StaffId) {
         this.customerId = customerId;
-        this.orderId=atomicInteger.incrementAndGet();
-        this.SweetsId = SweetsId;
+        atomicInteger.incrementAndGet();
+        this.orderId = atomicInteger.incrementAndGet();
+        this.Sweets = Sweets;
         this.StaffId = StaffId;
+    }
+    
+    public boolean addtoOrder(Sweets Sweet){
+        return this.Sweets.add(Sweet);
     }
 
     public int getOrderId() {
         return orderId;
     }
 
-    public List<Integer> getSweetsId() {
-        return SweetsId;
+    public List<Sweets> getSweets() {
+        return Sweets;
     }
     
     public OrderStatus getOrderStatus() {
