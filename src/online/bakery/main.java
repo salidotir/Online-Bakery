@@ -40,22 +40,35 @@ public class main {
         System.out.printf(b1.getProfile());
 
         Discount d1 = new Discount("تخفیف یلدایی" , 20 , new Date(1399,9,20),new Date(1399,10,1),b1.getID());
-        b1.addDiscount(d1.getID());
+        b1.addDiscount(d1);
 
-        b1.addMenu(s1.getSweetId());
+        b1.addMenu(s1);
         
         //~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~
 
         // create customer-1 with wallet
 
-        Customer c = new Customer("فاطمه" ,"مسعودی" ,"۰۹۱۷۲۲۳۲۸۳۵" , "شیراز شهرک شهید باهنر");
+        Customer c = new Customer("fm","1234");
+        c.setFirstname("فاطمه");
+        c.setLastname("مسعودی");
+        c.setContactNo("۰۹۱۷۲۲۳۲۸۳۵");
+        c.setAddress("شیراز شهرک شهید باهنر");
 
+        // customer-1 order sweet 2 , 1
+        List<Sweets> sList = new ArrayList<Sweets>();
+        List<SweetType> stList = new ArrayList<SweetType>();
+        sList.add(s2);
+        stList.add(SweetType.CREATE_CUSTOMER);
 
-        // customer-1 order sweet 1
-        ConfectionerStatus cs1 = b1.sweetToOrder(s1);
+        sList.add(s1);
+        stList.add(SweetType.READY);
+
+        ConfectionerStatus cs1 = b1.sweetToOrder(sList,stList,c);
         System.out.println(cs1.toString());
         if(cs1 == ConfectionerStatus.ACCEPT){
-            c.createNewSweet(s2.getSweetId(),b1.getID());
+            Order o1 = c.createNewSweet(s2.getSweetId(),b1.getID());
+            b1.addOrder(o1);
+
         }
         
         
@@ -127,19 +140,32 @@ public class main {
         System.out.printf(b1.getProfile());
 
         Discount d1 = new Discount("تخفیف یلدایی" , 20 , new Date(1399,9,20),new Date(1399,10,1),b1.getID());
-        b1.addDiscount(d1.getID());
+        b1.addDiscount(d1);
 
-        b1.addMenu(s1.getSweetId());
+        b1.addReadySweet(s1);
 
-        Customer c = new Customer("فاطمه" ,"مسعودی" ,"۰۹۱۷۲۲۳۲۸۳۵" , "شیراز شهرک شهید باهنر");
+        Customer c = new Customer("fm","1234");
+        c.setFirstname("فاطمه");
+        c.setLastname("مسعودی");
+        c.setContactNo("۰۹۱۷۲۲۳۲۸۳۵");
+        c.setAddress("شیراز شهرک شهید باهنر");
+        
+        List<Sweets> sList = new ArrayList<Sweets>();
+        List<SweetType> stList = new ArrayList<SweetType>();
+        sList.add(s2);
+        stList.add(SweetType.CREATE_CUSTOMER);
 
+        sList.add(s1);
+        stList.add(SweetType.READY);
 
-        ConfectionerStatus cs1 = b1.sweetToOrder(s2);
+        ConfectionerStatus cs1 = b1.sweetToOrder(sList,stList,c);
         System.out.println(cs1.toString());
         if(cs1 == ConfectionerStatus.ACCEPT){
-            c.createNewSweet(s2.getSweetId(),b1.getID());
+            Order o1 = c.createNewSweet(s2.getSweetId(),b1.getID());
+            b1.addOrder(o1);
 
         }
+
         List<Integer> orderIdC = c.getOrdersID();
         for (int i : orderIdC){
             System.out.println(i+"");

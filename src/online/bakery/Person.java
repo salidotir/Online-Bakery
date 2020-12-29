@@ -12,11 +12,10 @@ public class Person extends Account implements Confectioner{
     private String description;
     private int score;
     private int numScore;
-    private List<Integer> post = new ArrayList<Integer>(); // post id
-    private List<Integer> sweetId = new ArrayList<Integer>(); //list of sweets is ready to buy
-    private List<Integer> orderList = new ArrayList<Integer>(); // list order id
-    private List<Integer> birthdayItemId = new ArrayList<Integer>();
-    private List<Integer> discountList = new ArrayList<Integer>();
+    private List<Sweets> post = new ArrayList<Sweets>(); // post id
+    private List<Sweets> readySweet = new ArrayList<Sweets>(); //list of sweets is ready to buy
+    private List<Order> orderList = new ArrayList<Order>(); // list order id
+    private List<Discount> discountList = new ArrayList<Discount>();
 
 
 
@@ -54,54 +53,64 @@ public class Person extends Account implements Confectioner{
         this.score -= a;
     }
 
-    public void addPost(int id){this.post.add(id);}
+    public void addPost(Sweets sweet){this.post.add(sweet);}
 
-    public void addSweet(int id){this.sweetId.add(id);}
+    public void addReadySweet(Sweets sweet){this.readySweet.add(sweet);}
 
-    public void addOrder(int id){this.orderList.add(id);}
+    public void addOrder(Order order){this.orderList.add(order);}
 
-    public void addBirthdayItem(int id) {this.birthdayItemId.add(id);}
 
-    public ConfectionerStatus sweetToOrder(Sweets s){
-        int i = 1;
-        System.out.println(s.description);
-        for (ConfectionerStatus CS: ConfectionerStatus.values())
-        {
-            System.out.println(i + " : "+ CS);
-            i += 1;
+    public ConfectionerStatus sweetToOrder(List<Sweets> s,List<SweetType> st,Customer c){
+        System.out.println("Customer");
+        System.out.println(c.getProfile());
+
+        for (int i = 0;i < s.size();i++) {
+            System.out.println("Sweet");
+            System.out.println(st.get(i));
+            System.out.println(s.get(i).description);
+            System.out.println(s.get(i).getTOTAL_Grams());
+            System.out.println(s.get(i).getTOTAL_COST());
+        }
+        int indexCS = 1;
+        for (ConfectionerStatus CS : ConfectionerStatus.values()) {
+            System.out.println(indexCS + " : " + CS);
+            indexCS += 1;
         }
         Scanner scan = new Scanner(System.in);
         System.out.printf("Please Enter your Status for this Order : ");
         int num = scan.nextInt();
         scan.close();
 
-        return ConfectionerStatus.values()[num-1];
+        return ConfectionerStatus.values()[num - 1];
     }
 
-    public List<Integer> getPost() {
+    public List<Sweets> getPost() {
         return post;
     }
 
-    public List<Integer> getSweetId() {
-        return sweetId;
-    }
+    public List<Sweets> getReadySweet() { return readySweet; }
 
-    public List<Integer> getOrderList() {
+    public List<Order> getOrderList() {
         return orderList;
     }
 
-    public List<Integer> getBirthdayItemId() {
-        return birthdayItemId;
-    }
+    public void addDiscount(Discount discount){this.discountList.add(discount);}
 
-    public void addDiscount(int id){this.discountList.add(id);}
-
-    public List<Integer> getDiscountList() {
+    public List<Discount> getDiscountList() {
         return discountList;
     }
+
 
     public String getProfile() {
         String personP = super.getFirstname() +" " + super.getLastname() +"\n" + description + "\n" + "Number : " + super.getContactNo() + "\n" + "\n" + "Score : " + score + "/5 "  + "(" + numScore + ") \n";
         return personP;
     }
+
+    public boolean addNote(Note note, String extraText) {
+        if (this.id == note.getNoteSellerId()) {
+            note.setNoteSellerText(extraText);
+        }
+        return true;
+    }
+
 }

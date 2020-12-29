@@ -16,17 +16,19 @@ public interface Confectioner {
 
     int getScore();
     String getDescription();
-    List<Integer> getPost();
-    List<Integer> getSweetId();
-    List<Integer> getOrderList();
-    List<Integer> getBirthdayItemId();
+    List<Sweets> getPost();
+    List<Sweets> getReadySweet();
+    List<Order> getOrderList();
 
-    void addPost(int id);
-    void addSweet(int id);
-    void addOrder(int id);
-    void addBirthdayItem(int id);
-    ConfectionerStatus sweetToOrder(Sweets s);
-    void addDiscount(int id);
+
+    void addPost(Sweets sweet);
+    void addReadySweet(Sweets sweet);
+    void addOrder(Order order);
+
+    ConfectionerStatus sweetToOrder(List<Sweets> s,List<SweetType> st,Customer c);
+    void addDiscount(Discount discount);
+
+    boolean addNote(Note note, String extraText);
 
 
 
