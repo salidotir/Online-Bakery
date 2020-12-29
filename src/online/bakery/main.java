@@ -37,8 +37,7 @@ public class main {
 
         b1.addMenu(s1.getSweetId());
 
-        Wallet w = new Wallet();
-        Customer c = new Customer(w.getWalletId());
+        Customer c = new Customer();
 
         ConfectionerStatus cs1 = b1.sweetToOrder(s2);
         System.out.println(cs1.toString());
@@ -50,13 +49,5 @@ public class main {
         for (int i : orderIdC){
             System.out.println(i+"");
         }
-
-
-
-
-
-
-
-
     }
 }
