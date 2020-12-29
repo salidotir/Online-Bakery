@@ -36,6 +36,19 @@ public class Payment {
         this.paymentStatus = PaymentStatus.IN_PROGRESS;
         this.paymentType = paymentType;
     }
+    
+    // private constructor for chargeWallet 
+    private Payment(int customerId, BigDecimal amount, Date date, String discreption) {
+        this.paymentId = atomicInteger.incrementAndGet();
+        // -1 is a null value for id, so it is used to make sure this payment is not due to any order
+        this.orderId = -1;
+        this.customerId = customerId;
+        this.date = date;
+        this.paymentAmount = amount;
+        this.discreption = discreption;
+        this.paymentStatus = PaymentStatus.IN_PROGRESS;
+        this.paymentType = PaymentType.PAY_ONLINE;
+    }
 
     /**
      * @return the paymentId
@@ -113,7 +126,7 @@ public class Payment {
     public void setPaymentType(PaymentType paymentType) {
         this.paymentType = paymentType;
     }
-    
+
     public String getPaymentInformation() {
         String s;
         s = "**Payment information**\n" +
@@ -127,6 +140,20 @@ public class Payment {
                 "payment status: " + this.paymentStatus.toString() + "\n" + 
                 "____________________________\n";
         return s;
+    }
+    
+    public static Payment chargeWallet(Customer customer, String discreption) {
+        Scanner scan = new Scanner(System.in);
+        System.out.println("How much do you want to charge your wallet: ");
+        BigDecimal num = scan.nextBigDecimal();
+        //scan.close();
+        
+        Payment pay = new Payment(customer.getID(), num, new Date(), discreption);
+        if(Payment.payOnline(pay) == true) {
+            customer.getWallet().addAmount(num);
+            return pay;
+        }
+        return null;
     }
     
     public static PaymentType howToPay() {
@@ -154,7 +181,7 @@ public class Payment {
         return false;
     }
     
-    private boolean payFromWallet(Payment pay, Customer customer) {
+    private static boolean payFromWallet(Payment pay, Customer customer) {
         int res = customer.getWallet().getAmount().compareTo(pay.paymentAmount);
         // res == 0 -> both are equal
         // res == 1 -> wallet > pay amount
@@ -171,7 +198,7 @@ public class Payment {
         }
     }
     
-    private boolean payOnline(Payment pay) {
+    private static boolean payOnline(Payment pay) {
         pay.setPaymentStatus(PaymentStatus.SUCCESSFUL);
         System.out.println("Paid for the order online.\n");
         return true;
