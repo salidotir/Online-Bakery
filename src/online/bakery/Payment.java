@@ -16,15 +16,19 @@ public class Payment {
     private final String paymentCustomerId;
     private final Date paymentDate;
     private final int paymentAmount;          // payment amount is calculated in 'Rials' -> int
-    private String paymentDiscreption;  // any discreption for payment
+    private String paymentDiscreption;        // any discreption for payment
+    private PaymentStatus paymentStatus;
+    private PaymentType paymentType;
     
     // constructor for creating payment object the first time for ordeing
-    public Payment(String paymentCustomerId, Date paymentDate, int paymentAmount) {
+    public Payment(String paymentCustomerId, Date paymentDate, int paymentAmount, String paymentDesciption, PaymentStatus paymentStatus, PaymentType paymentType) {
         this.paymentCustomerId = paymentCustomerId;
         this.paymentDate = paymentDate;
         this.paymentAmount = paymentAmount;
         this.paymentDiscreption = "";
         this.paymentId = atomicInteger.incrementAndGet();
+        this.paymentStatus = paymentStatus;
+        this.paymentType = paymentType;
     }
 
     /**
@@ -68,6 +72,34 @@ public class Payment {
     public void setPaymentDiscreption(String paymentDiscreption) {
         this.paymentDiscreption = paymentDiscreption;
     }
+
+    /**
+     * @return the paymentStatus
+     */
+    public PaymentStatus getPaymentStatus() {
+        return paymentStatus;
+    }
+
+    /**
+     * @param paymentStatus the paymentStatus to set
+     */
+    public void setPaymentStatus(PaymentStatus paymentStatus) {
+        this.paymentStatus = paymentStatus;
+    }
+
+    /**
+     * @return the paymentType
+     */
+    public PaymentType getPaymentType() {
+        return paymentType;
+    }
+
+    /**
+     * @param paymentType the paymentType to set
+     */
+    public void setPaymentType(PaymentType paymentType) {
+        this.paymentType = paymentType;
+    }
     
-    
+
 }
