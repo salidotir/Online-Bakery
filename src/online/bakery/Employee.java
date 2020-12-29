@@ -4,64 +4,26 @@
 package online.bakery;
 
 import java.util.Date;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  *
  * @author salidotir
  */
-public class Employee {
+public class Employee extends Account{
     int employeeId ;
-    static AtomicInteger atomicInteger = new AtomicInteger(0);
-    private String firstName;
-    private String lastName;
     private int score;
     private int numOfPeopleWhoScored = 0;
     
     public Employee(String FirstName, String LastName) {
-        this.firstName = FirstName;
-        this.lastName = LastName;
+        super();
+        super.setFirstname(FirstName);
+        super.setLastname(LastName);
         this.score = 0;
-        this.employeeId=atomicInteger.incrementAndGet();
+        this.employeeId = super.ID;
     }
 
     public String getProfile() {
-        return "First name: " + firstName + " | Last name: " + lastName + " | Id: " + employeeId + " | Score: " + score;
-    }
-    
-    /**
-     * @return the id
-     */
-    public int getId() {
-        return employeeId;
-    }
-
-    /**
-     * @return the firstName
-     */
-    public String getFirstName() {
-        return firstName;
-    }
-
-    /**
-     * @param firstName the firstName to set
-     */
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    /**
-     * @return the lastName
-     */
-    public String getLastName() {
-        return lastName;
-    }
-
-    /**
-     * @param lastName the lastName to set
-     */
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+        return "First name: " + super.getFirstname() + " | Last name: " + super.getLastname() + " | Id: " + employeeId + " | Score: " + score;
     }
 
     /**

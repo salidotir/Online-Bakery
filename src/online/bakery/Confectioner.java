@@ -6,8 +6,6 @@ import java.util.List;
 
 public interface Confectioner {
 
-
-    void setNumber(String number);
     void setScore(int score);
     void increaseScore(int a);
     void decreaseScore(int a);
@@ -16,10 +14,8 @@ public interface Confectioner {
 
     String getProfile();
 
-    String getNumber();
     int getScore();
     String getDescription();
-    int getId();
     List<Integer> getPost();
     List<Integer> getSweetId();
     List<Integer> getOrderList();

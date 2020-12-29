@@ -2,18 +2,14 @@ package online.bakery;
 
 import online.bakery.sweets.Sweets;
 
-import java.util.concurrent.atomic.AtomicInteger;
 import java.math.BigDecimal;
 import java.util.*;
 
-public class Bakery implements Confectioner {
+public class Bakery extends Account implements Confectioner {
 
     private final int id ;
-    static AtomicInteger atomicInteger = new AtomicInteger(2);
     private String name;
     private String description;
-    private String number;
-    private String address;
     private int score;
     private int numScore;
     private List<Integer> post = new ArrayList<Integer>(); // post id
@@ -27,21 +23,14 @@ public class Bakery implements Confectioner {
 
 
     public Bakery(String name, String description, String number, String address) {
-        atomicInteger.incrementAndGet();
-        this.id=atomicInteger.incrementAndGet();
+        super();
+        this.id = super.ID;
         this.name = name;
         this.description = description;
-        this.number = number;
-        this.address = address;
+        super.setContactNo(number);
+        super.setAddress(address);
         this.score = 0;
         this.numScore = 0;
-    }
-
-
-
-
-    public int getId() {
-        return id;
     }
 
     public String getName() {
@@ -55,22 +44,6 @@ public class Bakery implements Confectioner {
     public void setDescription(String description) { this.description = description; }
 
     public String getDescription() { return description; }
-
-    public String getNumber() {
-        return number;
-    }
-
-    public void setNumber(String number) {
-        this.number = number;
-    }
-
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) { this.address = address; }
-
 
     public int getScore() {
         return score;
@@ -141,7 +114,7 @@ public class Bakery implements Confectioner {
     }
 
     public String getProfile() {
-        String bakeryP = name +"\n" + description + "\n" + "Number : " + number + "\n" + "Address : " + address + "\n" + "Score : " +score + "/5 " + "(" + numScore + ") \n" ;
+        String bakeryP = name +"\n" + description + "\n" + "Number : " + super.ContactNo + "\n" + "Address : " + super.Address + "\n" + "Score : " +score + "/5 " + "(" + numScore + ") \n" ;
         return bakeryP;
     }
 }

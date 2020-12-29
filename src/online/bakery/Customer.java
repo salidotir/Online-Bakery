@@ -8,15 +8,15 @@ import java.util.concurrent.atomic.AtomicInteger;
  *
  * @author melika
  */
-public class Customer {
+public class Customer extends Account{
     private final int CustomerID;
     static AtomicInteger atomicInteger = new AtomicInteger(2);
     private final Wallet wallet;
     private List<Integer> OrdersID = new ArrayList<Integer>();
 
     public Customer() {
-        atomicInteger.incrementAndGet();
-        this.CustomerID=atomicInteger.incrementAndGet();
+        super();
+        this.CustomerID = super.ID;
         Wallet w = new Wallet();
         this.wallet = w;
     }
