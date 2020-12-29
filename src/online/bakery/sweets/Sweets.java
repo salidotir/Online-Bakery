@@ -26,7 +26,7 @@ public abstract class Sweets {
         return Score;
     }
 
-    public void addScore(Rate rate, Customer customer) {
+    /*public void addScore(Rate rate, Customer customer) {
         double myscore = this.CustomerForScore.size() * this.Score;
         if (!this.CustomerForScore.contains(customer)) {
             this.CustomerForScore.add(customer);
@@ -71,7 +71,7 @@ public abstract class Sweets {
             System.out.println("already rated.");
         }
 
-    }
+    }*/
 
     public String getDescription() {
         return description;
