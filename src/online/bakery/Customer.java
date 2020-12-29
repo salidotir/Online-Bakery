@@ -10,14 +10,14 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class Customer {
     private final int CustomerID;
-    static AtomicInteger atomicInteger = new AtomicInteger(2);
-    private final int WalletID;
+    static AtomicInteger atomicInteger = new AtomicInteger(0);
+    private Wallet wallet;
     private List<Integer> OrdersID = new ArrayList<Integer>();
 
-    public Customer(int WalletID) {
+    public Customer(Wallet Wallet) {
         atomicInteger.incrementAndGet();
         this.CustomerID=atomicInteger.incrementAndGet();
-        this.WalletID = WalletID;
+        this.wallet = Wallet;
     }
     
     public void setOrderID(int OrderID) {
@@ -35,5 +35,8 @@ public class Customer {
         this.OrdersID.add(order.getOrderId());
     }
 
+    public Wallet getWallet() {
+        return wallet;
+    }
 
 }
