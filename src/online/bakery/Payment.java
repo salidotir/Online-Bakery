@@ -114,6 +114,21 @@ public class Payment {
         this.paymentType = paymentType;
     }
     
+    public String getPaymentInformation() {
+        String s;
+        s = "**Payment information**\n" +
+                "payment id: " + this.paymentId + "\n" +
+                "order id: " + this.orderId + "\n" +
+                "customer id: " + this.customerId + "\n" +
+                "amount: " + this.paymentAmount + "\n" +
+                "date: " + this.date.toString() + "\n" +
+                "discreption: " + this.discreption + "\n" +
+                "payment type: " + this.paymentType.toString() + "\n" +
+                "payment status: " + this.paymentStatus.toString() + "\n" + 
+                "____________________________\n";
+        return s;
+    }
+    
     public static PaymentType howToPay() {
         int index = 1;
         for (PaymentType PT: PaymentType.values())
