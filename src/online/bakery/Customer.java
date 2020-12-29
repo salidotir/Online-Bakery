@@ -57,15 +57,15 @@ public class Customer extends Account{
         return personP;
     }
 
-    public Order createNewSweet(List<Sweets> sweetlist, Confectioner Staff){
-        Order order = new Order(this, sweetlist, Staff);
+    public Order createNewSweet(List<Sweets> sweetlist, Confectioner Staff, List<BirthdayItems> items){
+        Order order = new Order(this, sweetlist, Staff, items);
         this.Orders.add(order);
         return order;
     }
     
-    public boolean addtoOrder(Sweets sweet, Order order){
+    public boolean SweetaddtoOrder(Sweets sweet, Order order){
         if (this.Orders.contains(order)){
-            return this.Orders.get(this.Orders.lastIndexOf(order)).addtoOrder(sweet);
+            return this.Orders.get(this.Orders.lastIndexOf(order)).SweetaddtoOrder(sweet);
         }else
             return false;
     }

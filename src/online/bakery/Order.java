@@ -1,4 +1,5 @@
 package online.bakery;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,11 +20,11 @@ public class Order {
     private final int orderId;
     static AtomicInteger atomicInteger = new AtomicInteger(2);
     private Map<Sweets,Integer> map = new HashMap<Sweets,Integer>(); ;  
-    
+    private List<BirthdayItems> items;
     private final Confectioner Staff;
     private int paymentId;
     
-    public Order(Customer customer, List<Sweets> Sweets, Confectioner Staff) {
+    public Order(Customer customer, List<Sweets> Sweets, Confectioner Staff, List<BirthdayItems> items) {
         this.customer = customer;
         atomicInteger.incrementAndGet();
         this.orderId = atomicInteger.incrementAndGet();
@@ -31,9 +32,10 @@ public class Order {
             map.put(s, null);
         }
         this.Staff = Staff;
+        this.items = items;
     }
     
-    public boolean addtoOrder(Sweets Sweet){
+    public boolean SweetaddtoOrder(Sweets Sweet){
         if (map.get(Sweet) != null){
             map.put(Sweet, null);
             return true;
@@ -41,6 +43,12 @@ public class Order {
             return false;
     }
 
+    public boolean ItemaddtoOrder(BirthdayItems item){
+        if (!items.contains(item)){
+            return items.add(item);            
+        }else
+            return false;
+    }
     public int getOrderId() {
         return orderId;
     }
@@ -127,4 +135,14 @@ public class Order {
             return false;
     }
    
+    public BigDecimal getCost(){
+        BigDecimal cost = new BigDecimal(0);
+        for (Sweets i : map.keySet()) {
+            cost = cost.add(i.getTOTAL_COST());
+        }
+        for (BirthdayItems b: items){
+            cost = cost.add(b.getCost());
+        }
+        return cost;
+    }
 }
