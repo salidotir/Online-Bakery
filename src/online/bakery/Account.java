@@ -35,6 +35,10 @@ abstract public class Account {
         return ID;
     }
 
+    public Date getDateCreated() {
+        return dateCreated;
+    }
+
     public String getAddress() {
         return Address;
     }
@@ -75,4 +79,7 @@ abstract public class Account {
         return Login.ValidateLogin(username, password);
     }
     
+    public Date getLastLogin(){
+        return Login.lastLoginTime;
+    }
 }
