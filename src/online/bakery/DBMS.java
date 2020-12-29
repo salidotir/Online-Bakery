@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.ToLongFunction;
 
 /**
  *
@@ -38,6 +39,62 @@ public class DBMS {
     
     public static DBMS getDBMS() {
         return DBMS.dbms;
+    }
+    
+    //~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~ 
+    
+    // search for notes of a specific order
+    public Note getOrderNote(Order order) {
+        for(Note note : DBMS.getDBMS().notes) {
+            if(order.getOrderId() == note.getOrderId()) {
+                return note;
+            }
+        }
+        return null;
+    }
+    
+    // search for delivery information of a specific order
+    public DeliveryInformation getOrderDeliverInformation(Order order) {
+        for(DeliveryInformation deliveryInformation : DBMS.getDBMS().deliveryInformations) {
+            if(order.getOrderId() == deliveryInformation.getOrderId()) {
+                return deliveryInformation;
+            }
+        }
+        return null;
+    }
+    
+    // search for payment information of a specific order
+    public Payment getOrderPaymentInformation(Order order) {
+        for(Payment payment : DBMS.getDBMS().payments) {
+            if(order.getOrderId() == payment.getOrderId()) {
+                return payment;
+            }
+        }
+        return null;
+    }
+
+    //~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~ 
+    
+    // search a bakery in its name
+    public static List<Bakery> searchBakeryByName(String subString) {
+        List<Bakery> result = new ArrayList<Bakery>();
+        for(Bakery bakery:DBMS.getDBMS().bakeries) {
+            if(bakery.getName().toLowerCase().contains(subString.toLowerCase())) {
+                result.add(bakery);
+            }
+        }
+        return result;
+    }
+    
+    // search a baker in its firstname & lastname
+    public static List<Person> searchBakerByName(String subString) {
+        List<Person> result = new ArrayList<Person>();
+        for(Person baker:DBMS.getDBMS().bakers) {
+            if(baker.getFirstname().toLowerCase().contains(subString.toLowerCase()) || baker.getLastname().toLowerCase().contains(subString.toLowerCase())) {
+                result.add(baker);
+            }
+        }
+        return result;
     }
     
     //~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~ 
@@ -175,6 +232,5 @@ public class DBMS {
         DBMS.getDBMS().deliveryInformations.add(deliveryInformation);
         return true;
     }
-
-    
+ 
 }
