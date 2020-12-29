@@ -1,5 +1,6 @@
 package online.bakery;
 
+import java.math.BigDecimal;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -7,12 +8,12 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author salidotir
  */
 public class Wallet {
-    private int Amount;
+    private BigDecimal Amount;
     private final int walletId ;
     static AtomicInteger atomicInteger = new AtomicInteger(0);
     
     public Wallet() {
-        this.Amount = 0;
+        this.Amount = new BigDecimal(0);
         this.walletId=atomicInteger.incrementAndGet();
     }
         
@@ -29,15 +30,15 @@ public class Wallet {
         return this.walletId;
     }
     
-    public int getAmount() {
+    public BigDecimal getAmount() {
         return Amount;
     }
 
-    public void subtractAmount(int Amount) {
-        this.Amount -= Amount;
+    public void subtractAmount(BigDecimal Amount) {
+        this.Amount = this.Amount.subtract(Amount);
     }
     
-    public void addAmount(int Amount) {
-        this.Amount += Amount;
+    public void addAmount(BigDecimal Amount) {
+        this.Amount.add(Amount);
     }   
 }
