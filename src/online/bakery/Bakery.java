@@ -114,7 +114,7 @@ public class Bakery extends Account implements Confectioner {
     }
 
     public String getProfile() {
-        String bakeryP = name +"\n" + description + "\n" + "Number : " + super.ContactNo + "\n" + "Address : " + super.Address + "\n" + "Score : " +score + "/5 " + "(" + numScore + ") \n" ;
+        String bakeryP = name +"\n" + description + "\n" + "Number : " + super.getContactNo() + "\n" + "Address : " + super.getAddress() + "\n" + "Score : " +score + "/5 " + "(" + numScore + ") \n" ;
         return bakeryP;
     }
 }
