@@ -4,17 +4,18 @@
 package online.bakery;
 
 import java.util.Date;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  *
  * @author salidotir
  */
 public class DeliveryInformation {
-    private OrderStatus orderStatus;
     
-    private final String deliveryId;
-    private final String orderId;
-    private String employeeId;
+    static AtomicInteger atomicInteger = new AtomicInteger(1);
+    private int deliveryId;
+    private int orderId;
+    private int employeeId;
     
     private String deliveryAddress;
     private Date deliveryTime;                      // date & time the customer wants to recieve order.
@@ -22,56 +23,29 @@ public class DeliveryInformation {
     private Date actualDeliveryTime;                // actual date & time the order is delivered.
     
     // constructor for making the delivery information at first time ordering
-    public DeliveryInformation(String deliveryId, String orderId, Date deliveryTime) {
-        this.orderStatus = OrderStatus.PENDING;     // orderStatus the first time creating the delivery information is PENDING.
+    public DeliveryInformation(int orderId, int employeeId, String deliveryAddress, Date deliveryTime) {
         
-        this.deliveryId = deliveryId;
+        this.deliveryId = atomicInteger.incrementAndGet();
         this.orderId = orderId;
         this.deliveryTime = deliveryTime;
         
-        this.employeeId = null;                     // maybe no need to deliver the order.
-        this.deliveryAddress = null;                // maybe no need to deliver the order.
-        this.actualDeliveryTime = null;             // filled after order is delivered.
+        this.employeeId = employeeId;                       // maybe no need to deliver the order.
+        this.deliveryAddress = deliveryAddress;             // maybe no need to deliver the order.
+        this.actualDeliveryTime = null;                     // filled after order is delivered.
     }
     
-    // constructor for making the delivery information after reading from database
-    public DeliveryInformation(OrderStatus orderStatus, String deliveryId, String orderId, String employeeId, String deliveryAddress, Date deliveryTime, Date actualDeliveryTime) {
-        this.orderStatus = orderStatus;
-        
-        this.deliveryId = deliveryId;
-        this.orderId = orderId;
-        this.deliveryTime = deliveryTime;
-        
-        this.employeeId = employeeId;
-        this.deliveryAddress = deliveryAddress;
-        this.actualDeliveryTime = actualDeliveryTime;
-    }
-
-    /**
-     * @return the orderStatus
-     */
-    public OrderStatus getOrderStatus() {
-        return orderStatus;
-    }
-
-    /**
-     * @param orderStatus the orderStatus to set
-     */
-    public void setOrderStatus(OrderStatus orderStatus) {
-        this.orderStatus = orderStatus;
-    }
 
     /**
      * @return the employeeId
      */
-    public String getEmployeeId() {
+    public int getEmployeeId() {
         return employeeId;
     }
 
     /**
      * @param employeeId the employeeId to set
      */
-    public void setEmployeeId(String employeeId) {
+    public void setEmployeeId(int employeeId) {
         this.employeeId = employeeId;
     }
 
@@ -115,5 +89,9 @@ public class DeliveryInformation {
      */
     public void setActualDeliveryTime(Date actualDeliveryTime) {
         this.actualDeliveryTime = actualDeliveryTime;
+    }
+    
+    public DeliveryInformation createNewDelivery(int orderID, int employeeId, String deliveryAddress, Date deliveryTime) {
+        return new DeliveryInformation(orderID, employeeId, deliveryAddress, deliveryTime);
     }
 }
