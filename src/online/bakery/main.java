@@ -66,7 +66,7 @@ public class main {
         ConfectionerStatus cs1 = b1.sweetToOrder(sList,stList,c);
         System.out.println(cs1.toString());
         if(cs1 == ConfectionerStatus.ACCEPT){
-            Order o1 = c.createNewSweet(sList,b1.getID());
+            Order o1 = c.createNewSweet(sList,b1);
             b1.addOrder(o1);
 
         }
@@ -161,9 +161,22 @@ public class main {
         ConfectionerStatus cs1 = b1.sweetToOrder(sList,stList,c);
         System.out.println(cs1.toString());
         if(cs1 == ConfectionerStatus.ACCEPT){
-            Order o1 = c.createNewSweet(sList,b1.getID());
+            Order o1 = c.createNewSweet(sList,b1);
             b1.addOrder(o1);
-
+            
+            System.out.println(b1.getScore());
+            
+//            System.out.println("hey");
+//            System.out.println(o1.getSweets());
+//            System.out.println(o1.getMap());
+            for(Sweets s: o1.getSweets()){
+                o1.addScore(s, 2);
+            }
+            System.out.println(o1.addScore(s2, 1));
+            
+            System.out.println(b1.getScore());
+//            System.out.println("now");
+//            System.out.println(o1.getMap());
         }
 
         List<Order> orderIdC = c.getOrders();

@@ -57,8 +57,8 @@ public class Customer extends Account{
         return personP;
     }
 
-    public Order createNewSweet(List<Sweets> sweetlist, int StaffId){
-        Order order = new Order(this.CustomerID, sweetlist, StaffId);
+    public Order createNewSweet(List<Sweets> sweetlist, Confectioner Staff){
+        Order order = new Order(this, sweetlist, Staff);
         this.Orders.add(order);
         return order;
     }
@@ -72,9 +72,5 @@ public class Customer extends Account{
     
     public void addtoDesigns(Sweets sweet){
         designs.add(sweet);
-    }
-    
-    void rateSweet(Sweets s,Rate rate){
-        s.addscore(rate,this);
     }
 }
