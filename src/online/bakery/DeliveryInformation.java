@@ -12,7 +12,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class DeliveryInformation {
     
-    static AtomicInteger atomicInteger = new AtomicInteger(1);
+    static AtomicInteger atomicInteger = new AtomicInteger(0);
     private int deliveryId;
     private int orderId;
     private int employeeId;
@@ -91,7 +91,20 @@ public class DeliveryInformation {
         this.actualDeliveryTime = actualDeliveryTime;
     }
     
-    public DeliveryInformation createNewDelivery(int orderID, int employeeId, String deliveryAddress, Date deliveryTime) {
+    public String getDeliveryInformation() {
+        String s;
+        s = "**Delivery information**\n" + 
+                "delivery id: " + this.deliveryId + "\n" +
+                "order id: " + this.orderId + "\n" +
+                "employee id: " + this.employeeId + "\n" +
+                "delivery address: " + this.deliveryAddress + "\n" +
+                "delivery time: " + this.deliveryTime + "\n" +
+                "actual delivery time: " + this.actualDeliveryTime + "\n" +
+                "____________________________\n";
+        return s;
+    }
+        
+    public static DeliveryInformation createNewDelivery(int orderID, int employeeId, String deliveryAddress, Date deliveryTime) {
         return new DeliveryInformation(orderID, employeeId, deliveryAddress, deliveryTime);
     }
 }
