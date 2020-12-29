@@ -72,5 +72,8 @@ public class Customer extends Account{
     public void addtoDesigns(Sweets sweet){
         designs.add(sweet);
     }
-
+    
+    rateSweet(Sweets s,enum rate){
+        s.addscore(rate,this);
+    }
 }
