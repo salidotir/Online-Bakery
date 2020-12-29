@@ -14,13 +14,9 @@ import java.util.Map;
  * @author melika
  */
 public class Login {
-    private Map<String,String> map;  
-
-    public Login() {
-        this.map = new HashMap<String,String>(); 
-    }
+    private static final Map<String,String> map = new HashMap<String,String>(); ;  
     
-    Date lastLoginTime;
+    static Date lastLoginTime;
     
     String SecurityQuestion;
     String SecurityAnswer;
@@ -41,21 +37,21 @@ public class Login {
         this.SecurityAnswer = SecurityAnswer;
     }
     
-    public boolean SignUp(String username, String password){
-        if (this.map.containsKey(username))
+    public static boolean SignUp(String username, String password){
+        if (map.containsKey(username))
             return false;
         else{
-            this.map.put(username, password);
+            map.put(username, password);
             return true;
         }
     }
     
-    public boolean ValidateLogin(String username, String password){
-        String pass = this.map.get(username);
+    public static boolean ValidateLogin(String username, String password){
+        String pass = map.get(username);
         if (pass != null){
             boolean result = pass.equals(password);
             if(result)
-                this.lastLoginTime = new Date();
+                lastLoginTime = new Date();
             return result;
         }else{
             return false;

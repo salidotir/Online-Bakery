@@ -18,7 +18,7 @@ abstract public class Account {
     String Address;
     String ContactNo;
 
-    private Login login;
+//    private Login login;
     Date dateCreated;
     
     //for bakery name of manger 
@@ -28,7 +28,6 @@ abstract public class Account {
     public Account() {
         atomicInteger.incrementAndGet();
         this.ID = atomicInteger.incrementAndGet();
-        this.login = new Login();
         this.dateCreated = new Date();
     }
 
@@ -69,11 +68,11 @@ abstract public class Account {
     }
     
     public boolean SignUp(String username, String password){
-        return login.SignUp(username, password);
+        return Login.SignUp(username, password);
     }
     
     public boolean Login(String username, String password){
-        return login.ValidateLogin(username, password);
+        return Login.ValidateLogin(username, password);
     }
     
 }

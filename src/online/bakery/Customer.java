@@ -10,18 +10,25 @@ public class Customer extends Account{
     private final int CustomerID;
     private final Wallet wallet;
     private List<Integer> OrdersID = new ArrayList<Integer>();
+    private String activeness;
     
-    public Customer(String Firstname, String Lastname, String Number, String Address) {
+    public Customer(String username, String password){
         super();
         this.CustomerID = super.ID;
         Wallet w = new Wallet();
         this.wallet = w;
-        super.setAddress(Address);
-        super.setContactNo(Number);
-        super.setFirstname(Firstname);
-        super.setLastname(Lastname);
+        super.SignUp(username, password);
+        this.activeness = Admin.getInstance().createCustomer(this); 
     }
-    
+
+    public String getActiveness() {
+        return activeness;
+    }
+
+    public void setActiveness(String activeness) {
+        this.activeness = activeness;
+    }
+ 
     public Wallet getWallet() {
         return wallet;
     }
