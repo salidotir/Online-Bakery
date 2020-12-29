@@ -3,6 +3,7 @@
  */
 package online.bakery;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -13,21 +14,25 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class Payment {
     int paymentId ;
     static AtomicInteger atomicInteger = new AtomicInteger(1);
-    private final String paymentCustomerId;
-    private final Date paymentDate;
-    private final int paymentAmount;          // payment amount is calculated in 'Rials' -> int
-    private String paymentDiscreption;        // any discreption for payment
+    private final int customerId;
+    private final int orderId;
+    private final Date date;
+    private final BigDecimal paymentAmount;          // payment amount is calculated in BigDecimal
+    private String discreption;                      // any discreption for payment
     private PaymentStatus paymentStatus;
     private PaymentType paymentType;
     
     // constructor for creating payment object the first time for ordeing
-    public Payment(String paymentCustomerId, Date paymentDate, int paymentAmount, String paymentDesciption, PaymentStatus paymentStatus, PaymentType paymentType) {
-        this.paymentCustomerId = paymentCustomerId;
-        this.paymentDate = paymentDate;
+    public Payment(int paymentOrderId, int paymentCustomerId, Date paymentDate, BigDecimal paymentAmount, String paymentDesciption, PaymentStatus paymentStatus, PaymentType paymentType) {
+        this.orderId = paymentOrderId;
+        this.customerId = paymentCustomerId;
+        this.date = paymentDate;
         this.paymentAmount = paymentAmount;
-        this.paymentDiscreption = "";
+        this.discreption = paymentDesciption;
+        
         this.paymentId = atomicInteger.incrementAndGet();
         this.paymentStatus = paymentStatus;
+        
         this.paymentType = paymentType;
     }
 
@@ -41,36 +46,43 @@ public class Payment {
     /**
      * @return the paymentCustomerId
      */
-    public String getPaymentCustomerId() {
-        return paymentCustomerId;
+    public int getCustomerId() {
+        return this.customerId;
     }
 
     /**
+     * @return the orderId
+     */
+    public int getOrderId() {
+        return orderId;
+    }
+    
+    /**
      * @return the paymentDate
      */
-    public Date getPaymentDate() {
-        return paymentDate;
+    public Date getDate() {
+        return this.date;
     }
 
     /**
      * @return the paymentAmount
      */
-    public int getPaymentAmount() {
-        return paymentAmount;
+    public BigDecimal getPaymentAmount() {
+        return this.paymentAmount;
     }
 
     /**
      * @return the paymentDiscreption
      */
     public String getPaymentDiscreption() {
-        return paymentDiscreption;
+        return this.discreption;
     }
 
     /**
      * @param paymentDiscreption the paymentDiscreption to set
      */
     public void setPaymentDiscreption(String paymentDiscreption) {
-        this.paymentDiscreption = paymentDiscreption;
+        this.discreption = paymentDiscreption;
     }
 
     /**
@@ -100,6 +112,5 @@ public class Payment {
     public void setPaymentType(PaymentType paymentType) {
         this.paymentType = paymentType;
     }
-    
 
 }
