@@ -43,6 +43,14 @@ public class Customer extends Account{
         return Orders;
     }
     
+    public List<Integer> getOrdersID(){
+        List<Integer> ids = new ArrayList<Integer>();
+        for (Order order : this.Orders) {
+            ids.add(order.getOrderId());
+        }
+        return ids;
+    }
+    
     public String getProfile() {
         String personP = super.getFirstname() +" " + super.getLastname() + "\n" + "Number : " + super.getContactNo() + "\n" + "Address : " + super.getAddress() + "\n";
         return personP;

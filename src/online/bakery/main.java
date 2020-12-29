@@ -16,7 +16,7 @@ public class main {
     public static void main(String[] args) {
         test1();
 
-        //test2();
+//        test2();
     }
     
     // test2 -> test note & payment & delivery
@@ -66,15 +66,15 @@ public class main {
         ConfectionerStatus cs1 = b1.sweetToOrder(sList,stList,c);
         System.out.println(cs1.toString());
         if(cs1 == ConfectionerStatus.ACCEPT){
-            Order o1 = c.createNewSweet(s2.getSweetId(),b1.getID());
+            Order o1 = c.createNewSweet(sList,b1.getID());
             b1.addOrder(o1);
 
         }
         
         
         // print customer1 order-ids
-        List<Integer> orderIdC = c.getOrdersID();
-        for (int i : orderIdC){
+        List<Order> orderIdC = c.getOrders();
+        for (Order i : orderIdC){
             System.out.println(i+"");
         }
         
@@ -161,14 +161,15 @@ public class main {
         ConfectionerStatus cs1 = b1.sweetToOrder(sList,stList,c);
         System.out.println(cs1.toString());
         if(cs1 == ConfectionerStatus.ACCEPT){
-            Order o1 = c.createNewSweet(s2.getSweetId(),b1.getID());
+            Order o1 = c.createNewSweet(sList,b1.getID());
             b1.addOrder(o1);
 
         }
 
-        List<Integer> orderIdC = c.getOrdersID();
-        for (int i : orderIdC){
-            System.out.println(i+"");
+        List<Order> orderIdC = c.getOrders();
+        for (Order i : orderIdC){
+            System.out.println(i.getOrderId());
+            System.out.println(i.getSweets());
         }
     }
 }
