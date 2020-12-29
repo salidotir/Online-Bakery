@@ -14,12 +14,12 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class Note {    
     int noteId ;
-    static AtomicInteger atomicInteger = new AtomicInteger(2);
+    static AtomicInteger atomicInteger = new AtomicInteger(0);
     
-    private final String orderId;
-    private final String noteSellerId;
-    private final String noteCustomerId;
-    private String noteEmployeeId;          // maybe no need to employee for delivering the order
+    private final int orderId;
+    private final int noteSellerId;
+    private final int noteCustomerId;
+    private final int noteEmployeeId;          // maybe no need to employee for delivering the order
     
     private String noteSellerText;          // any note seller wants to add
     private String noteCustomerText;        // any note customer wants to add
@@ -32,13 +32,13 @@ public class Note {
      * @param customerId
      * set these 2 parameters in the constructor, if customer or employee added a note, set their id fields.
      */
-    public Note(String orderId, String sellerId, String customerId) {
+    public Note(int orderId, int sellerId, int customerId, int employeeId) {
         this.noteId = atomicInteger.incrementAndGet();
         
         this.orderId = orderId;
         this.noteSellerId = sellerId;
         this.noteCustomerId = customerId;
-        this.noteEmployeeId = null;
+        this.noteEmployeeId = employeeId;
         
         this.noteSellerText = "";
         this.noteCustomerText = "";
@@ -55,38 +55,30 @@ public class Note {
     /**
      * @return the orderId
      */
-    public String getOrderId() {
+    public int getOrderId() {
         return orderId;
     }
     
     /**
      * @return the noteSellerId
      */
-    public String getNoteSellerId() {
+    public int getNoteSellerId() {
         return noteSellerId;
     }
 
     /**
      * @return the noteCustomerId
      */
-    public String getNoteCustomerId() {
+    public int getNoteCustomerId() {
         return noteCustomerId;
     }
 
     /**
      * @return the noteEmployeeId
      */
-    public String getNoteEmployeeId() {
+    public int getNoteEmployeeId() {
         return noteEmployeeId;
-    }
-
-    /**
-     * @param noteEmployeeId the noteEmployeeId to set
-     */
-    public void setNoteEmployeeId(String noteEmployeeId) {
-        this.noteEmployeeId = noteEmployeeId;
-    }
-    
+    }    
     
     /**
      * @return the noteSellerText
@@ -128,5 +120,19 @@ public class Note {
      */
     public void setNoteEmployeeText(String noteEmployeeText) {
         this.noteEmployeeText = noteEmployeeText;
+    }
+    
+    public String getNoteInformation() {
+        String s;
+        s = "**Note nformation**\n" +
+                "note id: " + this.noteId + "\n" +
+                "seller id: " + this.noteSellerId + "\n" +
+                "customer id: " + this.noteCustomerId + "\n" +
+                "employee id: " + this.noteEmployeeId + "\n" +
+                "seller text: " + this.noteSellerText + "\n" +
+                "customer text: " + this.noteCustomerText + "\n" +
+                "employee text: " + this.noteEmployeeText + "\n" +
+                "____________________________\n";
+        return s;
     }
 }
