@@ -4,6 +4,7 @@
 package online.bakery;
 
 import java.util.Date;
+import online.bakery.sweets.Rate;
 
 /**
  *
@@ -11,15 +12,17 @@ import java.util.Date;
  */
 public class Employee extends Account{
     int employeeId ;
-    private int score;
+    private boolean isBusy;
+    private Rate score;
     private int numOfPeopleWhoScored = 0;
     
     public Employee(String FirstName, String LastName) {
         super();
         super.setFirstname(FirstName);
         super.setLastname(LastName);
-        this.score = 0;
+        this.score = Rate.ZERO;
         this.employeeId = super.ID;
+        this.isBusy = false;
     }
 
     public String getProfile() {
@@ -29,15 +32,15 @@ public class Employee extends Account{
     /**
      * @return the score
      */
-    public int getScore() {
+    public Rate getScore() {
         return score;
     }
 
     /**
      * @param newScore the score to set
      */
-    public void giveNewScore(int newScore) {
-        this.score = (this.score*this.numOfPeopleWhoScored + newScore) / (this.numOfPeopleWhoScored + 1);
+    public void giveScore(Rate newScore) {
+        //this.score = (this.score*this.numOfPeopleWhoScored + newScore) / (this.numOfPeopleWhoScored + 1);
         this.numOfPeopleWhoScored += 1;
     }
     
@@ -49,6 +52,7 @@ public class Employee extends Account{
     }
     
     public boolean deliverOrder(DeliveryInformation deliveryInformation) {
+        // call setEmployeeIsBusyFalse() of DBMS from Admin
         deliveryInformation.setActualDeliveryTime(new Date());
         return true;
     }
@@ -58,5 +62,19 @@ public class Employee extends Account{
             note.setNoteEmployeeText(extraText);
         }
         return true;
+    }
+
+    /**
+     * @return the isBusy
+     */
+    public boolean isIsBusy() {
+        return isBusy;
+    }
+
+    /**
+     * @param isBusy the isBusy to set
+     */
+    public void setIsBusy(boolean isBusy) {
+        this.isBusy = isBusy;
     }
 }
