@@ -6,16 +6,12 @@
 package online.bakery;
 
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  *
  * @author melika
  */
-public class Login {
-    private static final Map<String,String> map = new HashMap<String,String>(); ;  
-    
+public class Login {    
     static Date lastLoginTime;
     
     String SecurityQuestion;
@@ -38,17 +34,17 @@ public class Login {
     }
     
     public static boolean SignUp(String username, String password){
-        if (map.containsKey(username))
+        if (DBMS.hasEntry(username, password))
             return false;
         else{
-            map.put(username, password);
+            DBMS.addEntry(username, password);
             lastLoginTime = new Date();
             return true;
         }
     }
     
     public static boolean ValidateLogin(String username, String password){
-        String pass = map.get(username);
+        String pass = DBMS.getPasword(username);
         if (pass != null){
             boolean result = pass.equals(password);
             if(result)

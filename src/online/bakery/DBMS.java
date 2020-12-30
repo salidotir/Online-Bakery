@@ -245,23 +245,16 @@ public class DBMS {
     
     //~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~ 
     
-    public static boolean signUp(String username, String password){
-        if (DBMS.getDBMS().usernamePasswordTable.containsKey(username))
-            return false;
-        else{
-            DBMS.getDBMS().usernamePasswordTable.put(username, password);
-            return true;
-        }
+    public static String getPasword(String username){
+        return DBMS.getDBMS().usernamePasswordTable.get(username);
     }
     
-    public static boolean login(String username, String password){
-        String pass = DBMS.getDBMS().usernamePasswordTable.get(username);
-        if (pass != null){
-            boolean result = pass.equals(password);
-            return result;
-        }else{
-            return false;
-        }
+    public static boolean hasEntry(String username, String password){
+        return DBMS.getDBMS().usernamePasswordTable.containsKey(username);
+    }
+    
+    public static String addEntry(String username, String password){
+        return DBMS.getDBMS().usernamePasswordTable.put(username, password);
     }
     
     //~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~ 
@@ -303,7 +296,7 @@ public class DBMS {
         return DBMS.getDBMS().customers;
     }
     
-    public static boolean addCustome(Customer customer) {
+    public static boolean addCustomer(Customer customer) {
         if (DBMS.getDBMS().customers.contains(customer) == true) {
             int index = DBMS.getDBMS().customers.indexOf(customer);
             DBMS.getDBMS().customers.get(index).setActiveness("Active");
@@ -316,6 +309,7 @@ public class DBMS {
     public static boolean removeCustomer(Customer customer) {
         int index = DBMS.getDBMS().customers.indexOf(customer);
         DBMS.getDBMS().customers.get(index).setActiveness("Inactive");
+        DBMS.getDBMS().customers.remove(index);
         return true;
     }    
     
@@ -325,12 +319,12 @@ public class DBMS {
         return DBMS.getDBMS().employees;
     }
     
-    public static boolean addBaker(Employee employee) {
+    public static boolean addEmployee(Employee employee) {
         DBMS.getDBMS().employees.add(employee);
         return true;
     }
     
-    public static boolean removeBaker(Employee employee) {
+    public static boolean removeEmployee(Employee employee) {
         DBMS.getDBMS().employees.remove(employee);
         return true;
     }

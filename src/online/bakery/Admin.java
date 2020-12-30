@@ -14,9 +14,6 @@ import java.util.List;
  */
 public class Admin extends Account{
     private final int AdminID;
-    ArrayList<Customer> customers = new ArrayList<Customer>();
-    ArrayList<Bakery> bakeries = new ArrayList<Bakery>();
-    ArrayList<Person> persons = new ArrayList<Person>();
     
     //Lazy Initialization with Double Lock
     private static Admin INSTANCE = null;
@@ -38,42 +35,40 @@ public class Admin extends Account{
     }
     
     boolean createCustomer(Customer customer){
-        boolean result = customers.add(customer);
-        customer.setActiveness("Active");
-        return result;
+        return DBMS.addCustomer(customer);
     }
     
     List<Customer> viewCustomers(){
-        return customers;
+        return DBMS.getListOfCustomers();
     }
     
     boolean deleteCustomer(Customer customer){
         customer.setActiveness("Inactive");
-        return customers.remove(customer);
+        return DBMS.removeCustomer(customer);
     }
     
-    void createBakery (Bakery baker){
-        bakeries.add(baker);
+    boolean createBakery (Bakery baker){
+        return DBMS.addBakery(baker);
     }
     
     List<Bakery> viewBakery(){
-        return bakeries;
+        return DBMS.getListOfBakeries();
     }
     
     boolean deleteBakery (Bakery baker){
-        return bakeries.remove(baker);
+        return DBMS.removeBakery(baker);
     }
     
-    void createPerson (Person person){
-        persons.add(person);
+    boolean createPerson (Person person){
+        return DBMS.addBaker(person);
     }
     
     List<Person> viewPerson(){
-        return persons;
+        return DBMS.getListOfBakers();
     }
     
     boolean deletePerson(Person person){
-        return persons.remove(person);
+        return DBMS.removeBaker(person);
     }
     
 }
