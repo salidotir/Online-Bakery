@@ -1,8 +1,10 @@
 /*
  * Store delivery information.
+ * To create a delivery information object, call createNewDelivery() function
  */
 package online.bakery;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -15,39 +17,57 @@ public class DeliveryInformation {
     
     static AtomicInteger atomicInteger = new AtomicInteger(0);
     private int deliveryId;
-    private int orderId;
-    private int employeeId;
+
+    Employee employee;                              // assign an employee to a delivery
     
+    BigDecimal transferPrice;
     private String deliveryAddress;
     private Date deliveryTime;                      // date & time the customer wants to recieve order.
                                                     // deliveruTime is not final because customer can change the delivery time later if accepted by the seller.
     private Date actualDeliveryTime;                // actual date & time the order is delivered.
     
-    // constructor for making the delivery information at first time ordering
-    public DeliveryInformation(int orderId, int employeeId, String deliveryAddress, Date deliveryTime) {
+
+    private DeliveryInformation(Employee employee, String deliveryAddress, Date deliveryTime, BigDecimal transferPrice) {
         
         this.deliveryId = atomicInteger.incrementAndGet();
-        this.orderId = orderId;
-        this.deliveryTime = deliveryTime;
         
-        this.employeeId = employeeId;                       // maybe no need to deliver the order.
+        this.employee = employee;
+        
+        this.deliveryTime = deliveryTime;
         this.deliveryAddress = deliveryAddress;             // maybe no need to deliver the order.
         this.actualDeliveryTime = null;                     // filled after order is delivered.
+        this.transferPrice = transferPrice;
+    }
+
+    public DeliveryInformation createNewDelivery(String deliveryAddress, Date deliveryTime) {
+        Employee e = DBMS.getDBMS("admin", "admin123").getFirstFreeEmployee();      // find first free employee to the delivery
+                                                                                    // if there is nop free employee, return null not the deliveryInformation object
+                
+        if (e != null) {
+            return new DeliveryInformation(employee, deliveryAddress, deliveryTime, guessTransferPrice(deliveryAddress));
+        }
+        return null;
+    }
+
+    // guess the price of transfer based on address
+    private BigDecimal guessTransferPrice(String deliveryAddress) {
+        // currently it returns a random number between 50-100
+        int r = (int)(Math.random() * (100 - 50)) + 50;
+        return BigDecimal.valueOf(r);
     }
     
-
     /**
      * @return the employeeId
      */
-    public int getEmployeeId() {
-        return employeeId;
+    public Employee getEmployee() {
+        return this.employee;
     }
 
     /**
      * @param employeeId the employeeId to set
      */
-    public void setEmployeeId(int employeeId) {
-        this.employeeId = employeeId;
+    public void setEmployeeId(Employee employee) {
+        this.employee = employee;
     }
 
     /**
@@ -97,8 +117,7 @@ public class DeliveryInformation {
         String s;
         s = "**Delivery information**\n" + 
                 "delivery id: " + this.getDeliveryId() + "\n" +
-                "order id: " + this.getOrderId() + "\n" +
-                "employee id: " + this.employeeId + "\n" +
+                "employee : " + this.employee.getProfile() + "\n" +
                 "delivery address: " + this.deliveryAddress + "\n" +
                 "delivery time: " + formatter.format(this.deliveryTime) + "\n";
         if(this.actualDeliveryTime == null) {
@@ -109,10 +128,6 @@ public class DeliveryInformation {
         }
         s += "____________________________\n";
         return s;
-    }
-        
-    public static DeliveryInformation createNewDelivery(int orderID, int employeeId, String deliveryAddress, Date deliveryTime) {
-        return new DeliveryInformation(orderID, employeeId, deliveryAddress, deliveryTime);
     }
 
     /**
@@ -127,12 +142,5 @@ public class DeliveryInformation {
      */
     public void setDeliveryId(int deliveryId) {
         this.deliveryId = deliveryId;
-    }
-
-    /**
-     * @return the orderId
-     */
-    public int getOrderId() {
-        return orderId;
     }
 }
