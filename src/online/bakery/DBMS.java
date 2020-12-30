@@ -120,6 +120,26 @@ public class DBMS {
     }
 
     //~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~ 
+    
+    // function to find a free employee to assign a delivery to.
+    public Employee getFirstFreeEmployee() {
+        for(Employee employee:DBMS.getDBMS().employees) {
+            if (employee.isIsBusy() == false) {
+                return employee;
+            }
+        }
+        // could not find any free employee
+        return null;
+    }
+    
+    // function to call when an employee delivers an order -> when deliverOrder in employee is called
+    public boolean setEmployeeIsBusyFalse(Employee employee) {
+        int index = DBMS.getDBMS().employees.indexOf(employee);
+        DBMS.getDBMS().employees.get(index).setIsBusy(false);
+        return true;
+    }
+    
+    //~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~ 
     // functions to edit informations in bakeries, bakers, customers & employee
     
     // edit bakery information -> gets all fileds again and set them all again
@@ -221,13 +241,9 @@ public class DBMS {
     
     // set actual delivery time for a specific order in delivery information list
     public boolean setActualDeliveryTime(Order order, Date actualDeliveryTime) {
-        for(DeliveryInformation deliveryInformation : DBMS.getDBMS().deliveryInformations) {
-            if(order.getOrderId() == deliveryInformation.getOrderId()) {
-                deliveryInformation.setDeliveryTime(actualDeliveryTime);
-                return true;
-            }
-        }
-        return false;
+        int index = DBMS.getDBMS().orders.indexOf(order);
+        DBMS.getDBMS().orders.get(index).getDelivery().setActualDeliveryTime(actualDeliveryTime);
+        return true;
     }
     
     // set payment status for a specific order in payments list
@@ -255,12 +271,7 @@ public class DBMS {
     
     // search for delivery information of a specific order
     public DeliveryInformation getOrderDeliverInformation(Order order) {
-        for(DeliveryInformation deliveryInformation : DBMS.getDBMS().deliveryInformations) {
-            if(order.getOrderId() == deliveryInformation.getOrderId()) {
-                return deliveryInformation;
-            }
-        }
-        return null;
+        return order.getDelivery();
     }
     
     // search for payment information of a specific order
