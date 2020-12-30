@@ -4,6 +4,7 @@
 package online.bakery;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,6 +40,38 @@ public class DBMS {
     
     public static DBMS getDBMS() {
         return DBMS.dbms;
+    }
+    
+    //~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~ 
+    // functions to change some fields later in lists
+    
+    // set order status for a specific order in order
+    public static boolean setOrderStatus(Order order, OrderStatus orderStatus) {
+        int index = DBMS.getDBMS().orders.indexOf(order);
+        DBMS.getDBMS().orders.get(index).setOrderStatus(orderStatus);
+        return true;
+    }
+    
+    // set actual delivery time for a specific order in delivery information list
+    public static boolean setActualDeliveryTime(Order order, Date actualDeliveryTime) {
+        for(DeliveryInformation deliveryInformation : DBMS.getDBMS().deliveryInformations) {
+            if(order.getOrderId() == deliveryInformation.getOrderId()) {
+                deliveryInformation.setDeliveryTime(actualDeliveryTime);
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    // set payment status for a specific order in payments list
+    public static boolean setPaymentStatus(Order order, PaymentStatus paymentStatus) {
+        for(Payment payment : DBMS.getDBMS().payments) {
+            if(order.getOrderId() == payment.getOrderId()) {
+                payment.setPaymentStatus(paymentStatus);
+                return true;
+            }
+        }
+        return false;
     }
     
     //~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~ 
