@@ -8,7 +8,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.ToLongFunction;
 
 /**
  *
@@ -40,6 +39,30 @@ public class DBMS {
     
     public static DBMS getDBMS() {
         return DBMS.dbms;
+    }
+    
+    
+    //~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~ 
+    // functions to get orders and payments of a specific customer
+
+    public static List<Order> getCustomerOrders(Customer customer) {
+        List<Order> result = new ArrayList<Order>();
+        for(Order order:DBMS.getDBMS().orders) {
+            if(order.getCustomerId() == customer.getID()) {
+                result.add(order);
+            }
+        }
+        return result;
+    }
+    
+    public static List<Payment> getCustomerPayments(Customer customer) {
+        List<Payment> result = new ArrayList<Payment>();
+        for(Payment payment:DBMS.getDBMS().payments) {
+            if(payment.getCustomerId() == customer.getID()) {
+                result.add(payment);
+            }
+        }
+        return result;
     }
 
     //~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~ 
