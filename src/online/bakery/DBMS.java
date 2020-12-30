@@ -3,6 +3,8 @@
  */
 package online.bakery;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -17,8 +19,16 @@ public class DBMS {
     
     private static DBMS dbms = new DBMS();
     
-    private Map<String,String> usernamePasswordTable = new HashMap<String,String>(); 
-    
+    /**
+    * Map of usernames to their password hashes.
+    */
+    private Map<String, String> usernamePasswordTable = new HashMap<String, String>();
+
+    /**
+     * Map of usernames to their salts.
+     */
+    private Map<String, Integer> userSaltMap = new HashMap<String, Integer>();
+
     private List<Bakery> bakeries;
     private List<Person> bakers;
     private List<Customer> customers;
@@ -41,6 +51,41 @@ public class DBMS {
         return DBMS.dbms;
     }
     
+    
+    //~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~ 
+    /**
+    * Returns a random number between 0 and 1000.
+    */
+    private static int getRandomSalt() {
+        return (int)(Math.random() * 1000);
+    }
+
+    /**
+    * In real life this would probably read from a config file,
+    * so you could check your code into a repo without the config file.
+    */
+    private static String getPepper() {
+        return "this is a very long random string";
+    }
+
+    private static String getSimpleHash(String saltedAndPepperedPassword) {
+        StringBuilder hash = new StringBuilder();
+        try {
+                MessageDigest sha = MessageDigest.getInstance("SHA-1");
+                byte[] hashedBytes = sha.digest(saltedAndPepperedPassword.getBytes());
+                char[] digits = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+                                'a', 'b', 'c', 'd', 'e', 'f' };
+                for(int idx = 0; idx < hashedBytes.length ; idx++){
+                    byte b = hashedBytes[idx];
+                    hash.append(digits[(b & 0xf0) >> 4]);
+                    hash.append(digits[b & 0x0f]);
+                }
+        } catch (NoSuchAlgorithmException e) {
+                // handle error here.
+        }
+
+        return hash.toString();
+    }
     
     //~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~ 
     // functions to get orders and payments of a specific customer
@@ -245,16 +290,28 @@ public class DBMS {
     
     //~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~ 
     
-    public static String getPasword(String username){
-        return DBMS.getDBMS().usernamePasswordTable.get(username);
+    public static boolean checkPasword(String username, String password){
+        int salt = DBMS.getDBMS().userSaltMap.get(username);
+        String saltedAndPepperedPassword = password + salt + getPepper();
+        String passwordHash = getSimpleHash(saltedAndPepperedPassword);
+        String storedPasswordHash = DBMS.getDBMS().usernamePasswordTable.get(username);
+        return passwordHash == storedPasswordHash;
     }
     
     public static boolean hasEntry(String username, String password){
         return DBMS.getDBMS().usernamePasswordTable.containsKey(username);
     }
     
+    public static boolean hasSalt(String username){
+        return DBMS.getDBMS().userSaltMap.containsKey(username);
+    }
+    
     public static String addEntry(String username, String password){
-        return DBMS.getDBMS().usernamePasswordTable.put(username, password);
+        int salt = getRandomSalt();
+        String saltedAndPepperedPassword = password + salt + getPepper();
+        String passwordHash = getSimpleHash(saltedAndPepperedPassword);
+        DBMS.getDBMS().userSaltMap.put(username, salt);
+        return DBMS.getDBMS().usernamePasswordTable.put(username, passwordHash);
     }
     
     //~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~ 

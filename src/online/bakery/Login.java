@@ -44,14 +44,15 @@ public class Login {
     }
     
     public static boolean ValidateLogin(String username, String password){
-        String pass = DBMS.getPasword(username);
-        if (pass != null){
-            boolean result = pass.equals(password);
-            if(result)
-                lastLoginTime = new Date();
-            return result;
-        }else{
+        if(!DBMS.hasEntry(username, password) || !DBMS.hasSalt(username)){
             return false;
         }
+       
+        boolean result = DBMS.checkPasword(username , password);
+        if(result){
+            lastLoginTime = new Date();
+            return result;
+        }else
+            return false;
     }
 }
