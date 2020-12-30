@@ -15,8 +15,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class Payment {
     int paymentId ;
     static AtomicInteger atomicInteger = new AtomicInteger(0);
-    private final int customerId;
-    private final int orderId;
+    private String trackingCode; 
     private final Date date;
     private final BigDecimal paymentAmount;          // payment amount is calculated in BigDecimal
     private String discreption;                      // any discreption for payment
@@ -24,9 +23,7 @@ public class Payment {
     private PaymentType paymentType;
     
     // constructor for creating payment object the first time for ordeing
-    public Payment(int paymentOrderId, int paymentCustomerId, Date paymentDate, BigDecimal paymentAmount, String paymentDesciption, PaymentType paymentType) {
-        this.orderId = paymentOrderId;
-        this.customerId = paymentCustomerId;
+    public Payment(Date paymentDate, BigDecimal paymentAmount, String paymentDesciption, PaymentType paymentType) {
         this.date = paymentDate;
         this.paymentAmount = paymentAmount;
         this.discreption = paymentDesciption;
@@ -35,19 +32,21 @@ public class Payment {
         
         this.paymentStatus = PaymentStatus.IN_PROGRESS;
         this.paymentType = paymentType;
+        
+        
+        this.trackingCode = TrackingCode.randomDecimalString(24);
     }
     
     // private constructor for chargeWallet 
-    private Payment(int customerId, BigDecimal amount, Date date, String discreption) {
+    private Payment(BigDecimal amount, Date date, String discreption) {
         this.paymentId = atomicInteger.incrementAndGet();
-        // -1 is a null value for id, so it is used to make sure this payment is not due to any order
-        this.orderId = -1;
-        this.customerId = customerId;
         this.date = date;
         this.paymentAmount = amount;
         this.discreption = discreption;
         this.paymentStatus = PaymentStatus.IN_PROGRESS;
         this.paymentType = PaymentType.PAY_ONLINE;
+        
+        this.trackingCode = TrackingCode.randomDecimalString(24);
     }
 
     /**
@@ -55,20 +54,6 @@ public class Payment {
      */
     public int getPaymentId() {
         return paymentId;
-    }
-
-    /**
-     * @return the paymentCustomerId
-     */
-    public int getCustomerId() {
-        return this.customerId;
-    }
-
-    /**
-     * @return the orderId
-     */
-    public int getOrderId() {
-        return orderId;
     }
     
     /**
@@ -131,8 +116,6 @@ public class Payment {
         String s;
         s = "**Payment information**\n" +
                 "payment id: " + this.paymentId + "\n" +
-                "order id: " + this.orderId + "\n" +
-                "customer id: " + this.customerId + "\n" +
                 "amount: " + this.paymentAmount + "\n" +
                 "date: " + this.date.toString() + "\n" +
                 "discreption: " + this.discreption + "\n" +
@@ -148,7 +131,7 @@ public class Payment {
         BigDecimal num = scan.nextBigDecimal();
         //scan.close();
         
-        Payment pay = new Payment(customer.getID(), num, new Date(), discreption);
+        Payment pay = new Payment(num, new Date(), discreption);
         if(Payment.payOnline(pay) == true) {
             customer.getWallet().addAmount(num);
             return pay;
@@ -202,6 +185,20 @@ public class Payment {
         pay.setPaymentStatus(PaymentStatus.SUCCESSFUL);
         System.out.println("Paid for the order online.\n");
         return true;
+    }
+
+    /**
+     * @return the trackingCode
+     */
+    public String getTrackingCode() {
+        return trackingCode;
+    }
+
+    /**
+     * @param trackingCode the trackingCode to set
+     */
+    public void setTrackingCode(String trackingCode) {
+        this.trackingCode = trackingCode;
     }
     
 }
