@@ -14,30 +14,29 @@ import online.bakery.sweets.Sweets;
  */
 public class Order {
     private OrderStatus orderStatus;
-    private PaymentStatus paymentStatus;
     
     private final Customer customer;
     private final int orderId;
     static AtomicInteger atomicInteger = new AtomicInteger(2);
-    private Map<Sweets,Integer> map = new HashMap<Sweets,Integer>(); ;  
+    private Map<Sweets,Integer> sweet_score = new HashMap<Sweets,Integer>(); ;  
     private List<BirthdayItems> items;
     private final Confectioner Staff;
-    private int paymentId;
+    private Payment payment;
     
     public Order(Customer customer, List<Sweets> Sweets, Confectioner Staff, List<BirthdayItems> items) {
         this.customer = customer;
         atomicInteger.incrementAndGet();
         this.orderId = atomicInteger.incrementAndGet();
         for(Sweets s: Sweets){
-            map.put(s, null);
+            sweet_score.put(s, null);
         }
         this.Staff = Staff;
         this.items = items;
     }
     
     public boolean SweetaddtoOrder(Sweets Sweet){
-        if (map.get(Sweet) != null){
-            map.put(Sweet, null);
+        if (sweet_score.get(Sweet) != null){
+            sweet_score.put(Sweet, null);
             return true;
         }else
             return false;
@@ -52,17 +51,21 @@ public class Order {
     public int getOrderId() {
         return orderId;
     }
+    
+    public int getCustomerId(){
+        return customer.getID();
+    }
 
     public List<Sweets> getSweets() {
         List<Sweets> sweets = new ArrayList<Sweets>();
-        for (Sweets i : map.keySet()) {
+        for (Sweets i : sweet_score.keySet()) {
             sweets.add(i);
         }
         return sweets;
     }
 
     public Map<Sweets, Integer> getMap() {
-        return map;
+        return sweet_score;
     }
     
     public OrderStatus getOrderStatus() {
@@ -73,24 +76,16 @@ public class Order {
         this.orderStatus = orderStatus;
     }
 
-    public PaymentStatus getPaymentStatus() {
-        return paymentStatus;
+    public Payment getPayment() {
+        return payment;
     }
 
-    public void setPaymentStatus(PaymentStatus paymentStatus) {
-        this.paymentStatus = paymentStatus;
-    }
-
-    public int getPaymentId() {
-        return paymentId;
-    }
-
-    public void setPaymentId(int paymentId) {
-        this.paymentId = paymentId;
+    public void setPayment(Payment payment) {
+        this.payment = payment;
     }
     
     public boolean addScore(Sweets sweet, int score){
-        boolean result = map.replace(sweet, null , score);
+        boolean result = sweet_score.replace(sweet, null , score);
 
         if(result){
             switch (score){
@@ -137,12 +132,25 @@ public class Order {
    
     public BigDecimal getCost(){
         BigDecimal cost = new BigDecimal(0);
-        for (Sweets i : map.keySet()) {
+        for (Sweets i : sweet_score.keySet()) {
             cost = cost.add(i.getTOTAL_COST());
         }
         for (BirthdayItems b: items){
             cost = cost.add(b.getCost());
         }
         return cost;
+    }
+    
+    public String getOrderInformation(){
+        String s;
+        s = "Order nformation:\n" +
+                "order id: " + this.orderId + "\n" +
+                "order status: "+ this.orderStatus + "\n" +
+                "coefectioner profile: " + this.Staff.getProfile() + "\n" +
+                "****************\n"+
+                "customer id: " + this.customer.getID() + "\n" +
+                "payment status: " + this.payment.getPaymentStatus() + "\n" +
+                "____________________________\n";
+        return s;
     }
 }
