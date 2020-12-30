@@ -41,6 +41,96 @@ public class DBMS {
     public static DBMS getDBMS() {
         return DBMS.dbms;
     }
+
+    //~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~ 
+    // functions to edit informations in bakeries, bakers, customers & employee
+    
+    // edit bakery information -> gets all fileds again and set them all again
+    public static boolean editBakery(int id, String name, String discreption, String firstName, String lastName, String address, String contactNo) {
+        int index = -1;
+        for(int i= 0; i < DBMS.getDBMS().bakeries.size(); i++) {
+            if(DBMS.getDBMS().bakeries.get(i).getID() == id) {
+                index = i;
+                break;
+            }
+        }
+        if(index == -1) {
+            return false;
+        }
+        
+        // change fields
+        DBMS.getDBMS().bakeries.get(index).setName(name);
+        DBMS.getDBMS().bakeries.get(index).setDescription(discreption);
+        DBMS.getDBMS().bakeries.get(index).setFirstname(firstName);
+        DBMS.getDBMS().bakeries.get(index).setLastname(lastName);
+        DBMS.getDBMS().bakeries.get(index).setAddress(address);
+        DBMS.getDBMS().bakeries.get(index).setContactNo(contactNo);
+        return true;
+    }
+    
+    // edit baker information
+    public static boolean editBaker(int id, String discreption, String firstName, String lastName, String address, String contactNo) {
+        int index = -1;
+        for(int i= 0; i < DBMS.getDBMS().bakers.size(); i++) {
+            if(DBMS.getDBMS().bakers.get(i).getID() == id) {
+                index = i;
+                break;
+            }
+        }
+        if(index == -1) {
+            return false;
+        }
+        
+        // change fields
+        DBMS.getDBMS().bakers.get(index).setDescription(discreption);
+        DBMS.getDBMS().bakers.get(index).setFirstname(firstName);
+        DBMS.getDBMS().bakers.get(index).setLastname(lastName);
+        DBMS.getDBMS().bakers.get(index).setAddress(address);
+        DBMS.getDBMS().bakers.get(index).setContactNo(contactNo);
+        return true;
+    }
+    
+    // edit customer information
+    public static boolean editCustomer(int id, String firstName, String lastName, String address, String contactNo) {
+        int index = -1;
+        for(int i= 0; i < DBMS.getDBMS().customers.size(); i++) {
+            if(DBMS.getDBMS().customers.get(i).getID() == id) {
+                index = i;
+                break;
+            }
+        }
+        if(index == -1) {
+            return false;
+        }
+        
+        // change fields
+        DBMS.getDBMS().customers.get(index).setFirstname(firstName);
+        DBMS.getDBMS().customers.get(index).setLastname(lastName);
+        DBMS.getDBMS().customers.get(index).setAddress(address);
+        DBMS.getDBMS().customers.get(index).setContactNo(contactNo);
+        return true;
+    }
+    
+    // edit employee information
+    public static boolean editEmployee(int id, String firstName, String lastName, String address, String contactNo) {
+        int index = -1;
+        for(int i= 0; i < DBMS.getDBMS().employees.size(); i++) {
+            if(DBMS.getDBMS().employees.get(i).getID() == id) {
+                index = i;
+                break;
+            }
+        }
+        if(index == -1) {
+            return false;
+        }
+        
+        // change fields
+        DBMS.getDBMS().employees.get(index).setFirstname(firstName);
+        DBMS.getDBMS().employees.get(index).setLastname(lastName);
+        DBMS.getDBMS().employees.get(index).setAddress(address);
+        DBMS.getDBMS().employees.get(index).setContactNo(contactNo);
+        return true;
+    }
     
     //~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~ 
     // functions to change some fields later in lists
