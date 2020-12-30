@@ -47,7 +47,16 @@ public class DBMS {
         this.orders = new ArrayList<Order>();
     }
     
-    public static DBMS getDBMS() {
+    // function to give access to dbms only for admin
+    public static DBMS getDBMS(String username, String password) {
+        if(username.equals("admin") && password.equals("admin123")) {
+            return DBMS.dbms;
+        }
+        return null;
+    }
+    
+    // function to give access to dbms for functions in the same class DBMS
+    private static DBMS getDBMS() {
         return DBMS.dbms;
     }
     
@@ -56,7 +65,7 @@ public class DBMS {
     /**
     * Returns a random number between 0 and 1000.
     */
-    private static int getRandomSalt() {
+    public int getRandomSalt() {
         return (int)(Math.random() * 1000);
     }
 
@@ -64,11 +73,11 @@ public class DBMS {
     * In real life this would probably read from a config file,
     * so you could check your code into a repo without the config file.
     */
-    private static String getPepper() {
+    public String getPepper() {
         return "this is a very long random string";
     }
 
-    private static String getSimpleHash(String saltedAndPepperedPassword) {
+    public String getSimpleHash(String saltedAndPepperedPassword) {
         StringBuilder hash = new StringBuilder();
         try {
                 MessageDigest sha = MessageDigest.getInstance("SHA-1");
@@ -90,7 +99,7 @@ public class DBMS {
     //~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~ 
     // functions to get orders and payments of a specific customer
 
-    public static List<Order> getCustomerOrders(Customer customer) {
+    public List<Order> getCustomerOrders(Customer customer) {
         List<Order> result = new ArrayList<Order>();
         for(Order order:DBMS.getDBMS().orders) {
             if(order.getCustomerId() == customer.getID()) {
@@ -100,7 +109,7 @@ public class DBMS {
         return result;
     }
     
-    public static List<Payment> getCustomerPayments(Customer customer) {
+    public List<Payment> getCustomerPayments(Customer customer) {
         List<Payment> result = new ArrayList<Payment>();
         for(Payment payment:DBMS.getDBMS().payments) {
             if(payment.getCustomerId() == customer.getID()) {
@@ -114,7 +123,7 @@ public class DBMS {
     // functions to edit informations in bakeries, bakers, customers & employee
     
     // edit bakery information -> gets all fileds again and set them all again
-    public static boolean editBakery(int id, String name, String discreption, String firstName, String lastName, String address, String contactNo) {
+    public boolean editBakery(int id, String name, String discreption, String firstName, String lastName, String address, String contactNo) {
         int index = -1;
         for(int i= 0; i < DBMS.getDBMS().bakeries.size(); i++) {
             if(DBMS.getDBMS().bakeries.get(i).getID() == id) {
@@ -137,7 +146,7 @@ public class DBMS {
     }
     
     // edit baker information
-    public static boolean editBaker(int id, String discreption, String firstName, String lastName, String address, String contactNo) {
+    public boolean editBaker(int id, String discreption, String firstName, String lastName, String address, String contactNo) {
         int index = -1;
         for(int i= 0; i < DBMS.getDBMS().bakers.size(); i++) {
             if(DBMS.getDBMS().bakers.get(i).getID() == id) {
@@ -159,7 +168,7 @@ public class DBMS {
     }
     
     // edit customer information
-    public static boolean editCustomer(int id, String firstName, String lastName, String address, String contactNo) {
+    public boolean editCustomer(int id, String firstName, String lastName, String address, String contactNo) {
         int index = -1;
         for(int i= 0; i < DBMS.getDBMS().customers.size(); i++) {
             if(DBMS.getDBMS().customers.get(i).getID() == id) {
@@ -180,7 +189,7 @@ public class DBMS {
     }
     
     // edit employee information
-    public static boolean editEmployee(int id, String firstName, String lastName, String address, String contactNo) {
+    public boolean editEmployee(int id, String firstName, String lastName, String address, String contactNo) {
         int index = -1;
         for(int i= 0; i < DBMS.getDBMS().employees.size(); i++) {
             if(DBMS.getDBMS().employees.get(i).getID() == id) {
@@ -204,14 +213,14 @@ public class DBMS {
     // functions to change some fields later in lists
     
     // set order status for a specific order in order
-    public static boolean setOrderStatus(Order order, OrderStatus orderStatus) {
+    public boolean setOrderStatus(Order order, OrderStatus orderStatus) {
         int index = DBMS.getDBMS().orders.indexOf(order);
         DBMS.getDBMS().orders.get(index).setOrderStatus(orderStatus);
         return true;
     }
     
     // set actual delivery time for a specific order in delivery information list
-    public static boolean setActualDeliveryTime(Order order, Date actualDeliveryTime) {
+    public boolean setActualDeliveryTime(Order order, Date actualDeliveryTime) {
         for(DeliveryInformation deliveryInformation : DBMS.getDBMS().deliveryInformations) {
             if(order.getOrderId() == deliveryInformation.getOrderId()) {
                 deliveryInformation.setDeliveryTime(actualDeliveryTime);
@@ -222,7 +231,7 @@ public class DBMS {
     }
     
     // set payment status for a specific order in payments list
-    public static boolean setPaymentStatus(Order order, PaymentStatus paymentStatus) {
+    public boolean setPaymentStatus(Order order, PaymentStatus paymentStatus) {
         for(Payment payment : DBMS.getDBMS().payments) {
             if(order.getOrderId() == payment.getOrderId()) {
                 payment.setPaymentStatus(paymentStatus);
@@ -267,7 +276,7 @@ public class DBMS {
     //~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~ 
     
     // search a bakery in its name
-    public static List<Bakery> searchBakeryByName(String subString) {
+    public List<Bakery> searchBakeryByName(String subString) {
         List<Bakery> result = new ArrayList<Bakery>();
         for(Bakery bakery:DBMS.getDBMS().bakeries) {
             if(bakery.getName().toLowerCase().contains(subString.toLowerCase())) {
@@ -278,7 +287,7 @@ public class DBMS {
     }
     
     // search a baker in its firstname & lastname
-    public static List<Person> searchBakerByName(String subString) {
+    public List<Person> searchBakerByName(String subString) {
         List<Person> result = new ArrayList<Person>();
         for(Person baker:DBMS.getDBMS().bakers) {
             if(baker.getFirstname().toLowerCase().contains(subString.toLowerCase()) || baker.getLastname().toLowerCase().contains(subString.toLowerCase())) {
@@ -290,7 +299,7 @@ public class DBMS {
     
     //~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~ 
     
-    public static boolean checkPasword(String username, String password){
+    public boolean checkPasword(String username, String password){
         int salt = DBMS.getDBMS().userSaltMap.get(username);
         String saltedAndPepperedPassword = password + salt + getPepper();
         String passwordHash = getSimpleHash(saltedAndPepperedPassword);
@@ -298,15 +307,15 @@ public class DBMS {
         return passwordHash == storedPasswordHash;
     }
     
-    public static boolean hasEntry(String username, String password){
+    public boolean hasEntry(String username, String password){
         return DBMS.getDBMS().usernamePasswordTable.containsKey(username);
     }
     
-    public static boolean hasSalt(String username){
+    public boolean hasSalt(String username){
         return DBMS.getDBMS().userSaltMap.containsKey(username);
     }
     
-    public static String addEntry(String username, String password){
+    public String addEntry(String username, String password){
         int salt = getRandomSalt();
         String saltedAndPepperedPassword = password + salt + getPepper();
         String passwordHash = getSimpleHash(saltedAndPepperedPassword);
@@ -316,16 +325,16 @@ public class DBMS {
     
     //~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~ 
     
-    public static List<Bakery> getListOfBakeries() {
+    public List<Bakery> getListOfBakeries() {
         return DBMS.getDBMS().bakeries;
     }
     
-    public static boolean addBakery(Bakery bakery) {
+    public boolean addBakery(Bakery bakery) {
         DBMS.getDBMS().bakeries.add(bakery);
         return true;
     }
     
-    public static boolean removeBakery(Bakery bakery) {
+    public boolean removeBakery(Bakery bakery) {
         DBMS.getDBMS().bakeries.remove(bakery);
         return true;
     }
@@ -333,27 +342,27 @@ public class DBMS {
     
     //~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~    
     
-    public static List<Person> getListOfBakers() {
+    public List<Person> getListOfBakers() {
         return DBMS.getDBMS().bakers;
     }
     
-    public static boolean addBaker(Person baker) {
+    public boolean addBaker(Person baker) {
         DBMS.getDBMS().bakers.add(baker);
         return true;
     }
     
-    public static boolean removeBaker(Person baker) {
+    public boolean removeBaker(Person baker) {
         DBMS.getDBMS().bakers.remove(baker);
         return true;
     }
 
     //~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~    
     // we do not delete any customer, just make it inactive.
-    public static List<Customer> getListOfCustomers() {
+    public List<Customer> getListOfCustomers() {
         return DBMS.getDBMS().customers;
     }
     
-    public static boolean addCustomer(Customer customer) {
+    public boolean addCustomer(Customer customer) {
         if (DBMS.getDBMS().customers.contains(customer) == true) {
             int index = DBMS.getDBMS().customers.indexOf(customer);
             DBMS.getDBMS().customers.get(index).setActiveness("Active");
@@ -363,7 +372,7 @@ public class DBMS {
         return true;
     }
     
-    public static boolean removeCustomer(Customer customer) {
+    public boolean removeCustomer(Customer customer) {
         int index = DBMS.getDBMS().customers.indexOf(customer);
         DBMS.getDBMS().customers.get(index).setActiveness("Inactive");
         DBMS.getDBMS().customers.remove(index);
@@ -372,60 +381,60 @@ public class DBMS {
     
     //~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~    
     
-    public static List<Employee> getListOfEmployees() {
+    public List<Employee> getListOfEmployees() {
         return DBMS.getDBMS().employees;
     }
     
-    public static boolean addEmployee(Employee employee) {
+    public boolean addEmployee(Employee employee) {
         DBMS.getDBMS().employees.add(employee);
         return true;
     }
     
-    public static boolean removeEmployee(Employee employee) {
+    public boolean removeEmployee(Employee employee) {
         DBMS.getDBMS().employees.remove(employee);
         return true;
     }
 
     //~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~    
     
-    public static List<Order> getListOfOrders() {
+    public List<Order> getListOfOrders() {
         return DBMS.getDBMS().orders;
     }
     
-    public static boolean addOrder(Order order) {
+    public boolean addOrder(Order order) {
         DBMS.getDBMS().orders.add(order);
         return true;
     }
     
     //~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~    
     
-    public static List<Note> getListOfNotes() {
+    public List<Note> getListOfNotes() {
         return DBMS.getDBMS().notes;
     }
     
-    public static boolean addNote(Note note) {
+    public boolean addNote(Note note) {
         DBMS.getDBMS().notes.add(note);
         return true;
     }
 
     //~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~    
     
-    public static List<Payment> getListOfPayments() {
+    public List<Payment> getListOfPayments() {
         return DBMS.getDBMS().payments;
     }
     
-    public static boolean addPayment(Payment payment) {
+    public boolean addPayment(Payment payment) {
         DBMS.getDBMS().payments.add(payment);
         return true;
     }
 
     //~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~    
     
-    public static List<DeliveryInformation> getListOfDeliveryInformations() {
+    public List<DeliveryInformation> getListOfDeliveryInformations() {
         return DBMS.getDBMS().deliveryInformations;
     }
     
-    public static boolean addDeliveryInformation(DeliveryInformation deliveryInformation) {
+    public boolean addDeliveryInformation(DeliveryInformation deliveryInformation) {
         DBMS.getDBMS().deliveryInformations.add(deliveryInformation);
         return true;
     }
