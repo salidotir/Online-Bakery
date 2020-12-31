@@ -21,7 +21,7 @@ public class Customer extends Account{
         this.CustomerID = super.ID;
         Wallet w = new Wallet();
         this.wallet = w;
-        super.SignUp(username, password);
+        super.SignUp(username, password, Role.CUSTOMER);
         Admin.getInstance().createCustomer(this); 
     }
 

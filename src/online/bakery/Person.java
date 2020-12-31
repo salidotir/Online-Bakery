@@ -16,15 +16,17 @@ public class Person extends Account implements Confectioner{
 
 
 
-    public Person( String firstName, String lastName,String description,String number) {
+    public Person( String username, String password,String firstName, String lastName, String description,String number) {
         super();
         this.id = super.ID;
+        super.SignUp(username, password, Role.BAKER);
         super.setFirstname(firstName);
         super.setLastname(lastName);
         this.description = description;
         super.setContactNo(number);
         this.score = 0;
         this.numScore = 0;
+        Admin.getInstance().createPerson(this); 
     }
 
     public String getDescription() {

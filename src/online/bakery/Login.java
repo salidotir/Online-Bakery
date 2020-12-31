@@ -33,7 +33,7 @@ public class Login {
         this.SecurityAnswer = SecurityAnswer;
     }
     
-    public static boolean SignUp(String username, String password){
+    public static boolean SignUp(String username, String password, Role role){
         if (DBMS.getDBMS("admin", "admin123").hasEntry(username, password))
             return false;
         else{
@@ -43,7 +43,7 @@ public class Login {
         }
     }
     
-    public static boolean ValidateLogin(String username, String password){
+    public static boolean ValidateLogin(String username, String password, Role role){
         if(!DBMS.getDBMS("admin", "admin123").hasEntry(username, password) || !DBMS.getDBMS("admin", "admin123").hasSalt(username)){
             return false;
         }

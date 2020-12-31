@@ -22,7 +22,9 @@ abstract public class Account {
     
     //for bakery name of manger 
     String Firstname;
-    String Lastname;    
+    String Lastname; 
+    
+    Role role;
     
     public Account() {
         atomicInteger.incrementAndGet();
@@ -70,12 +72,12 @@ abstract public class Account {
         this.Lastname = Lastname;
     }
     
-    public boolean SignUp(String username, String password){
-        return Login.SignUp(username, password);
+    public boolean SignUp(String username, String password, Role role){
+        return Login.SignUp(username, password, role);
     }
     
-    public boolean Login(String username, String password){
-        return Login.ValidateLogin(username, password);
+    public boolean Login(String username, String password, Role role){
+        return Login.ValidateLogin(username, password, role);
     }
     
     public Date getLastLogin(){

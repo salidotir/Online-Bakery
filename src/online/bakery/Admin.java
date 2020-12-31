@@ -23,7 +23,7 @@ public class Admin extends Account{
         this.AdminID = super.ID;
         this.username = "admin";
         this.password = "admin123";
-        super.SignUp("admin", "admin123");
+        super.SignUp("admin", "admin123", Role.ADMIN);
     }
     
     public static Admin getInstance() {

@@ -22,9 +22,10 @@ public class Bakery extends Account implements Confectioner {
 
 
 
-    public Bakery(String name,String firstName, String lastName, String description, String number, String address) {
+    public Bakery(String name,String username,String password,String firstName, String lastName, String description, String number, String address) {
         super();
         this.id = super.ID;
+        super.SignUp(username, password, Role.BAKER);
         super.setFirstname(firstName);
         super.setLastname(lastName);
         this.name = name;
@@ -33,6 +34,7 @@ public class Bakery extends Account implements Confectioner {
         super.setAddress(address);
         this.score = 0;
         this.numScore = 0;
+        Admin.getInstance().createBakery(this); 
     }
 
     public String getName() {

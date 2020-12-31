@@ -36,7 +36,7 @@ public class main {
         //System.out.println(ss);
 
         ArrayList conf = new ArrayList<Confectioner>();
-        Bakery b1 = new Bakery("شب شیرینی","علی","شریعتی","لحظات زندگی خود را با کمک ما شیرین کنید" , "07131111111" , "تاچارا");
+        Bakery b1 = new Bakery("شب شیرینی","usermane","pass","علی","شریعتی","لحظات زندگی خود را با کمک ما شیرین کنید" , "07131111111" , "تاچارا");
         b1.setScore(3);
         System.out.printf(b1.getProfile());
 
@@ -137,7 +137,7 @@ public class main {
 
         ArrayList conf = new ArrayList<Confectioner>();
 
-        Bakery b1 = new Bakery("شب شیرینی","علی","شریعتی","لحظات زندگی خود را با کمک ما شیرین کنید" , "07131111111" , "تاچارا");
+        Bakery b1 = new Bakery("شب شیرینی","username","pass","علی","شریعتی","لحظات زندگی خود را با کمک ما شیرین کنید" , "07131111111" , "تاچارا");
         b1.setScore(3);
         System.out.printf(b1.getProfile());
 
