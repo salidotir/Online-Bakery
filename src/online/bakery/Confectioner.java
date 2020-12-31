@@ -15,15 +15,13 @@ public interface Confectioner {
     int getScore();
     String getDescription();
     List<Sweets> getPost();
-    List<Sweets> getReadySweet();
     List<Order> getOrderList();
 
 
     void addPost(Sweets sweet);
-    void addReadySweet(Sweets sweet);
-    void addOrder(Order order);
+    void addOrder(Order order,List<SweetType> s);
 
-    ConfectionerStatus sweetToOrder(List<Sweets> s,List<SweetType> st,Customer c);
+    //ConfectionerStatus sweetToOrder(List<Sweets> s,List<SweetType> st,Customer c);
     void addDiscount(Discount discount);
 
     boolean addNote(Note note, String extraText);

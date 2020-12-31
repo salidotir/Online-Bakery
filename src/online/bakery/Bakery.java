@@ -13,10 +13,10 @@ public class Bakery extends Account implements Confectioner {
     private int score;
     private int numScore;
     private List<Sweets> post = new ArrayList<Sweets>(); // post id
-    private List<Sweets> readySweet = new ArrayList<Sweets>(); //list of sweets is ready to buy
+    private  Map<Sweets , Integer> readySweet  = new HashMap<Sweets , Integer>(); //list of sweets and number is ready to buy
     private List<Sweets> menu = new ArrayList<Sweets>(); //List of sweets id to order
     private List<Order> orderList = new ArrayList<Order>(); // list order id
-    private List<BirthdayItems> birthdayItem = new ArrayList<BirthdayItems>();
+    private  Map<BirthdayItems , Integer> birthdayItem = new HashMap<BirthdayItems , Integer>(); //list of sweets and number is ready to buy
     private List<Discount> discountList = new ArrayList<Discount>();
 
 
@@ -60,35 +60,67 @@ public class Bakery extends Account implements Confectioner {
 
     public void addPost(Sweets sweet){this.post.add(sweet);}
 
-    public void addReadySweet(Sweets sweet){this.readySweet.add(sweet);}
+    public void addReadySweet(Sweets sweet,int number){this.readySweet.put(sweet,number);}
 
-    public void addOrder(Order order){this.orderList.add(order);}
+    public void addOrder(Order order,List<SweetType> s){
+        this.orderList.add(order);
+        List<Sweets> sweet = new ArrayList<Sweets>(order.getSweets());
+        List <BirthdayItems> item = order.getItems();
+        for(int i=0; i<sweet.size();i++){
+            if(s.get(i) == SweetType.READY) {
+                int n = readySweet.get(sweet.get(i));
+                readySweet.put(sweet.get(i),n-1);
+            }
+        }
+        for(int i=0; i<item.size();i++){
+            int n = birthdayItem.get(item.get(i));
+            birthdayItem.put(item.get(i),n-1);
+        }
+    }
 
     public void addMenu(Sweets sweet){this.menu.add(sweet);}
 
-    public void addBirthdayItem(BirthdayItems item) {this.birthdayItem.add(item);}
+    public void addBirthdayItem(BirthdayItems item,int number) {this.birthdayItem.put(item,number);}
 
-    public ConfectionerStatus sweetToOrder(List<Sweets> s,List<SweetType> st,Customer c){
+    public List<ConfectionerStatus> sweetToOrder(List<Sweets> s,List<SweetType> st,BirthdayItems b,Customer c){
+        List<ConfectionerStatus> out = new ArrayList<ConfectionerStatus>();
         System.out.println("Customer");
         System.out.println(c.getProfile());
-
+        System.out.println("Sweet");
         for (int i = 0;i < s.size();i++) {
-            System.out.println("Sweet");
+
             System.out.println(st.get(i));
             System.out.println(s.get(i).description);
             System.out.println(s.get(i).getTOTAL_Grams());
             System.out.println(s.get(i).getTOTAL_COST());
-        }
-        int indexCS = 1;
-        for (ConfectionerStatus CS : ConfectionerStatus.values()) {
-            System.out.println(indexCS + " : " + CS);
-            indexCS += 1;
-        }
-        Scanner scan = new Scanner(System.in);
-        System.out.printf("Please Enter your Status for this Order : ");
-        int num = scan.nextInt();
 
-        return ConfectionerStatus.values()[num - 1];
+            int indexCS = 1;
+            for (ConfectionerStatus CS : ConfectionerStatus.values()) {
+                System.out.println(indexCS + " : " + CS);
+                indexCS += 1;
+            }
+            Scanner scan = new Scanner(System.in);
+            System.out.printf("Please Enter your Status for this Order : ");
+            int num = scan.nextInt();
+            out.add(ConfectionerStatus.values()[num - 1]);
+        }
+        System.out.println("BirthdayItems");
+        for (int i = 0;i < s.size();i++) {
+            System.out.println(b.getDescription());
+
+            int indexCS = 1;
+            for (ConfectionerStatus CS : ConfectionerStatus.values()) {
+                System.out.println(indexCS + " : " + CS);
+                indexCS += 1;
+            }
+            Scanner scan = new Scanner(System.in);
+            System.out.printf("Please Enter your Status for this Order : ");
+            int num = scan.nextInt();
+            out.add(ConfectionerStatus.values()[num - 1]);
+        }
+
+        return out;
+
     }
 
 
@@ -98,7 +130,7 @@ public class Bakery extends Account implements Confectioner {
         return post;
     }
 
-    public List<Sweets> getReadySweet() { return readySweet; }
+    public Map<Sweets , Integer> getReadySweet() { return readySweet; }
 
     public List<Sweets> getMenu() {
         return menu;
@@ -108,7 +140,7 @@ public class Bakery extends Account implements Confectioner {
         return orderList;
     }
 
-    public List<BirthdayItems> getBirthdayItemId() {
+    public Map<BirthdayItems, Integer> getBirthdayItemId() {
         return birthdayItem;
     }
 

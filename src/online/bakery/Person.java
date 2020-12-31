@@ -2,9 +2,7 @@ package online.bakery;
 
 import online.bakery.sweets.Sweets;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class Person extends Account implements Confectioner{
 
@@ -13,7 +11,6 @@ public class Person extends Account implements Confectioner{
     private int score;
     private int numScore;
     private List<Sweets> post = new ArrayList<Sweets>(); // post id
-    private List<Sweets> readySweet = new ArrayList<Sweets>(); //list of sweets is ready to buy
     private List<Order> orderList = new ArrayList<Order>(); // list order id
     private List<Discount> discountList = new ArrayList<Discount>();
 
@@ -50,9 +47,9 @@ public class Person extends Account implements Confectioner{
 
     public void addPost(Sweets sweet){this.post.add(sweet);}
 
-    public void addReadySweet(Sweets sweet){this.readySweet.add(sweet);}
 
-    public void addOrder(Order order){this.orderList.add(order);}
+
+    public void addOrder(Order order,List<SweetType> s){this.orderList.add(order);}
 
 
     public ConfectionerStatus sweetToOrder(List<Sweets> s,List<SweetType> st,Customer c){
@@ -82,7 +79,7 @@ public class Person extends Account implements Confectioner{
         return post;
     }
 
-    public List<Sweets> getReadySweet() { return readySweet; }
+
 
     public List<Order> getOrderList() {
         return orderList;
