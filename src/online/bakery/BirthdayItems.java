@@ -6,7 +6,9 @@ public interface BirthdayItems {
 
     String getDescription();
 
-    void setDescription(String description);
+
+    String getName();
+    void setName(String Name);
 
     BigDecimal getCost() ;
     void setCost(BigDecimal cost) ;

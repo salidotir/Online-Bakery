@@ -3,25 +3,25 @@ package online.bakery;
 import java.math.BigDecimal;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class Candle implements BirthdayItems {
+public class Balloon implements BirthdayItems{
 
     private final int itemId ;
     static AtomicInteger atomicInteger = new AtomicInteger(0);
     String name;
-    String number;
+    String material;
     String color;
     BigDecimal cost ;
 
-    public Candle(String name,BigDecimal cost,String number,String color){
+    public Balloon(String name,BigDecimal cost,String material,String color){
         this.itemId=atomicInteger.incrementAndGet();
         this.name = name;
         this.cost = cost;
-        this.number = number;
+        this.material = material;
         this.color = color;
     }
 
     public String getDescription(){
-        String s = name + "  " + number + "\n color : "+color + "\n" + cost + " Tooman" ;
+        String s = name + "\nmaterial : " + material + "\n color : "+color + "\n" + cost + " Tooman" ;
         return s;
     }
 
@@ -40,10 +40,8 @@ public class Candle implements BirthdayItems {
     }
     public void setColor(String color) {this.color = color; }
 
-    public String getNumber() {
-        return number;
+    public String getMaterial() {
+        return material;
     }
-    public void setNumber(String number) {this.number = number; }
-
-
+    public void setMaterial(String material) {this.material = material; }
 }
