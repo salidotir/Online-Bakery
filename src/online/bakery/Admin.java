@@ -14,12 +14,15 @@ import java.util.List;
  */
 public class Admin extends Account{
     private final int AdminID;
+    private String username, password;
     
     //Lazy Initialization with Double Lock
     private static Admin INSTANCE = null;
     private Admin() {
         super();
         this.AdminID = super.ID;
+        this.username = "admin";
+        this.password = "admin123";
         super.SignUp("admin", "admin123");
     }
     
@@ -35,40 +38,40 @@ public class Admin extends Account{
     }
     
     boolean createCustomer(Customer customer){
-        return DBMS.addCustomer(customer);
+        return DBMS.getDBMS(this.username, this.password).addCustomer(customer);
     }
     
     List<Customer> viewCustomers(){
-        return DBMS.getListOfCustomers();
+        return DBMS.getDBMS(this.username, this.password).getListOfCustomers();
     }
     
     boolean deleteCustomer(Customer customer){
         customer.setActiveness("Inactive");
-        return DBMS.removeCustomer(customer);
+        return DBMS.getDBMS(this.username, this.password).removeCustomer(customer);
     }
     
     boolean createBakery (Bakery baker){
-        return DBMS.addBakery(baker);
+        return DBMS.getDBMS(this.username, this.password).addBakery(baker);
     }
     
     List<Bakery> viewBakery(){
-        return DBMS.getListOfBakeries();
+        return DBMS.getDBMS(this.username, this.password).getListOfBakeries();
     }
     
     boolean deleteBakery (Bakery baker){
-        return DBMS.removeBakery(baker);
+        return DBMS.getDBMS(this.username, this.password).removeBakery(baker);
     }
     
     boolean createPerson (Person person){
-        return DBMS.addBaker(person);
+        return DBMS.getDBMS(this.username, this.password).addBaker(person);
     }
     
     List<Person> viewPerson(){
-        return DBMS.getListOfBakers();
+        return DBMS.getDBMS(this.username, this.password).getListOfBakers();
     }
     
     boolean deletePerson(Person person){
-        return DBMS.removeBaker(person);
+        return DBMS.getDBMS(this.username, this.password).removeBaker(person);
     }
     
 }

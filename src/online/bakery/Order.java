@@ -90,46 +90,53 @@ public class Order {
         if(result){
             switch (score){
               case 0:
-                  sweet.addScore(Rate.ZERO, customer);
+//                  sweet.addScore(Rate.ZERO, customer);
                   break;
               case 1:
-                  sweet.addScore(Rate.ONE, customer);
+//                  sweet.addScore(Rate.ONE, customer);
                   break;
               case 2:
-                  sweet.addScore(Rate.TWO, customer);
+//                  sweet.addScore(Rate.TWO, customer);
                   break;
               case 3:
-                  sweet.addScore(Rate.THREE, customer);
+//                  sweet.addScore(Rate.THREE, customer);
                   break;
               case 4:
-                  sweet.addScore(Rate.FOUR, customer);
+//                  sweet.addScore(Rate.FOUR, customer);
                   break;
               case 5:
-                  sweet.addScore(Rate.FIVE, customer);
+//                  sweet.addScore(Rate.FIVE, customer);
                   break;
               case 6:
-                  sweet.addScore(Rate.SIX, customer);
+//                  sweet.addScore(Rate.SIX, customer);
                   break;
               case 7:
-                  sweet.addScore(Rate.SEVEN, customer);
+//                  sweet.addScore(Rate.SEVEN, customer);
                   break;
               case 8:
-                  sweet.addScore(Rate.EIGHT, customer);
+//                  sweet.addScore(Rate.EIGHT, customer);
                   break;
               case 9:
-                  sweet.addScore(Rate.NINE, customer);
+//                  sweet.addScore(Rate.NINE, customer);
                   break;
               case 10:
-                  sweet.addScore(Rate.TEN, customer);
+//                  sweet.addScore(Rate.TEN, customer);
                   break;
             }
-            Staff.setScore(score);
+//            Staff.setScore(dounle,double,sweet);
             return true;
         }
         else
             return false;
     }
-   
+    //pay create payment 
+    
+    // set request delivey 
+    //address profile
+    //maintain emploee
+    
+    // detail cost return 
+    
     public BigDecimal getCost(){
         BigDecimal cost = new BigDecimal(0);
         for (Sweets i : sweet_score.keySet()) {
@@ -138,6 +145,7 @@ public class Order {
         for (BirthdayItems b: items){
             cost = cost.add(b.getCost());
         }
+        //cost deliry add kon
         return cost;
     }
     

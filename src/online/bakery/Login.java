@@ -34,21 +34,21 @@ public class Login {
     }
     
     public static boolean SignUp(String username, String password){
-        if (DBMS.hasEntry(username, password))
+        if (DBMS.getDBMS("admin", "admin123").hasEntry(username, password))
             return false;
         else{
-            DBMS.addEntry(username, password);
+            DBMS.getDBMS("admin", "admin123").addEntry(username, password);
             lastLoginTime = new Date();
             return true;
         }
     }
     
     public static boolean ValidateLogin(String username, String password){
-        if(!DBMS.hasEntry(username, password) || !DBMS.hasSalt(username)){
+        if(!DBMS.getDBMS("admin", "admin123").hasEntry(username, password) || !DBMS.getDBMS("admin", "admin123").hasSalt(username)){
             return false;
         }
        
-        boolean result = DBMS.checkPasword(username , password);
+        boolean result = DBMS.getDBMS("admin", "admin123").checkPasword(username , password);
         if(result){
             lastLoginTime = new Date();
             return result;
