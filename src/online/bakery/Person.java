@@ -42,16 +42,11 @@ public class Person extends Account implements Confectioner{
         return score;
     }
 
-    public void setScore(int score) {
+    public void setScore(int lastScore,int newScore) {
+        this.score = (score*numScore - lastScore + newScore) / (numScore + 1) ;
         numScore += 1;
-        this.score = (this.score + score) / numScore ;
     }
 
-    public void increaseScore(int a) { this.score += a; }
-
-    public void decreaseScore(int a) {
-        this.score -= a;
-    }
 
     public void addPost(Sweets sweet){this.post.add(sweet);}
 
@@ -79,7 +74,6 @@ public class Person extends Account implements Confectioner{
         Scanner scan = new Scanner(System.in);
         System.out.printf("Please Enter your Status for this Order : ");
         int num = scan.nextInt();
-        scan.close();
 
         return ConfectionerStatus.values()[num - 1];
     }
