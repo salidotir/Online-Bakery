@@ -213,7 +213,7 @@ public class Order {
 
             if(result){
                 double prevoius = sweet.getScore();
-//                sweet.setScore(score);
+                sweet.addScore(score);
                 double next = sweet.getScore();
                 Staff.setScore(prevoius, next ,sweet);
                 return true;

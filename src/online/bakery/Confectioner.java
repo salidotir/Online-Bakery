@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface Confectioner {
 
-    void setScore(int lastScore,int newScore);
+    void setScore(double lastScore,double newScore, Sweets sweet);
 
     void setDescription(String description);
 

@@ -41,7 +41,7 @@ public class Person extends Account implements Confectioner{
         return score;
     }
 
-    public void setScore(int lastScore,int newScore) {
+    public void setScore(double lastScore,double newScore, Sweets sweet) {
         this.score = (score*numScore - lastScore + newScore) / (numScore + 1) ;
         numScore += 1;
     }
