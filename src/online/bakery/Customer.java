@@ -1,5 +1,6 @@
 package online.bakery;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import online.bakery.sweets.Rate;
 import online.bakery.sweets.Sweets;
@@ -57,8 +58,8 @@ public class Customer extends Account{
         return personP;
     }
 
-    public Order createNewSweet(List<Sweets> sweetlist, Confectioner Staff, List<BirthdayItems> items){
-        Order order = new Order(this, sweetlist, Staff, items);
+    public Order createNewSweet(List<Sweets> sweetlist, List<BirthdayItems> items){
+        Order order = new Order(this, sweetlist, items, new Date());
         this.Orders.add(order);
         return order;
     }

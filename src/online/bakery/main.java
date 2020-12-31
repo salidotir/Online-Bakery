@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import online.bakery.sweets.Rate;
 
 
 public class main {
@@ -67,7 +68,7 @@ public class main {
         System.out.println(cs1.toString());
         if(cs1 == ConfectionerStatus.ACCEPT){
             List<BirthdayItems> listitem = new ArrayList<BirthdayItems>();
-            Order o1 = c.createNewSweet(sList,b1, listitem);
+            Order o1 = c.createNewSweet(sList, listitem);
             b1.addOrder(o1);
 
         }
@@ -85,8 +86,8 @@ public class main {
         Employee e1 = new Employee("سارا", "لیمویی");        
         
         // request for a delivery for customer-1 order
-        DeliveryInformation c1_delivery1 = DeliveryInformation.createNewDelivery(c.getOrdersID().get(0), e1.getID(), "معالی آباد، کوچه ی سوم", new Date(2021, 1, 15, 16, 30));
-        System.out.println(c1_delivery1.getDeliveryInformation());
+//        DeliveryInformation c1_delivery1 = DeliveryInformation.createNewDelivery(c.getOrdersID().get(0), e1.getID(), "معالی آباد، کوچه ی سوم", new Date(2021, 1, 15, 16, 30));
+//        System.out.println(c1_delivery1.getDeliveryInformation());
         
         // create a note for the order
         Note order1_note = new Note(c.getOrdersID().get(0), b1.getID(), c.getID(), e1.getID());
@@ -96,7 +97,7 @@ public class main {
         
         // pay the order
         PaymentType paymentType = Payment.howToPay();
-        Payment payment = new Payment(c.getOrdersID().get(0), c.getID(), new Date(), new BigDecimal(400), "خرید کیک از شب شیرینی", paymentType);
+//        Payment payment = new Payment(c.getOrdersID().get(0), c.getID(), new Date(), new BigDecimal(400), "خرید کیک از شب شیرینی", paymentType);
 
         Payment walletChargePay = Payment.chargeWallet(c, "شارژ کیف پول");
         System.out.println(walletChargePay.getPaymentInformation());
@@ -104,13 +105,13 @@ public class main {
         System.out.println(c.getWallet().getWalletInformation());
         //System.out.println(payment.getPaymentInformation());
 
-        if (payment.pay(payment, c) == true) {
-            System.out.println(payment.getPaymentInformation());
-            
-            // deliver the order
-            e1.deliverOrder(c1_delivery1);
-            System.out.println(c1_delivery1.getDeliveryInformation());
-        }
+//        if (payment.pay(payment, c) == true) {
+//            System.out.println(payment.getPaymentInformation());
+//            
+//            // deliver the order
+//            e1.deliverOrder(c1_delivery1);
+//            System.out.println(c1_delivery1.getDeliveryInformation());
+//        }
 
         //System.out.println(payment.getPaymentInformation());
         System.out.println(c.getWallet().getWalletInformation());
@@ -163,7 +164,7 @@ public class main {
         System.out.println(cs1.toString());
         if(cs1 == ConfectionerStatus.ACCEPT){
             List<BirthdayItems> listitem = new ArrayList<BirthdayItems>();
-            Order o1 = c.createNewSweet(sList,b1, listitem);
+            Order o1 = c.createNewSweet(sList, listitem);
             b1.addOrder(o1);
             
             System.out.println(b1.getScore());
@@ -172,9 +173,9 @@ public class main {
 //            System.out.println(o1.getSweets());
 //            System.out.println(o1.getMap());
             for(Sweets s: o1.getSweets()){
-                o1.addScore(s, 2);
+                o1.addScore(s, Rate.FIVE);
             }
-            System.out.println(o1.addScore(s2, 1));
+            System.out.println(o1.addScore(s2, Rate.FOUR));
             System.out.println(b1.getScore());
             
             System.out.println("cost");

@@ -15,10 +15,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 abstract public class Account {
     static AtomicInteger atomicInteger = new AtomicInteger(2);
     protected int ID;
-    String Address;
+    String Address = null;
     String ContactNo;
 
-//    private Login login;
     Date dateCreated;
     
     //for bakery name of manger 

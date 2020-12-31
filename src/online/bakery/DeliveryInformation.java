@@ -39,18 +39,18 @@ public class DeliveryInformation {
         this.transferPrice = transferPrice;
     }
 
-    public DeliveryInformation createNewDelivery(String deliveryAddress, Date deliveryTime) {
+    public static DeliveryInformation createNewDelivery(String deliveryAddress, Date deliveryTime) {
         Employee e = DBMS.getDBMS("admin", "admin123").getFirstFreeEmployee();      // find first free employee to the delivery
                                                                                     // if there is nop free employee, return null not the deliveryInformation object
                 
         if (e != null) {
-            return new DeliveryInformation(employee, deliveryAddress, deliveryTime, guessTransferPrice(deliveryAddress));
+            return new DeliveryInformation(e, deliveryAddress, deliveryTime, guessTransferPrice(deliveryAddress));
         }
         return null;
     }
 
     // guess the price of transfer based on address
-    private BigDecimal guessTransferPrice(String deliveryAddress) {
+    private static BigDecimal guessTransferPrice(String deliveryAddress) {
         // currently it returns a random number between 50-100
         int r = (int)(Math.random() * (100 - 50)) + 50;
         return BigDecimal.valueOf(r);

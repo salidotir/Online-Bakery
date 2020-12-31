@@ -1,8 +1,9 @@
 package online.bakery;
 import java.math.BigDecimal;
+import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -19,20 +20,22 @@ public class Order {
     private final Customer customer;
     private final int orderId;
     static AtomicInteger atomicInteger = new AtomicInteger(2);
-    private Map<Sweets,Integer> sweet_score = new HashMap<Sweets,Integer>(); ;  
+    private Map<Sweets,Rate > sweet_score = new HashMap<Sweets,Rate>(); ;  
     private List<BirthdayItems> items;
-    private final Confectioner Staff;
+    private Confectioner Staff;
     private Payment payment;
+    private Date expectedDeliveryTime;
+    private DeliveryInformation delivery = null;
     
-    public Order(Customer customer, List<Sweets> Sweets, Confectioner Staff, List<BirthdayItems> items) {
+    public Order(Customer customer, List<Sweets> Sweets, List<BirthdayItems> items, Date expectedDeliveryTime) {
         this.customer = customer;
         atomicInteger.incrementAndGet();
         this.orderId = atomicInteger.incrementAndGet();
         for(Sweets s: Sweets){
             sweet_score.put(s, null);
         }
-        this.Staff = Staff;
         this.items = items;
+        this.expectedDeliveryTime = expectedDeliveryTime;
         this.orderStatus = OrderStatus.ORDERING_BY_CUSTOMER;
     }
     
@@ -63,6 +66,111 @@ public class Order {
         return (orderStatus == OrderStatus.ORDERING_BY_CUSTOMER ? items.remove(item): false);
     }
     
+    public boolean finalizedOrder(){
+        if( orderStatus == OrderStatus.ORDERING_BY_CUSTOMER){
+            orderStatus = OrderStatus.FINALIZED_BY_CUSTOMER;
+            return true;
+        }else
+            return false;
+    }
+    
+    public boolean cancelByCustomer(){
+        if( orderStatus == OrderStatus.FINALIZED_BY_CUSTOMER){
+            orderStatus = OrderStatus.CANCELED_BY_CUSTOMER;
+            return true;
+        }else
+            return false;
+    }
+    
+    public boolean chooseBaker(Confectioner staff){
+        if(orderStatus == OrderStatus.FINALIZED_BY_CUSTOMER){
+            this.Staff = staff;
+            //notify baker
+            orderStatus = OrderStatus.PENDING_CHOSEN_BAKER;
+            return true;
+        }else
+            return false;
+    }
+    
+    public ConfectionerStatus getConfirmBaker(List<ConfectionerStatus> acceptness){
+        ConfectionerStatus s = null;
+        for(ConfectionerStatus i : acceptness){
+            if (i == ConfectionerStatus.ACCEPT){
+                s = ConfectionerStatus.ACCEPT;
+            }else{
+                s = i;
+                break;
+            }
+        }
+        if(orderStatus == OrderStatus.PENDING_CHOSEN_BAKER){
+            if ( s == ConfectionerStatus.ACCEPT){
+                orderStatus = OrderStatus.ACCEPTED;
+                return s;
+            }else{
+                orderStatus = OrderStatus.CANCELED_BY_BAKER;
+                return s;
+            }
+        }else
+            return s;
+    }
+    
+    public AbstractMap.SimpleEntry setDelivery(){
+        if(orderStatus == OrderStatus.ACCEPTED ){
+            if (customer.getAddress() == null)
+                return new AbstractMap.SimpleEntry(false, "please Set address first");
+            else{
+                DeliveryInformation newdelivery = DeliveryInformation.createNewDelivery(customer.getAddress(), expectedDeliveryTime);
+                if (newdelivery == null)
+                    return new AbstractMap.SimpleEntry(false, "No emploee can find");
+                else{
+                    this.delivery = newdelivery;
+                    orderStatus = OrderStatus.SET_DELIVERY;
+                    return new AbstractMap.SimpleEntry(true, "Emploee set");
+                }
+            }
+        }else
+            return new AbstractMap.SimpleEntry(false, "your order is not accepted");
+    }
+    
+    public boolean payOrder(String description){
+        if(orderStatus == OrderStatus.SET_DELIVERY){
+            PaymentType paymentType = Payment.howToPay();
+            this.payment = new Payment(new Date(), this.getCost(), description, paymentType);
+            boolean result = payment.pay(payment, this.customer);
+            if(result){
+                orderStatus = OrderStatus.PAYED;
+                return true;
+            }else
+                return false;
+        }else
+            return false;
+    }
+    
+    public boolean setBakerStatus(){
+        if(orderStatus == OrderStatus.PAYED){
+            orderStatus = OrderStatus.IN_PROGRESS;
+            return true;
+        }else
+            return false;
+    }
+    
+    public boolean callDelivery(){
+        if(orderStatus == OrderStatus.IN_PROGRESS){
+            orderStatus = OrderStatus.DONE;
+            // notify delivery
+            return true;
+        }else
+            return false;
+    }
+    
+    public boolean finishOrder(){
+        if(orderStatus == OrderStatus.DONE){
+            orderStatus = OrderStatus.DELIVERED;
+            return true;
+        }else
+            return false;
+    }
+    
     public int getOrderId() {
         return orderId;
     }
@@ -78,8 +186,12 @@ public class Order {
         }
         return sweets;
     }
+    
+    public List<BirthdayItems> getItems(){
+        return items;
+    }
 
-    public Map<Sweets, Integer> getListScores() {
+    public Map<Sweets, Rate> getListScores() {
         return sweet_score;
     }
     
@@ -87,59 +199,23 @@ public class Order {
         return orderStatus;
     }
 
-    public void setOrderStatus(OrderStatus orderStatus) {
-        this.orderStatus = orderStatus;
-    }
-
     public Payment getPayment() {
         return payment;
     }
-
-    public void setPayment(Payment payment) {
-        this.payment = payment;
+    
+    public DeliveryInformation getDelivery(){
+        return delivery;
     }
     
-    public boolean addScore(Sweets sweet, int score){
+    public boolean addScore(Sweets sweet, Rate score){
         if (orderStatus == OrderStatus.DELIVERED){
             boolean result = sweet_score.replace(sweet, null , score);
 
             if(result){
-                switch (score){
-                  case 0:
-    //                  sweet.addScore(Rate.ZERO, customer);
-                      break;
-                  case 1:
-    //                  sweet.addScore(Rate.ONE, customer);
-                      break;
-                  case 2:
-    //                  sweet.addScore(Rate.TWO, customer);
-                      break;
-                  case 3:
-    //                  sweet.addScore(Rate.THREE, customer);
-                      break;
-                  case 4:
-    //                  sweet.addScore(Rate.FOUR, customer);
-                      break;
-                  case 5:
-    //                  sweet.addScore(Rate.FIVE, customer);
-                      break;
-                  case 6:
-    //                  sweet.addScore(Rate.SIX, customer);
-                      break;
-                  case 7:
-    //                  sweet.addScore(Rate.SEVEN, customer);
-                      break;
-                  case 8:
-    //                  sweet.addScore(Rate.EIGHT, customer);
-                      break;
-                  case 9:
-    //                  sweet.addScore(Rate.NINE, customer);
-                      break;
-                  case 10:
-    //                  sweet.addScore(Rate.TEN, customer);
-                      break;
-                }
-    //            Staff.setScore(dounle,double,sweet);
+                double prevoius = sweet.getScore();
+//                sweet.setScore(score);
+                double next = sweet.getScore();
+                Staff.setScore(prevoius, next ,sweet);
                 return true;
             }
             else
@@ -147,17 +223,13 @@ public class Order {
         }else
             return false;
     }
-    //pay create payment 
-    
-    // set request delivey 
-    //address profile
-    //maintain emploee
-    
     
     public String getDetailCosts(){
         String s;
         String sweet = null , item = null , delivery = null;
-        delivery = "100";
+        if (this.delivery != null){
+            delivery = this.delivery.transferPrice.toString();
+        }
         for (Sweets i : sweet_score.keySet()) {
             sweet += i.getDescription();
             sweet += " : ";
@@ -185,7 +257,9 @@ public class Order {
         for (BirthdayItems b: items){
             cost = cost.add(b.getCost());
         }
-        //cost deliry add kon
+        if(delivery != null){
+            cost = cost.add(delivery.transferPrice);
+        }
         return cost;
     }
     
