@@ -5,7 +5,11 @@
  */
 package online.bakery;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Scanner;
 
 /**
  *
@@ -13,32 +17,22 @@ import java.util.Date;
  */
 public class Login {    
     static Date lastLoginTime;
-    
-    String SecurityQuestion;
-    String SecurityAnswer;
+    static boolean isLogedIn;
 
-    public String getSecurityQuestion() {
-        return SecurityQuestion;
-    }
-
-    public void setSecurityQuestion(String SecurityQuestion) {
-        this.SecurityQuestion = SecurityQuestion;
-    }
-
-    public String getSecurityAnswer() {
-        return SecurityAnswer;
-    }
-
-    public void setSecurityAnswer(String SecurityAnswer) {
-        this.SecurityAnswer = SecurityAnswer;
-    }
-    
     public static boolean SignUp(String username, String password, Role role){
         if (DBMS.getDBMS("admin", "admin123").hasEntry(username, password))
             return false;
         else{
             DBMS.getDBMS("admin", "admin123").addEntry(username, password);
             lastLoginTime = new Date();
+            List<String> answers = new ArrayList<String>();
+            for (String q : Admin.getInstance().getQuestions()) {
+                Scanner scan = new Scanner(System.in);
+                System.out.printf(q);
+                String ans = scan.nextLine();
+                answers.add(ans);
+            }
+            Admin.getInstance().setAnswers(username, answers);
             return true;
         }
     }
@@ -51,8 +45,13 @@ public class Login {
         boolean result = DBMS.getDBMS("admin", "admin123").checkPasword(username , password);
         if(result){
             lastLoginTime = new Date();
+            isLogedIn = true;
             return result;
         }else
             return false;
+    }
+    
+    public static void Logout(){
+        isLogedIn = false;
     }
 }

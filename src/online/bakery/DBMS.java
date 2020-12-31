@@ -22,12 +22,12 @@ public class DBMS {
     /**
     * Map of usernames to their password hashes.
     */
-    private Map<String, String> usernamePasswordTable = new HashMap<String, String>();
+    private Map<String, String> usernamePasswordTable;
 
     /**
      * Map of usernames to their salts.
      */
-    private Map<String, Integer> userSaltMap = new HashMap<String, Integer>();
+    private Map<String, Integer> userSaltMap;
 
     private List<Bakery> bakeries;
     private List<Person> bakers;
@@ -39,12 +39,19 @@ public class DBMS {
     private List<Payment> payments;
     private List<DeliveryInformation> deliveryInformations;
     
+    private List<String> securityQuestions;
+    private Map<String, List<String>> usernameAnswersTable; 
+    
     private DBMS() {
         this.customers = new ArrayList<Customer>();
         this.employees = new ArrayList<Employee>();
         this.bakeries = new ArrayList<Bakery>();
         this.bakers = new ArrayList<Person>();  
         this.orders = new ArrayList<Order>();
+        this.usernamePasswordTable = new HashMap<String, String>();
+        this.userSaltMap = new HashMap<String, Integer>();
+        this.securityQuestions = new ArrayList<String>();
+        this.usernameAnswersTable = new HashMap<String, List<String>>();
     }
     
     // function to give access to dbms only for admin
@@ -94,6 +101,28 @@ public class DBMS {
         }
 
         return hash.toString();
+    }
+    //~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~ 
+    // functions for Security Questions
+    
+    public void setQuestions(List<String> questions){
+        DBMS.getDBMS().securityQuestions = questions;
+    }
+    
+    public boolean setAnswer(String username, List<String> answers){
+        if (!DBMS.getDBMS().usernameAnswersTable.containsKey(username)){
+            DBMS.getDBMS().usernameAnswersTable.put(username, answers);
+            return true;
+        }else
+            return false;
+    }
+    
+    public List<String> getQuestions(){
+        return DBMS.getDBMS().securityQuestions;
+    }
+    
+    public List<String> getAnswers(String username){
+        return DBMS.getDBMS().usernameAnswersTable.get(username);
     }
     
     //~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~ 

@@ -5,7 +5,10 @@
  */
 package online.bakery;
 
+import java.util.AbstractMap;
 import java.util.Date;
+import java.util.List;
+import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -23,6 +26,8 @@ abstract public class Account {
     //for bakery name of manger 
     String Firstname;
     String Lastname; 
+    String username;
+    String password;
     
     Role role;
     
@@ -73,14 +78,79 @@ abstract public class Account {
     }
     
     public boolean SignUp(String username, String password, Role role){
-        return Login.SignUp(username, password, role);
+        if( Login.SignUp(username, password, role)){
+            this.username = username;
+            this.password = password;
+            return true;
+        }else
+            return false;
     }
     
     public boolean Login(String username, String password, Role role){
         return Login.ValidateLogin(username, password, role);
     }
     
+    public void LogOut(){
+        Login.Logout();
+    }
+    
     public Date getLastLogin(){
         return Login.lastLoginTime;
+    }
+    
+    public AbstractMap.SimpleEntry forgotPassword(){
+        if (!Login.isLogedIn){
+            System.out.println("Please answer these security questions.\n");
+            boolean result = true;
+            List<String> actuallAnswers = Admin.getInstance().getAnswer(this.username);
+            for(String q: Admin.getInstance().getQuestions()){
+                Scanner scan = new Scanner(System.in);
+                System.out.printf(q);
+                String ans = scan.nextLine();
+                String actullAnswer = actuallAnswers.get(Admin.getInstance().getQuestions().indexOf(q));
+                if(!actullAnswer.equals(ans)){
+                  result = false;
+                  break;
+                }
+            }
+            if(result){
+                Scanner scan = new Scanner(System.in);
+                System.out.printf("Enter new password: ");
+                String pass = scan.next();
+                boolean changed = Admin.getInstance().changePassword(this.username, pass);
+                if(changed)
+                    return new AbstractMap.SimpleEntry(true, "Password successfully changed");
+                else
+                    return new AbstractMap.SimpleEntry(false, "No password is set");
+            }else{
+                boolean permit = Admin.getInstance().AskPermission(this.username);
+                if(permit){
+                    Scanner scan = new Scanner(System.in);
+                    System.out.printf("Enter new password: ");
+                    String pass = scan.next();
+                    boolean changed = Admin.getInstance().changePassword(this.username, pass);
+                    if(changed)
+                        return new AbstractMap.SimpleEntry(true, "Password successfully changed");
+                    else
+                        return new AbstractMap.SimpleEntry(false, "No password is set");
+                }else
+                    return new AbstractMap.SimpleEntry(false, "You have no permission to change password without answering security questions");
+            }
+        }else
+            return new AbstractMap.SimpleEntry(false, "You are loged in so use change password.");
+    }
+    
+    public AbstractMap.SimpleEntry changePassword(){
+        if (Login.isLogedIn){
+            Scanner scan = new Scanner(System.in);
+            System.out.printf("Enter new password: ");
+            String pass = scan.next();
+            boolean changed = Admin.getInstance().changePassword(this.username, pass);
+            if(changed)
+                return new AbstractMap.SimpleEntry(true, "Password successfully changed");
+            else
+                return new AbstractMap.SimpleEntry(false, "No password is set");
+        }else
+            return new AbstractMap.SimpleEntry(false, "You are not Loged in.");
     }
 }

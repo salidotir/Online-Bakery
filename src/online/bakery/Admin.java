@@ -36,6 +36,37 @@ public class Admin extends Account{
         }
         return INSTANCE;
     }
+    void setQuestions(List<String> questions){
+        DBMS.getDBMS(username, password).setQuestions(questions);
+    }
+    
+    boolean setAnswers(String username, List<String> answers){
+        return DBMS.getDBMS(this.username, this.password).setAnswer(username, answers);
+    }
+    
+    List<String> getQuestions(){
+        return DBMS.getDBMS(username, password).getQuestions();
+    }
+    
+    List<String> getAnswer(String username){
+        return DBMS.getDBMS(this.username, this.password).getAnswers(username);
+    }
+    
+    boolean changePassword(String username, String password){
+        if( DBMS.getDBMS(this.username, this.password).hasEntry(username, password)){
+            String result = DBMS.getDBMS(this.username, this.password).addEntry(username, password);
+            if (result != null){ // say there was password before this event 
+                return true;
+            }else
+                return false;
+        }else
+            return false;
+    }
+    
+    boolean AskPermission(String username){
+        // check if this username has option to change password without answering security Q&A
+        return true;
+    }
     
     boolean createCustomer(Customer customer){
         return DBMS.getDBMS(this.username, this.password).addCustomer(customer);
