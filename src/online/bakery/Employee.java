@@ -13,14 +13,14 @@ import online.bakery.sweets.Rate;
 public class Employee extends Account{
     int employeeId ;
     private boolean isBusy;
-    private Rate score;
+    private float score;
     private int numOfPeopleWhoScored = 0;
     
     public Employee(String FirstName, String LastName) {
         super();
         super.setFirstname(FirstName);
         super.setLastname(LastName);
-        this.score = Rate.ZERO;
+        this.score = 0;
         this.employeeId = super.ID;
         this.isBusy = false;
     }
@@ -32,16 +32,8 @@ public class Employee extends Account{
     /**
      * @return the score
      */
-    public Rate getScore() {
+    public float getScore() {
         return score;
-    }
-
-    /**
-     * @param newScore the score to set
-     */
-    public void giveScore(Rate newScore) {
-        //this.score = (this.score*this.numOfPeopleWhoScored + newScore) / (this.numOfPeopleWhoScored + 1);
-        this.numOfPeopleWhoScored += 1;
     }
     
      /**
@@ -76,5 +68,53 @@ public class Employee extends Account{
      */
     public void setIsBusy(boolean isBusy) {
         this.isBusy = isBusy;
+    }
+    
+    /**
+     * @param rate the score to set
+     */
+    public float addScore(Rate rate) {
+        float newScore = 0;
+        if(null != rate) switch (rate) {
+            case ZERO:
+                newScore = 0;
+                break;
+            case ONE:
+                newScore = 1;
+                break;
+            case TWO:
+                newScore = 2;
+                break;
+            case THREE:
+                newScore = 3;
+                break;
+            case FOUR:
+                newScore = 4;
+                break;
+            case FIVE:
+                newScore = 5;
+                break;
+            case SIX:
+                newScore = 6;
+                break;
+            case SEVEN:
+                newScore = 7;
+                break;
+            case EIGHT:
+                newScore = 8;
+                break;
+            case NINE:
+                newScore = 9;
+                break;
+            case TEN:
+                newScore = 10;
+                break;
+            default:
+                break;
+        }
+        
+        this.score = (this.score*this.numOfPeopleWhoScored + newScore) / (this.numOfPeopleWhoScored + 1);
+        this.numOfPeopleWhoScored += 1;
+        return this.score;
     }
 }
