@@ -34,9 +34,10 @@ public class DBMS {
     private List<Customer> customers;
     private List<Employee> employees;
     
-    private List<Order> orders;
-    private List<Note> notes;
+    private List<Admin> admins;
     
+    private List<Order> orders;
+   
     private List<String> securityQuestions;
     private Map<String, List<String>> usernameAnswersTable; 
     
@@ -53,8 +54,8 @@ public class DBMS {
     }
     
     // function to give access to dbms only for admin
-    public static DBMS getDBMS(String username, String password) {
-        if(username.equals("admin") && password.equals("admin123")) {
+    public static DBMS getDBMS(Account account) {
+        if(account.role == Role.ADMIN) {
             return DBMS.dbms;
         }
         return null;
@@ -279,16 +280,6 @@ public class DBMS {
     
     //~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~ 
     
-    // search for notes of a specific order
-    public Note getOrderNote(Order order) {
-        for(Note note : DBMS.getDBMS().notes) {
-            if(order.getOrderId() == note.getOrderId()) {
-                return note;
-            }
-        }
-        return null;
-    }
-    
     // search for delivery information of a specific order
     public DeliveryInformation getOrderDeliverInformation(Order order) {
         return order.getDelivery();
@@ -431,17 +422,6 @@ public class DBMS {
         DBMS.getDBMS().orders.add(order);
         return true;
     }
-    
-    //~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~    
-    
-    public List<Note> getListOfNotes() {
-        return DBMS.getDBMS().notes;
-    }
-    
-    public boolean addNote(Note note) {
-        DBMS.getDBMS().notes.add(note);
-        return true;
-    }
 
     //~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~    
     
@@ -463,6 +443,15 @@ public class DBMS {
         }
 
         return res;
+    }
+    
+    public List<Admin> getAdmins() {
+        return DBMS.getDBMS().admins;
+    }
+    
+    public boolean addNewAdmin(Admin admin) {
+        DBMS.getDBMS().admins.add(admin);
+        return true;
     }
  
 }
