@@ -16,13 +16,15 @@ public class Employee extends Account{
     private float score;
     private int numOfPeopleWhoScored = 0;
     
-    public Employee(String FirstName, String LastName) {
+    public Employee(String username, String password,String FirstName, String LastName) {
         super();
+        super.SignUp(username, password, Role.EMPLOEE);
         super.setFirstname(FirstName);
         super.setLastname(LastName);
         this.score = 0;
         this.employeeId = super.ID;
         this.isBusy = false;
+        Admin.getInstance().createEmploee(this); 
     }
 
     public String getProfile() {

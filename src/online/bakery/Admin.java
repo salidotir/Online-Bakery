@@ -105,6 +105,18 @@ public class Admin extends Account{
         return DBMS.getDBMS(this.username, this.password).removeBaker(person);
     }
     
+    boolean createEmploee (Employee employee){
+        return DBMS.getDBMS(this.username, this.password).addEmployee(employee);
+    }
+    
+    List<Employee> viewEmployee(){
+        return DBMS.getDBMS(this.username, this.password).getListOfEmployees();
+    }
+    
+    boolean deleteEmployee(Employee employee){
+        return DBMS.getDBMS(this.username, this.password).removeEmployee(employee);
+    }
+    
     Employee getFirstFreeEmployee() {
         return DBMS.getDBMS(this.username, this.password).getFirstFreeEmployee();
     }
