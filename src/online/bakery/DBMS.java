@@ -54,9 +54,19 @@ public class DBMS {
     }
     
     // function to give access to dbms only for admin
-    public static DBMS getDBMS(Account account) {
-        if(account.role == Role.ADMIN) {
-            return DBMS.dbms;
+//    public static DBMS getDBMS(Account account) {
+//        if(account.role == Role.ADMIN) {
+//            return DBMS.dbms;
+//        }
+//        return null;
+//    }
+    
+    // check in admins list for the username & password
+    public static DBMS getDBMS(String username, String password) {
+        for(Admin admin : DBMS.getDBMS().admins) {
+            if(admin.username.equals(username) && admin.password.equals(password)) {
+                return DBMS.dbms;
+            }
         }
         return null;
     }
