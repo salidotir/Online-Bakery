@@ -26,6 +26,19 @@ public abstract class Sweets {
         return Score;
     }
 
+
+    @Override
+    public String toString() {
+        return "Sweets{" +
+                ", SweetId=" + SweetId +
+                ", description='" + description + '\'' +
+                ", TOTAL_Grams=" + TOTAL_Grams +
+                ", TOTAL_COST=" + TOTAL_COST +
+                "Score=" + Score +
+                ", NumCustomerForScore=" + NumCustomerForScore +
+                '}';
+    }
+
     public void addScore(Rate rate) {
         double myscore = this.NumCustomerForScore * this.Score;
         this.NumCustomerForScore += 1;
