@@ -36,8 +36,6 @@ public class DBMS {
     
     private List<Order> orders;
     private List<Note> notes;
-    private List<Payment> payments;
-    private List<DeliveryInformation> deliveryInformations;
     
     private List<String> securityQuestions;
     private Map<String, List<String>> usernameAnswersTable; 
@@ -140,9 +138,9 @@ public class DBMS {
     
     public List<Payment> getCustomerPayments(Customer customer) {
         List<Payment> result = new ArrayList<Payment>();
-        for(Payment payment:DBMS.getDBMS().payments) {
-            if(payment.getCustomerId() == customer.getID()) {
-                result.add(payment);
+        for(Order order:DBMS.getDBMS().orders) {
+            if(order.getCustomerId() == customer.getID()) {
+                result.add(order.getPayment());
             }
         }
         return result;
@@ -270,9 +268,9 @@ public class DBMS {
     
     // set payment status for a specific order in payments list
     public boolean setPaymentStatus(Order order, PaymentStatus paymentStatus) {
-        for(Payment payment : DBMS.getDBMS().payments) {
-            if(order.getOrderId() == payment.getOrderId()) {
-                payment.setPaymentStatus(paymentStatus);
+        for(Order ord : DBMS.getDBMS().orders) {
+            if(ord.getOrderId() == order.getOrderId()) {
+                ord.getPayment().setPaymentStatus(paymentStatus);
                 return true;
             }
         }
@@ -298,12 +296,7 @@ public class DBMS {
     
     // search for payment information of a specific order
     public Payment getOrderPaymentInformation(Order order) {
-        for(Payment payment : DBMS.getDBMS().payments) {
-            if(order.getOrderId() == payment.getOrderId()) {
-                return payment;
-            }
-        }
-        return null;
+        return order.getPayment();
     }
 
     //~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~ 
@@ -453,23 +446,23 @@ public class DBMS {
     //~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~    
     
     public List<Payment> getListOfPayments() {
-        return DBMS.getDBMS().payments;
-    }
-    
-    public boolean addPayment(Payment payment) {
-        DBMS.getDBMS().payments.add(payment);
-        return true;
+        List<Payment> res = new ArrayList<>();
+        for(Order order : DBMS.getDBMS().orders) {
+            res.add(order.getPayment());
+        }
+
+        return res;
     }
 
     //~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~    
     
     public List<DeliveryInformation> getListOfDeliveryInformations() {
-        return DBMS.getDBMS().deliveryInformations;
-    }
-    
-    public boolean addDeliveryInformation(DeliveryInformation deliveryInformation) {
-        DBMS.getDBMS().deliveryInformations.add(deliveryInformation);
-        return true;
+        List<DeliveryInformation> res = new ArrayList<>();
+        for(Order order : DBMS.getDBMS().orders) {
+            res.add(order.getDelivery());
+        }
+
+        return res;
     }
  
 }
