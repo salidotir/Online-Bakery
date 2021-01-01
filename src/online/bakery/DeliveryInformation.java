@@ -39,8 +39,9 @@ public class DeliveryInformation {
         this.transferPrice = transferPrice;
     }
 
-    public static DeliveryInformation createNewDelivery(String deliveryAddress, Date deliveryTime) {
-        Employee e = DBMS.getDBMS("admin", "admin123").getFirstFreeEmployee();      // find first free employee to the delivery
+    // call getFirstFreeEmployee() function in main before passing Employee e to this function.
+    public static DeliveryInformation createNewDelivery(String deliveryAddress, Date deliveryTime, Employee e) {
+//        Employee e = DBMS.getDBMS("admin", "admin123").getFirstFreeEmployee();    // find first free employee to the delivery
                                                                                     // if there is nop free employee, return null not the deliveryInformation object
                 
         if (e != null) {
