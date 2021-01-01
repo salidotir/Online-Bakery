@@ -7,6 +7,7 @@ import online.bakery.sweets.Cookie;
 import online.bakery.sweets.Sweets;
 
 import java.math.BigDecimal;
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -15,10 +16,89 @@ import online.bakery.sweets.Rate;
 
 public class main {
     public static void main(String[] args) {
-        test1();
-
+//        test1();
+          test3();
 //        test2();
     }
+    
+    private static void test3(){
+        ArrayList<Sweets> ss = new ArrayList<Sweets>();
+        ArrayList<DecoratorToBuild> decorators = new ArrayList<DecoratorToBuild>();
+        decorators.add(new DecoratorToBuild(Decorator.FLOUR, new BigDecimal(100), new BigDecimal(400)));
+        decorators.add(new DecoratorToBuild(Decorator.SUGAR, new BigDecimal(300), new BigDecimal(40)));
+        decorators.add(new DecoratorToBuild(Decorator.BACKGROUNDER, new BigDecimal(200), new BigDecimal(500)));
+        Sweets s1 = new Cake.CakeBuilder(decorators).build();
+        decorators.add(new DecoratorToBuild(Decorator.STRAWBERRY, new BigDecimal(200), new BigDecimal(500)));
+        Sweets s2 = new Cookie.CookieBuilder(decorators).build();
+        System.out.println(s1.getTOTAL_COST());
+        ss.add(s1);
+        ss.add(s2);
+        
+        ArrayList conf = new ArrayList<Confectioner>();
+        Bakery b1 = new Bakery("شب شیرینی","usermane","pass","علی","شریعتی","لحظات زندگی خود را با کمک ما شیرین کنید" , "07131111111" , "تاچارا");
+        System.out.printf(b1.getProfile());
+
+        Discount d1 = new Discount("تخفیف یلدایی" , 20 , new Date(1399,9,20),new Date(1399,10,1),b1.getID());
+        b1.addDiscount(d1);
+
+        b1.addMenu(s1);
+        
+        Customer c = new Customer("melika","1234");
+        
+        List<Sweets> sList = new ArrayList<Sweets>();
+        List<SweetType> stList = new ArrayList<SweetType>();
+        sList.add(s2);
+        stList.add(SweetType.CREATE_CUSTOMER);
+
+        sList.add(s1);
+        stList.add(SweetType.READY);
+        
+        Employee emp = new Employee("mzm","pass1234","mohammad", "zare");
+        
+        List<BirthdayItems> listitem = new ArrayList<BirthdayItems>();
+        Candle candle = new Candle("happy",  new BigDecimal(1000), "123", "red");
+        Order o1 = c.createNewSweet(sList, listitem);
+        o1.ItemaddtoOrder(candle);
+        boolean result = true;
+        while(result){
+            result = o1.finalizedOrder();
+            if(!result)
+                break;
+            result = o1.chooseBaker(b1);
+            if(!result)
+                break;
+            List<ConfectionerStatus> cs1 = b1.sweetToOrder(sList,stList,candle,c);
+            ConfectionerStatus s = o1.getConfirmBaker(cs1);
+            if (s == ConfectionerStatus.ACCEPT){
+                c.setAddress("ملاصدرا دانشکده کامپیوتر");
+                
+                AbstractMap.SimpleEntry res = o1.setDelivery();
+                result = (boolean)res.getKey();
+                System.out.println(res.getValue());
+                if(!result)                    
+                    break;
+                result = o1.payOrder("paying order o1");
+                if(!result)                    
+                    break;
+                result = o1.setBakerStatus();
+                if(!result)                    
+                    break;
+//                b1.addOrder(o1, stList);
+                result = o1.callDelivery();
+                if(!result)                    
+                    break;
+                result = o1.finishOrder();
+                if(!result)                    
+                    break;
+                for(Sweets sweet: o1.getSweets()){
+                    o1.addScore(sweet, Rate.FIVE);
+                }
+                System.out.println(o1.getOrderInformation());
+            }
+        }
+        
+    }
+    
     
     // test2 -> test note & payment & delivery
     private static void test2() {
