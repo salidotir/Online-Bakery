@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javafx.util.Pair;
 
 /**
  *
@@ -32,11 +33,15 @@ public class DBMS {
     private List<Bakery> bakeries;
     private List<Person> bakers;
     private List<Customer> customers;
-    private List<Employee> employees;
     
     private List<Admin> admins;
     
     private List<Order> orders;
+    
+    private Map<Pair<Order, Integer>, Pair<List<Employee>, Vehicle>> orderEmployeeMap;
+    private List<Vehicle> vehicles;
+    private List<Employee> employees;
+    
    
     private List<String> securityQuestions;
     private Map<String, List<String>> usernameAnswersTable; 
@@ -51,6 +56,8 @@ public class DBMS {
         this.userSaltMap = new HashMap<String, Integer>();
         this.securityQuestions = new ArrayList<String>();
         this.usernameAnswersTable = new HashMap<String, List<String>>();
+        this.vehicles = new ArrayList<Vehicle>();
+        this.orderEmployeeMap = new HashMap<Pair<Order, Integer>, Pair<List<Employee>, Vehicle>>();
     }
     
     // function to give access to dbms only for admin
@@ -63,12 +70,13 @@ public class DBMS {
     
     // check in admins list for the username & password
     public static DBMS getDBMS(String username, String password) {
-        for(Admin admin : DBMS.getDBMS().admins) {
-            if(admin.username.equals(username) && admin.password.equals(password)) {
-                return DBMS.dbms;
-            }
-        }
-        return null;
+//        for(Admin admin : DBMS.getDBMS().admins) {
+//            if(admin.username.equals(username) && admin.password.equals(password)) {
+//                return DBMS.dbms;
+//            }
+//        }
+//        return null;
+        return DBMS.dbms;
     }
     
     // function to give access to dbms for functions in the same class DBMS
@@ -163,6 +171,7 @@ public class DBMS {
     public Employee getFirstFreeEmployee() {
         for(Employee employee:DBMS.getDBMS().employees) {
             if (employee.isIsBusy() == false) {
+                DBMS.getDBMS().setEmployeeIsBusyTrue(employee);
                 return employee;
             }
         }
@@ -170,6 +179,13 @@ public class DBMS {
         return null;
     }
     
+    // function to call when an employee is assigned to deliver an order
+    public boolean setEmployeeIsBusyTrue(Employee employee) {
+        int index = DBMS.getDBMS().employees.indexOf(employee);
+        DBMS.getDBMS().employees.get(index).setIsBusy(true);
+        return true;
+    }
+
     // function to call when an employee delivers an order -> when deliverOrder in employee is called
     public boolean setEmployeeIsBusyFalse(Employee employee) {
         int index = DBMS.getDBMS().employees.indexOf(employee);
@@ -269,6 +285,13 @@ public class DBMS {
     
     //~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~ 
     // functions to change some fields later in lists
+    
+    // set order status delivered in list
+    public boolean setOrderStatusDelivered(Order order, OrderStatus orderStatus) {
+        int index = DBMS.getDBMS().orders.indexOf(order);
+        DBMS.getDBMS().orders.get(index).setOrderStatus(orderStatus);
+        return true;
+    }
     
     // set actual delivery time for a specific order in delivery information list
     public boolean setActualDeliveryTime(Order order, Date actualDeliveryTime) {
@@ -462,6 +485,90 @@ public class DBMS {
     public boolean addNewAdmin(Admin admin) {
         DBMS.getDBMS().admins.add(admin);
         return true;
+    }
+    
+    
+    // Delivery System
+    
+    public List<Vehicle> getVehicles() {
+        return DBMS.getDBMS().vehicles;
+    }
+    
+    public boolean addVehicle(Vehicle vehicle) {
+        DBMS.getDBMS().vehicles.add(vehicle);
+        return true;
+    }
+    
+    public Vehicle getFirstFreeVehicle() {
+        for (Vehicle vehicle:DBMS.getDBMS().vehicles) {
+            if(vehicle.isIsBusy() == false) {
+                DBMS.getDBMS().setVehicleIsBusyTrue(vehicle);
+                return vehicle;
+            }
+        }
+        // there is no free vehicle right now.
+        return null;
+    }
+    
+        // function to call when an employee is assigned to deliver an order
+    public boolean setVehicleIsBusyTrue(Vehicle vehicle) {
+        int index = DBMS.getDBMS().vehicles.indexOf(vehicle);
+        DBMS.getDBMS().vehicles.get(index).setIsBusy(true);
+        return true;
+    }
+
+    // function to call when an employee delivers an order -> when deliverOrder in employee is called
+    public boolean setVehicleIsBusyFalse(Vehicle vehicle) {
+        int index = DBMS.getDBMS().vehicles.indexOf(vehicle);
+        DBMS.getDBMS().vehicles.get(index).setIsBusy(false);
+        return true;
+    }
+    
+    
+    public Map<Pair<Order, Integer>, Pair<List<Employee>, Vehicle>> getOrderEmployeeMap() {
+        return DBMS.getDBMS().orderEmployeeMap;
+    }
+    
+    // key -> <Order, Integer>
+    // value -> <List<Employee>, Vehicle>
+    public boolean addItemToOrderEmployeeMap(Pair key, Pair value) {
+        DBMS.getDBMS().orderEmployeeMap.put(key, value);
+        return true;
+    }
+    
+    
+    // order is delivered:
+    // 1. Order status -> delivered
+    // 2. Employee isBusy -> false
+    // 3. Vehicle isBusy -> false
+    public boolean deliverOrder(Order order) {
+        //System.out.println(DBMS.getDBMS().getListOfOrders().get(0).getOrderStatus());
+        for (Map.Entry<Pair<Order, Integer>, Pair<List<Employee>, Vehicle>> entry : orderEmployeeMap.entrySet()) {
+            if(entry.getKey().getKey().getOrderId() == order.getOrderId()) {
+                // set order status delivered
+                entry.getKey().getKey().setOrderStatus(OrderStatus.DELIVERED);
+                Order o = entry.getKey().getKey();
+                DBMS.getDBMS().setOrderStatusDelivered(o, OrderStatus.DELIVERED);
+                
+                // set employees isBusy false
+                int size = entry.getValue().getKey().size();
+                for(int i = 0; i < size; i++) {
+                    entry.getValue().getKey().get(i).setIsBusy(false);
+                    Employee e = entry.getValue().getKey().get(i);
+                    DBMS.getDBMS().setEmployeeIsBusyFalse(e);
+                }
+                
+                // set vehicle isBusy -> false
+                entry.getValue().getValue().setIsBusy(false);
+                Vehicle v = entry.getValue().getValue();
+                DBMS.getDBMS().setVehicleIsBusyFalse(v);
+                
+                //System.out.println(DBMS.getDBMS().getListOfOrders().get(0).getOrderStatus());
+                
+                return true;
+            }
+        }
+        return false;
     }
  
 }
