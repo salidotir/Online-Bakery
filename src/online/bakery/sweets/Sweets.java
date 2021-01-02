@@ -15,7 +15,8 @@ public abstract class Sweets {
     public String description = "Unknown Sweets";
     public BigDecimal TOTAL_Grams = new BigDecimal(0);
     public BigDecimal TOTAL_COST = new BigDecimal(0);
-
+    protected BigDecimal fee;
+    protected ArrayList<String>Images;
     public abstract BigDecimal cost();
 
     public int getSweetId() {
@@ -26,6 +27,21 @@ public abstract class Sweets {
         return Score;
     }
 
+    public BigDecimal getFee() {
+        return fee;
+    }
+
+    public void setFee(BigDecimal fee) {
+        this.fee = fee;
+    }
+
+    public ArrayList<String> getImages() {
+        return Images;
+    }
+
+    public void setImages(ArrayList<String> images) {
+        Images = images;
+    }
 
     @Override
     public String toString() {
