@@ -16,11 +16,56 @@ import online.bakery.sweets.Rate;
 
 public class main {
     public static void main(String[] args) {
+        test4();
+        
 //        test1();
-          test3();
+//        test3();
 //        test2();
     }
     
+    // test vehicles and delivery system
+    private static void test4() {
+        // create a list of employees
+        Employee e1 = new Employee("salidotir", "4444", "Sara", "Limooee");
+        Employee e2 = new Employee("hello", "1234", "firstname1", "lastname1");
+        Employee e3 = new Employee("world", "5678", "firstname2", "lastname2");
+        Admin.getInstance().createEmploee(e1);
+        Admin.getInstance().createEmploee(e2);
+        Admin.getInstance().createEmploee(e3);
+        
+        // craete a list of vehicles
+        Vehicle v1 = new Vehicle(VehicleType.MOTOR, "12M345");
+        Vehicle v2 = new Vehicle(VehicleType.CAR, "89D3673");
+        Vehicle v3 = new Vehicle(VehicleType.TRUCK, "34A300");
+        Admin.getInstance().addVehicle(v1);
+        Admin.getInstance().addVehicle(v2);
+        Admin.getInstance().addVehicle(v3);
+        
+        // create list of orders
+        Customer c = new Customer("Sara","4444");
+        
+        List<Sweets> sList1 = new ArrayList<Sweets>();
+        List<BirthdayItems> listitem1 = new ArrayList<BirthdayItems>();
+        Order o1 = c.createNewSweet(sList1, listitem1);
+
+//        List<Sweets> sList2 = new ArrayList<Sweets>();
+//        List<BirthdayItems> listitem2 = new ArrayList<BirthdayItems>();
+//        Order o2 = c.createNewSweet(sList2, listitem2);
+
+        Admin.getInstance().addOrder(o1);
+//        Admin.getInstance().addOrder(o2);
+        
+        // test delivery system
+        DeliverySystem deliverySystem = DeliverySystem.getDeliverySystem();
+        deliverySystem.assignEmployeesToOrder();
+        System.out.println(deliverySystem.toStringGetOrderEmployeeMap());
+        
+        // sara is set to an order delivery employee
+        e1.deliverOrder(o1);
+        System.out.println(deliverySystem.toStringGetOrderEmployeeMap());
+    }
+    
+   
     private static void test3(){
         ArrayList<Sweets> ss = new ArrayList<Sweets>();
         ArrayList<DecoratorToBuild> decorators = new ArrayList<DecoratorToBuild>();
@@ -274,4 +319,5 @@ public class main {
             System.out.println(i.getSweets());
         }
     }
+
 }
