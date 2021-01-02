@@ -78,9 +78,6 @@ public class Employee extends Account{
     public float addScore(Rate rate) {
         float newScore = 0;
         if(null != rate) switch (rate) {
-            case ZERO:
-                newScore = 0;
-                break;
             case ONE:
                 newScore = 1;
                 break;
@@ -95,21 +92,6 @@ public class Employee extends Account{
                 break;
             case FIVE:
                 newScore = 5;
-                break;
-            case SIX:
-                newScore = 6;
-                break;
-            case SEVEN:
-                newScore = 7;
-                break;
-            case EIGHT:
-                newScore = 8;
-                break;
-            case NINE:
-                newScore = 9;
-                break;
-            case TEN:
-                newScore = 10;
                 break;
             default:
                 break;
