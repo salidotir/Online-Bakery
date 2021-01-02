@@ -11,7 +11,6 @@ import online.bakery.sweets.Rate;
  * @author salidotir
  */
 public class Employee extends Account{
-    int employeeId ;
     private boolean isBusy;
     private float score;
     private int numOfPeopleWhoScored = 0;
@@ -22,13 +21,13 @@ public class Employee extends Account{
         super.setFirstname(FirstName);
         super.setLastname(LastName);
         this.score = 0;
-        this.employeeId = super.ID;
+//        this.employeeId = super.ID;
         this.isBusy = false;
         Admin.getInstance().createEmploee(this); 
     }
 
     public String getProfile() {
-        return "First name: " + super.getFirstname() + " | Last name: " + super.getLastname() + " | Id: " + employeeId + " | Score: " + score;
+        return "First name: " + super.getFirstname() + " | Last name: " + super.getLastname() + " | Id: " + this.getID() + " | Score: " + score;
     }
 
     /**
@@ -52,7 +51,7 @@ public class Employee extends Account{
     }
     
     public boolean addNote(Note note, String extraText) {
-        if (this.employeeId == note.getNoteEmployeeId()) {
+        if (this.getID() == note.getNoteEmployeeId()) {
             note.setNoteEmployeeText(extraText);
         }
         return true;
