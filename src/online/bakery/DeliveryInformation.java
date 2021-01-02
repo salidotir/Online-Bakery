@@ -18,8 +18,6 @@ public class DeliveryInformation {
     static AtomicInteger atomicInteger = new AtomicInteger(0);
     private int deliveryId;
 
-    Employee employee;                              // assign an employee to a delivery
-    
     BigDecimal transferPrice;
     private String deliveryAddress;
     private Date deliveryTime;                      // date & time the customer wants to recieve order.
@@ -27,11 +25,9 @@ public class DeliveryInformation {
     private Date actualDeliveryTime;                // actual date & time the order is delivered.
     
 
-    private DeliveryInformation(Employee employee, String deliveryAddress, Date deliveryTime, BigDecimal transferPrice) {
+    private DeliveryInformation(String deliveryAddress, Date deliveryTime, BigDecimal transferPrice) {
         
         this.deliveryId = atomicInteger.incrementAndGet();
-        
-        this.employee = employee;
         
         this.deliveryTime = deliveryTime;
         this.deliveryAddress = deliveryAddress;             // maybe no need to deliver the order.
@@ -39,15 +35,8 @@ public class DeliveryInformation {
         this.transferPrice = transferPrice;
     }
 
-    // call getFirstFreeEmployee() function in main before passing Employee e to this function.
-    public static DeliveryInformation createNewDelivery(String deliveryAddress, Date deliveryTime, Employee e) {
-//        Employee e = DBMS.getDBMS("admin", "admin123").getFirstFreeEmployee();    // find first free employee to the delivery
-                                                                                    // if there is nop free employee, return null not the deliveryInformation object
-                
-        if (e != null) {
-            return new DeliveryInformation(e, deliveryAddress, deliveryTime, guessTransferPrice(deliveryAddress));
-        }
-        return null;
+    public static DeliveryInformation createNewDelivery(String deliveryAddress, Date deliveryTime) {                
+        return new DeliveryInformation(deliveryAddress, deliveryTime, guessTransferPrice(deliveryAddress));
     }
 
     // guess the price of transfer based on address
@@ -55,20 +44,6 @@ public class DeliveryInformation {
         // currently it returns a random number between 50-100
         int r = (int)(Math.random() * (100 - 50)) + 50;
         return BigDecimal.valueOf(r);
-    }
-    
-    /**
-     * @return the employeeId
-     */
-    public Employee getEmployee() {
-        return this.employee;
-    }
-
-    /**
-     * @param employeeId the employeeId to set
-     */
-    public void setEmployeeId(Employee employee) {
-        this.employee = employee;
     }
 
     /**
@@ -118,7 +93,6 @@ public class DeliveryInformation {
         String s;
         s = "**Delivery information**\n" + 
                 "delivery id: " + this.getDeliveryId() + "\n" +
-                "employee : " + this.employee.getProfile() + "\n" +
                 "delivery address: " + this.deliveryAddress + "\n" +
                 "delivery time: " + formatter.format(this.deliveryTime) + "\n";
         if(this.actualDeliveryTime == null) {
