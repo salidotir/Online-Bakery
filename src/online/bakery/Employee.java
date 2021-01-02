@@ -27,7 +27,7 @@ public class Employee extends Account{
     }
 
     public String getProfile() {
-        return "First name: " + super.getFirstname() + " | Last name: " + super.getLastname() + " | Id: " + this.getID() + " | Score: " + score;
+        return "First name: " + super.getFirstname() + " | Last name: " + super.getLastname() + " | Id: " + this.getID() + " | Score: " + score + " | is busy: " + isBusy;
     }
 
     /**
@@ -44,9 +44,9 @@ public class Employee extends Account{
         return this.numOfPeopleWhoScored;
     }
     
-    public boolean deliverOrder(DeliveryInformation deliveryInformation) {
+    public boolean deliverOrder(Order order) {
         // call setEmployeeIsBusyFalse() of DBMS from Admin
-        deliveryInformation.setActualDeliveryTime(new Date());
+        Admin.getInstance().deliverOrder(order);
         return true;
     }
     
