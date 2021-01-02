@@ -16,7 +16,8 @@ public abstract class Sweets {
     public BigDecimal TOTAL_Grams = new BigDecimal(0);
     public BigDecimal TOTAL_COST = new BigDecimal(0);
     protected BigDecimal fee;
-    protected ArrayList<String>Images;
+    protected ArrayList<String> Images = new ArrayList<>();
+
     public abstract BigDecimal cost();
 
     public int getSweetId() {
@@ -39,8 +40,8 @@ public abstract class Sweets {
         return Images;
     }
 
-    public void setImages(ArrayList<String> images) {
-        Images = images;
+    public void addImages(String image) {
+        Images.add(image);
     }
 
     @Override
