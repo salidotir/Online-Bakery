@@ -61,9 +61,6 @@ public abstract class Sweets {
         this.NumCustomerForScore += 1;
         double score = 0;
         switch (rate) {
-            case ZERO:
-                score = 0;
-                break;
             case ONE:
                 score = 1;
                 break;
@@ -79,22 +76,7 @@ public abstract class Sweets {
             case FIVE:
                 score = 5;
                 break;
-            case SIX:
-                score = 6;
-                break;
-            case SEVEN:
-                score = 7;
-                break;
-            case EIGHT:
-                score = 8;
-                break;
-            case NINE:
-                score = 9;
-                break;
-            case TEN:
-                score = 10;
-                break;
-        }
+            }
         this.Score = (myscore + score) / this.NumCustomerForScore;
 
 
