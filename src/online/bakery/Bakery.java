@@ -10,7 +10,7 @@ public class Bakery extends Account implements Confectioner {
     private final int id ;
     private String name;
     private String description;
-    private int score;
+    private double score;
     private int numScore;
     private List<Sweets> post = new ArrayList<Sweets>(); // post id
     private  Map<Sweets , Integer> readySweet  = new HashMap<Sweets , Integer>(); //list of sweets and number is ready to buy
@@ -32,7 +32,7 @@ public class Bakery extends Account implements Confectioner {
         this.description = description;
         super.setContactNo(number);
         super.setAddress(address);
-        this.score = 0;
+        this.score = 5;
         this.numScore = 0;
         Admin.getInstance().createBakery(this); 
     }
@@ -49,7 +49,7 @@ public class Bakery extends Account implements Confectioner {
 
     public String getDescription() { return description; }
 
-    public int getScore() {
+    public double getScore() {
         return score;
     }
 

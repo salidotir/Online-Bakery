@@ -8,7 +8,7 @@ public class Person extends Account implements Confectioner{
 
     private final int  id ;
     private String description;
-    private int score;
+    private double score;
     private int numScore;
     private List<Sweets> post = new ArrayList<Sweets>(); // post id
     private List<Order> orderList = new ArrayList<Order>(); // list order id
@@ -24,7 +24,7 @@ public class Person extends Account implements Confectioner{
         super.setLastname(lastName);
         this.description = description;
         super.setContactNo(number);
-        this.score = 0;
+        this.score = 5;
         this.numScore = 0;
         Admin.getInstance().createPerson(this); 
     }
@@ -37,7 +37,7 @@ public class Person extends Account implements Confectioner{
         this.description = description;
     }
 
-    public int getScore() {
+    public double getScore() {
         return score;
     }
 

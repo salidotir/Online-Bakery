@@ -12,7 +12,7 @@ public interface Confectioner {
 
     String getProfile();
 
-    int getScore();
+    double getScore();
     String getDescription();
     List<Sweets> getPost();
     List<Order> getOrderList();
