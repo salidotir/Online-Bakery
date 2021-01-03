@@ -10,10 +10,14 @@ public class Cake extends Sweets {
 
     public Cake(CakeBuilder builder) {
 
-        this.description = "Cake: ";
+        this.type=SweetType.CAKE;
+        this.description="Cake: ";
+        if (builder.description!=null){
+        this.description =builder.description;}
         atomicInteger.incrementAndGet();
         this.SweetId = atomicInteger.get();
         this.TOTAL_COST = builder.TOTAL_COST;
+        this.TOTAL_Grams = builder.TOTAL_Grams;
 
     }
 

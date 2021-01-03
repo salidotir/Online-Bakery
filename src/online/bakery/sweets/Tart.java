@@ -10,11 +10,14 @@ import java.util.ArrayList;
 public class Tart extends Sweets {
 
     public Tart(TartBuilder builder) {
-
+        this.type=SweetType.TART;
         this.description = "Tart: ";
+        if (builder.description!=null){
+            this.description =builder.description;}
         atomicInteger.incrementAndGet();
         this.SweetId = atomicInteger.get();
         this.TOTAL_COST = builder.TOTAL_COST;
+        this.TOTAL_Grams = builder.TOTAL_Grams;
 
     }
 

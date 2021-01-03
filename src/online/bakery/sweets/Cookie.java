@@ -11,10 +11,14 @@ public class Cookie extends Sweets {
 
     public Cookie(CookieBuilder builder) {
 
+        this.type=SweetType.COOKIE;
         this.description = "Cookie: ";
+        if (builder.description!=null){
+            this.description =builder.description;}
         atomicInteger.incrementAndGet();
         this.SweetId = atomicInteger.get();
         this.TOTAL_COST = builder.TOTAL_COST;
+        this.TOTAL_Grams = builder.TOTAL_Grams;
 
     }
 
@@ -71,6 +75,7 @@ public class Cookie extends Sweets {
             TOTAL_Grams = cookie.getTOTAL_Grams();
             TOTAL_COST = cookie.getTOTAL_COST();
             description = cookie.getDescription();
+
         }
 
         public Cookie build() {
