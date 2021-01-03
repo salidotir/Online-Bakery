@@ -20,10 +20,10 @@ public class Login {
     static boolean isLogedIn;
 
     public static boolean SignUp(String username, String password, Role role){
-        if (DBMS.getDBMS("admin", "admin123").hasEntry(username, password))
+        if (Admin.getInstance().hasEntry(username, password))
             return false;
         else{
-            DBMS.getDBMS("admin", "admin123").addEntry(username, password);
+            Admin.getInstance().addEntry(username, password);
             lastLoginTime = new Date();
             List<String> answers = new ArrayList<String>();
             for (String q : Admin.getInstance().getQuestions()) {
@@ -38,11 +38,11 @@ public class Login {
     }
     
     public static boolean ValidateLogin(String username, String password, Role role){
-        if(!DBMS.getDBMS("admin", "admin123").hasEntry(username, password) || !DBMS.getDBMS("admin", "admin123").hasSalt(username)){
+        if(!Admin.getInstance().hasEntry(username, password) || !Admin.getInstance().hasSalt(username)){
             return false;
         }
        
-        boolean result = DBMS.getDBMS("admin", "admin123").checkPasword(username , password);
+        boolean result = Admin.getInstance().checkPasword(username , password);
         if(result){
             lastLoginTime = new Date();
             isLogedIn = true;

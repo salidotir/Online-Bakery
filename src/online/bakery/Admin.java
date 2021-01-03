@@ -16,6 +16,7 @@ import javafx.util.Pair;
  */
 public class Admin extends Account{
     private String username, password;
+    private final Wallet wallet;
     
     //Lazy Initialization with Double Lock
     private static Admin INSTANCE = null;
@@ -24,6 +25,7 @@ public class Admin extends Account{
         super.role = Role.ADMIN;
         this.username = "admin";
         this.password = "admin123";
+        this.wallet = new Wallet();
         DBMS.addNewAdmin(this, username, password);        
         Login.SignUp(username, password, Role.ADMIN); // for seting lastLoginDate and isLogedIn
     }
