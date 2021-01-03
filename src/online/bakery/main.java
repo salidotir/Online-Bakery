@@ -2,29 +2,44 @@ package online.bakery;
 
 import online.bakery.decorators.Decorator;
 import online.bakery.decorators.DecoratorToBuild;
-import online.bakery.sweets.Cake;
-import online.bakery.sweets.Cookie;
-import online.bakery.sweets.Sweets;
+import online.bakery.decorators.Design;
+import online.bakery.decorators.DesignDecoration;
+import online.bakery.sweets.*;
 
+import java.lang.reflect.Array;
 import java.math.BigDecimal;
-import java.util.AbstractMap;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import online.bakery.sweets.Rate;
+import java.util.*;
 
 
 public class main {
     public static void main(String[] args) {
-        test4();
-        
+        // test4();
+        test_multi_tiered();
+
 //        test1();
 //        test3();
 //        test2();
     }
-    
+
+    public static void test_multi_tiered() {
+        ArrayList<DecoratorToBuild> decorators = new ArrayList<>();
+        decorators.add(new DecoratorToBuild(Decorator.FLOUR, new BigDecimal(100), new BigDecimal(400)));
+        decorators.add(new DecoratorToBuild(Decorator.SUGAR, new BigDecimal(300), new BigDecimal(40)));
+        decorators.add(new DecoratorToBuild(Decorator.BAKING_POWDER, new BigDecimal(200), new BigDecimal(500)));
+        Sweets cake1 = new Cake.CakeBuilder(decorators).build();
+        System.out.println(cake1.getDescription() + "_______________");
+        decorators.add(new DecoratorToBuild(Decorator.VANILLA, new BigDecimal(200), new BigDecimal(500)));
+        Sweets cake2 = new Cake.CakeBuilder(decorators).build();
+        ArrayList<Design> cakeWithDesign = new ArrayList<>();
+        cakeWithDesign.add(new Design(new ArrayList<>(Arrays.asList(Color.BLUE, Color.BLACK)), new ArrayList<>(Arrays.asList(DesignDecoration.CHOCOLATE, DesignDecoration.COCONUT_POWDER)), cake1));
+        cakeWithDesign.add(new Design(new ArrayList<>(Collections.singletonList(Color.RED)), new ArrayList<>(Arrays.asList(DesignDecoration.CREAM, DesignDecoration.COCONUT_POWDER)), cake2));
+        Sweets s = new MultiTieredCake(2, cakeWithDesign);
+        System.out.println(s.cost());
+        System.out.println(s);
+    }
+
     // test vehicles and delivery system
-    private static void test4() {
+    /*private static void test4() {
         // create a list of employees
         Employee e1 = new Employee("salidotir", "4444", "Sara", "Limooee");
         Employee e2 = new Employee("hello", "1234", "firstname1", "lastname1");
@@ -71,7 +86,7 @@ public class main {
         ArrayList<DecoratorToBuild> decorators = new ArrayList<DecoratorToBuild>();
         decorators.add(new DecoratorToBuild(Decorator.FLOUR, new BigDecimal(100), new BigDecimal(400)));
         decorators.add(new DecoratorToBuild(Decorator.SUGAR, new BigDecimal(300), new BigDecimal(40)));
-        decorators.add(new DecoratorToBuild(Decorator.BACKGROUNDER, new BigDecimal(200), new BigDecimal(500)));
+        decorators.add(new DecoratorToBuild(Decorator.BAKING_POWDER, new BigDecimal(200), new BigDecimal(500)));
         Sweets s1 = new Cake.CakeBuilder(decorators).build();
         decorators.add(new DecoratorToBuild(Decorator.STRAWBERRY, new BigDecimal(200), new BigDecimal(500)));
         Sweets s2 = new Cookie.CookieBuilder(decorators).build();
@@ -144,9 +159,9 @@ public class main {
         
     }
     
-    
+   */
     // test2 -> test note & payment & delivery
-    private static void test2() {
+    /*private static void test2() {
         ArrayList<Sweets> ss = new ArrayList<Sweets>();
         ArrayList<DecoratorToBuild> decorators = new ArrayList<DecoratorToBuild>();
         decorators.add(new DecoratorToBuild(Decorator.FLOUR, new BigDecimal(100), new BigDecimal(400)));
@@ -318,6 +333,6 @@ public class main {
             System.out.println(i.getOrderId());
             System.out.println(i.getSweets());
         }
-    }
+    }*/
 
 }
