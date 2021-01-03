@@ -21,8 +21,8 @@ public class DBMS {
     private static DBMS dbms = new DBMS();
     
     /**
-    * Map of usernames to their password hashes.
-    */
+     * Map of usernames to their password hashes.
+     */
     private Map<String, String> usernamePasswordTable;
 
     /**
@@ -287,9 +287,9 @@ public class DBMS {
     // functions to change some fields later in lists
     
     // set order status delivered in list
-    public boolean setOrderStatusDelivered(Order order, OrderStatus orderStatus) {
+    public boolean setOrderStatusDelivered(Order order) {
         int index = DBMS.getDBMS().orders.indexOf(order);
-        DBMS.getDBMS().orders.get(index).setOrderStatus(orderStatus);
+        DBMS.getDBMS().orders.get(index).finishOrder();
         return true;
     }
     
@@ -546,9 +546,9 @@ public class DBMS {
         for (Map.Entry<Pair<Order, Integer>, Pair<List<Employee>, Vehicle>> entry : orderEmployeeMap.entrySet()) {
             if(entry.getKey().getKey().getOrderId() == order.getOrderId()) {
                 // set order status delivered
-                entry.getKey().getKey().setOrderStatus(OrderStatus.DELIVERED);
+                entry.getKey().getKey().finishOrder();
                 Order o = entry.getKey().getKey();
-                DBMS.getDBMS().setOrderStatusDelivered(o, OrderStatus.DELIVERED);
+                DBMS.getDBMS().setOrderStatusDelivered(o);
                 
                 // set employees isBusy false
                 int size = entry.getValue().getKey().size();
