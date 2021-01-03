@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public abstract class Sweets {
+
     protected double Score = 0.0;
     protected int NumCustomerForScore = 0;
     protected int SweetId;
@@ -17,6 +18,12 @@ public abstract class Sweets {
     public BigDecimal TOTAL_COST = new BigDecimal(0);
     protected BigDecimal fee;
     protected ArrayList<String> Images = new ArrayList<>();
+    protected SweetType type;
+
+
+    public SweetType getType() {
+        return type;
+    }
 
     public abstract BigDecimal cost();
 
@@ -46,12 +53,12 @@ public abstract class Sweets {
 
     @Override
     public String toString() {
-        return "Sweets{" +
+        return type.toString() + "{" +
                 ", SweetId=" + SweetId +
                 ", description='" + description + '\'' +
-                ", TOTAL_Grams=" + TOTAL_Grams +
+                ", TOTAL_Grams=" + getTOTAL_Grams().toString() +
                 ", TOTAL_COST=" + TOTAL_COST +
-                "Score=" + Score +
+                ", Score=" + Score +
                 ", NumCustomerForScore=" + NumCustomerForScore +
                 '}';
     }
@@ -76,7 +83,7 @@ public abstract class Sweets {
             case FIVE:
                 score = 5;
                 break;
-            }
+        }
         this.Score = (myscore + score) / this.NumCustomerForScore;
 
 
