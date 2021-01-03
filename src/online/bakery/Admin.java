@@ -7,6 +7,8 @@ package online.bakery;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import javafx.util.Pair;
 
 /**
  *
@@ -141,39 +143,35 @@ public class Admin extends Account{
     }
     
     List<Order> getOrders() {
-        return DBMS.getDBMS(this.username, this.password).getListOfOrders();
+        return DBMS.getDBMS(this).getListOfOrders();
     }
     
     boolean addOrder(Order order) {
-        return DBMS.getDBMS(this.username, this.password).addOrder(order);
-    }
-    
-    Employee getFirstFreeEmployee() {
-        return DBMS.getDBMS(this.username, this.password).getFirstFreeEmployee();
+        return DBMS.getDBMS(this).addOrder(order);
     }
     
     boolean addVehicle(Vehicle vehicle) {
-        return DBMS.getDBMS(this.username, this.password).addVehicle(vehicle);
+        return DBMS.getDBMS(this).addVehicle(vehicle);
     }
     
     Vehicle getFirstFreeVehicle() {
-        return DBMS.getDBMS(this.username, this.password).getFirstFreeVehicle();
+        return DBMS.getDBMS(this).getFirstFreeVehicle();
     }
     
     List<Vehicle> getVehicles() {
-        return DBMS.getDBMS(this.username, this.password).getVehicles();
+        return DBMS.getDBMS(this).getVehicles();
     }
     
     boolean addItemToOrderEmployeeMap(Pair key, Pair value) {
-        return DBMS.getDBMS(this.username, this.password).addItemToOrderEmployeeMap(key, value);
+        return DBMS.getDBMS(this).addItemToOrderEmployeeMap(key, value);
     }
     
     public Map<Pair<Order, Integer>, Pair<List<Employee>, Vehicle>> getOrderEmployeeMap() {
-        return DBMS.getDBMS(this.username, this.password).getOrderEmployeeMap();
+        return DBMS.getDBMS(this).getOrderEmployeeMap();
     }
     
     public boolean deliverOrder(Order order) {
-        return DBMS.getDBMS(this.username, this.password).deliverOrder(order);
+        return DBMS.getDBMS(this).deliverOrder(order);
     }
 }
 
