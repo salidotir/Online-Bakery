@@ -7,25 +7,23 @@ package online.bakery;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import javafx.util.Pair;
 
 /**
  *
  * @author melika
  */
 public class Admin extends Account{
-    private final int AdminID;
     private String username, password;
     
     //Lazy Initialization with Double Lock
     private static Admin INSTANCE = null;
     private Admin() {
         super();
-        this.AdminID = super.ID;
+        super.role = Role.ADMIN;
         this.username = "admin";
         this.password = "admin123";
-        super.SignUp("admin", "admin123", Role.ADMIN);
+        DBMS.addNewAdmin(this, username, password);        
+        Login.SignUp(username, password, Role.ADMIN); // for seting lastLoginDate and isLogedIn
     }
     
     public static Admin getInstance() {
@@ -39,24 +37,26 @@ public class Admin extends Account{
         return INSTANCE;
     }
     void setQuestions(List<String> questions){
-        DBMS.getDBMS(username, password).setQuestions(questions);
+        String q1= "how old are you? ";
+        questions.add(q1);
+        DBMS.getDBMS(this).setQuestions(questions);
     }
     
     boolean setAnswers(String username, List<String> answers){
-        return DBMS.getDBMS(this.username, this.password).setAnswer(username, answers);
+        return DBMS.getDBMS(this).setAnswer(username, answers);
     }
     
     List<String> getQuestions(){
-        return DBMS.getDBMS(username, password).getQuestions();
+        return DBMS.getDBMS(this).getQuestions();
     }
     
     List<String> getAnswer(String username){
-        return DBMS.getDBMS(this.username, this.password).getAnswers(username);
+        return DBMS.getDBMS(this).getAnswers(username);
     }
     
     boolean changePassword(String username, String password){
-        if( DBMS.getDBMS(this.username, this.password).hasEntry(username, password)){
-            String result = DBMS.getDBMS(this.username, this.password).addEntry(username, password);
+        if( DBMS.getDBMS(this).hasEntry(username, password)){
+            String result = DBMS.getDBMS(this).addEntry(username, password);
             if (result != null){ // say there was password before this event 
                 return true;
             }else
@@ -65,62 +65,80 @@ public class Admin extends Account{
             return false;
     }
     
+    boolean checkPasword(String username, String password){
+        return DBMS.getDBMS(this).checkPasword(username , password);
+    }
+    
     boolean AskPermission(String username){
         // check if this username has option to change password without answering security Q&A
         return true;
     }
     
+    boolean hasEntry(String username, String password){
+        boolean res = DBMS.getDBMS(this).hasEntry(username, password);
+        return res;
+    }
+    
+    String addEntry(String username, String password){
+        return DBMS.getDBMS(this).addEntry(username, password);
+    }
+    
+    boolean hasSalt(String username){
+        return DBMS.getDBMS(this).hasSalt(username);
+    } 
+    
     boolean createCustomer(Customer customer){
-        return DBMS.getDBMS(this.username, this.password).addCustomer(customer);
+        return DBMS.getDBMS(this).addCustomer(customer);
     }
     
     List<Customer> viewCustomers(){
-        return DBMS.getDBMS(this.username, this.password).getListOfCustomers();
+        return DBMS.getDBMS(this).getListOfCustomers();
     }
     
     boolean deleteCustomer(Customer customer){
         customer.setActiveness("Inactive");
-        return DBMS.getDBMS(this.username, this.password).removeCustomer(customer);
+        return DBMS.getDBMS(this).removeCustomer(customer);
     }
     
     boolean createBakery (Bakery baker){
-        return DBMS.getDBMS(this.username, this.password).addBakery(baker);
+        return DBMS.getDBMS(this).addBakery(baker);
     }
     
     List<Bakery> viewBakery(){
-        return DBMS.getDBMS(this.username, this.password).getListOfBakeries();
+        return DBMS.getDBMS(this).getListOfBakeries();
     }
     
     boolean deleteBakery (Bakery baker){
-        return DBMS.getDBMS(this.username, this.password).removeBakery(baker);
+        return DBMS.getDBMS(this).removeBakery(baker);
     }
     
     boolean createPerson (Person person){
-        return DBMS.getDBMS(this.username, this.password).addBaker(person);
+        return DBMS.getDBMS(this).addBaker(person);
     }
     
     List<Person> viewPerson(){
-        return DBMS.getDBMS(this.username, this.password).getListOfBakers();
+        return DBMS.getDBMS(this).getListOfBakers();
     }
     
     boolean deletePerson(Person person){
-        return DBMS.getDBMS(this.username, this.password).removeBaker(person);
+        return DBMS.getDBMS(this).removeBaker(person);
     }
     
     boolean createEmploee (Employee employee){
-        return DBMS.getDBMS(this.username, this.password).addEmployee(employee);
+        return DBMS.getDBMS(this).addEmployee(employee);
     }
     
     List<Employee> viewEmployee(){
-        return DBMS.getDBMS(this.username, this.password).getListOfEmployees();
+        return DBMS.getDBMS(this).getListOfEmployees();
     }
     
     boolean deleteEmployee(Employee employee){
-        return DBMS.getDBMS(this.username, this.password).removeEmployee(employee);
+        return DBMS.getDBMS(this).removeEmployee(employee);
     }
     
-    
-    // ~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.
+    Employee getFirstFreeEmployee() {
+        return DBMS.getDBMS(this).getFirstFreeEmployee();
+    }
     
     List<Order> getOrders() {
         return DBMS.getDBMS(this.username, this.password).getListOfOrders();
@@ -158,3 +176,4 @@ public class Admin extends Account{
         return DBMS.getDBMS(this.username, this.password).deliverOrder(order);
     }
 }
+

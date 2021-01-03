@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 import javafx.util.Pair;
 
 /**
@@ -21,8 +22,8 @@ public class DBMS {
     private static DBMS dbms = new DBMS();
     
     /**
-     * Map of usernames to their password hashes.
-     */
+    * Map of usernames to their password hashes.
+    */
     private Map<String, String> usernamePasswordTable;
 
     /**
@@ -35,13 +36,12 @@ public class DBMS {
     private List<Customer> customers;
     
     private List<Admin> admins;
+    private static int addOnceAdmin = 1;
     
     private List<Order> orders;
-    
     private Map<Pair<Order, Integer>, Pair<List<Employee>, Vehicle>> orderEmployeeMap;
     private List<Vehicle> vehicles;
-    private List<Employee> employees;
-    
+    private List<Employee> employees; 
    
     private List<String> securityQuestions;
     private Map<String, List<String>> usernameAnswersTable; 
@@ -56,27 +56,17 @@ public class DBMS {
         this.userSaltMap = new HashMap<String, Integer>();
         this.securityQuestions = new ArrayList<String>();
         this.usernameAnswersTable = new HashMap<String, List<String>>();
+        this.admins = new ArrayList<Admin>();
         this.vehicles = new ArrayList<Vehicle>();
-        this.orderEmployeeMap = new HashMap<Pair<Order, Integer>, Pair<List<Employee>, Vehicle>>();
+        this.orderEmployeeMap = new HashMap<Pair<Order, Integer>, Pair<List<Employee>, Vehicle>>(); 
     }
     
     // function to give access to dbms only for admin
-//    public static DBMS getDBMS(Account account) {
-//        if(account.role == Role.ADMIN) {
-//            return DBMS.dbms;
-//        }
-//        return null;
-//    }
-    
-    // check in admins list for the username & password
-    public static DBMS getDBMS(String username, String password) {
-//        for(Admin admin : DBMS.getDBMS().admins) {
-//            if(admin.username.equals(username) && admin.password.equals(password)) {
-//                return DBMS.dbms;
-//            }
-//        }
-//        return null;
-        return DBMS.dbms;
+    public static DBMS getDBMS(Account account) {
+        if(account.role == Role.ADMIN) {
+            return DBMS.dbms;
+        }
+        return null;
     }
     
     // function to give access to dbms for functions in the same class DBMS
@@ -171,7 +161,7 @@ public class DBMS {
     public Employee getFirstFreeEmployee() {
         for(Employee employee:DBMS.getDBMS().employees) {
             if (employee.isIsBusy() == false) {
-                DBMS.getDBMS().setEmployeeIsBusyTrue(employee);
+                DBMS.getDBMS().setEmployeeIsBusyTrue(employee); 
                 return employee;
             }
         }
@@ -184,8 +174,8 @@ public class DBMS {
         int index = DBMS.getDBMS().employees.indexOf(employee);
         DBMS.getDBMS().employees.get(index).setIsBusy(true);
         return true;
-    }
-
+    } 
+    
     // function to call when an employee delivers an order -> when deliverOrder in employee is called
     public boolean setEmployeeIsBusyFalse(Employee employee) {
         int index = DBMS.getDBMS().employees.indexOf(employee);
@@ -291,7 +281,7 @@ public class DBMS {
         int index = DBMS.getDBMS().orders.indexOf(order);
         DBMS.getDBMS().orders.get(index).finishOrder();
         return true;
-    }
+    } 
     
     // set actual delivery time for a specific order in delivery information list
     public boolean setActualDeliveryTime(Order order, Date actualDeliveryTime) {
@@ -482,9 +472,22 @@ public class DBMS {
         return DBMS.getDBMS().admins;
     }
     
-    public boolean addNewAdmin(Admin admin) {
-        DBMS.getDBMS().admins.add(admin);
-        return true;
+    public static boolean addNewAdmin(Admin admin, String username, String password) {
+        if (addOnceAdmin == 1){
+            addOnceAdmin = 0;
+            DBMS.getDBMS().admins.add(admin);
+            DBMS.getDBMS().addEntry(username, password);
+            List<String> answers = new ArrayList<String>();
+            for (String q : DBMS.getDBMS().getQuestions()) {
+                Scanner scan = new Scanner(System.in);
+                System.out.printf(q);
+                String ans = scan.nextLine();
+                answers.add(ans);
+            }
+            DBMS.getDBMS().setAnswer(username, answers);
+            return true;
+        }else
+            return false;
     }
     
     
