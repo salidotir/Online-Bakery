@@ -37,8 +37,8 @@ public class Tart extends Sweets {
                 switch (decorator.decorator_name) {
                     case CHOCOLATE:
                         break;
-                    case BACKGROUNDER:
-                        tart = new BackingPowderCondimentDecorator(tart, decorator.germs, decorator.cost);
+                    case BAKING_POWDER:
+                        tart = new BakingPowderCondimentDecorator(tart, decorator.germs, decorator.cost);
                         break;
                     case SUGAR:
                         tart = new SugarCondimentDecorator(tart, decorator.germs, decorator.cost);

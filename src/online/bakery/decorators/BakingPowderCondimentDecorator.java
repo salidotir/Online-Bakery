@@ -4,13 +4,13 @@ import online.bakery.sweets.Sweets;
 
 import java.math.BigDecimal;
 
-public class BackingPowderCondimentDecorator extends CondimentDecorator {
+public class BakingPowderCondimentDecorator extends CondimentDecorator {
     private Sweets sweets;
     private BigDecimal COST;
     private BigDecimal grams;
 
 
-    public BackingPowderCondimentDecorator(Sweets sweets, BigDecimal grams, BigDecimal cost) {
+    public BakingPowderCondimentDecorator(Sweets sweets, BigDecimal grams, BigDecimal cost) {
         this.sweets = sweets;
         this.grams = grams;
         this.COST = cost;

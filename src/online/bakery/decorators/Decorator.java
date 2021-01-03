@@ -2,7 +2,7 @@ package online.bakery.decorators;
 
 public enum Decorator {
     CHOCOLATE,
-    BACKGROUNDER,
+    BAKING_POWDER,
     SUGAR,
     FLOUR,
     VANILLA,
