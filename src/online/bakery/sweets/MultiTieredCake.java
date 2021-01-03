@@ -1,5 +1,6 @@
 package online.bakery.sweets;
 
+import com.sun.istack.internal.NotNull;
 import online.bakery.decorators.Design;
 import online.bakery.decorators.DesignDecoration;
 
@@ -10,17 +11,22 @@ import java.util.Map;
 public class MultiTieredCake extends Sweets {
     int tier;
     //ArrayList<Sweets> cakes;
-    Map<Sweets, Design> CakeWithDesign;
+    ArrayList<Design> CakeWithDesign;
 
-    public MultiTieredCake(int tier, Map<Sweets, Design> cakeWithDesign) {
+    public MultiTieredCake(int tier, @NotNull ArrayList<Design> cakeWithDesign) {
 
-        assert CakeWithDesign != null;
-        if (CakeWithDesign.size() != tier) {
+
+        if (cakeWithDesign.size() != tier) {
             System.out.println("tire not matches to cakes.");
         } else {
+
+            this.type = SweetType.CAKE;
             this.tier = tier;
             this.CakeWithDesign = cakeWithDesign;
-            this.description = "MultiTieredCake: ";
+            this.description = "Multi Tiered Cake " + getDescription();
+            for (Design d : this.CakeWithDesign) {
+                this.TOTAL_Grams = this.getTOTAL_Grams().add(d.getCake().getTOTAL_Grams());
+            }
             atomicInteger.incrementAndGet();
             this.SweetId = atomicInteger.get();
             this.TOTAL_COST = this.cost();
@@ -29,24 +35,22 @@ public class MultiTieredCake extends Sweets {
 
     @Override
     public String getDescription() {
-        this.description = super.getDescription();
-        this.description += "\nDesign: ";
         int i = 1;
         StringBuilder extra_desc = new StringBuilder();
-        extra_desc.append(this.description);
-        for (Map.Entry<Sweets, Design> entry : this.CakeWithDesign.entrySet()) {
-            extra_desc.append("tier").append(i).append(": COLORS:");
+        for (Design d : this.CakeWithDesign) {
+            extra_desc.append("\n{tier: ")
+                    .append(i).append("}").append("\n").append("Condiment:\n").append(d.getCake().getDescription()).append("\n").append("Design:\n")
+                    .append("COLORS:  ");
             i += 1;
-            ArrayList<Color> colors = entry.getValue().getColors();
-            for (Color c : colors
+            // ArrayList<Color> colors = this.CakeWithDesign.();
+            for (Color c : d.getColors()
             ) {
-                extra_desc.append(c.toString());
+                extra_desc.append(c.toString()).append("\t");
             }
-            extra_desc.append("Decoration");
-            ArrayList<DesignDecoration> designDecorations = entry.getValue().getDesignDecorations();
-            for (DesignDecoration dd : designDecorations
+            extra_desc.append("\nDecoration:  ");
+            for (DesignDecoration dd : d.getDesignDecorations()
             ) {
-                extra_desc.append(dd.toString());
+                extra_desc.append(dd.toString()).append("\t");
             }
         }
         this.description = extra_desc.toString();
@@ -57,10 +61,10 @@ public class MultiTieredCake extends Sweets {
     @Override
     public BigDecimal cost() {
         BigDecimal mycost = new BigDecimal(0);
-        for (Map.Entry<Sweets, Design> entry : this.CakeWithDesign.entrySet()) {
-            mycost = mycost.add(entry.getKey().TOTAL_COST);
+        for (Design d : this.CakeWithDesign) {
+            mycost = mycost.add(d.getCake().getTOTAL_COST());
             BigDecimal extra_cost = new BigDecimal(0);
-            ArrayList<DesignDecoration> designDecorations = entry.getValue().getDesignDecorations();
+            ArrayList<DesignDecoration> designDecorations = d.getDesignDecorations();
             for (DesignDecoration dd : designDecorations
             ) {
                 switch (dd) {
