@@ -6,19 +6,22 @@ import com.sun.istack.internal.Nullable;
 import java.math.BigDecimal;
 
 public class GiftCard {
+    Customer from;
     Customer Owner;
     BigDecimal Price;
     String Note;
-    public GiftCard(@NotNull Customer owner, @NotNull BigDecimal price,@Nullable String note){
+    public GiftCard(@NotNull Customer owner, @NotNull BigDecimal price,@Nullable String note,@NotNull Customer from){
         this.Owner=owner;
         this.Price=price;
         this.Note=note;
+        this.from=from;
     }
 
     @Override
     public String toString() {
         return "GiftCard{" +
-                "Owner=" + Owner +
+                "From=" + from +
+                ", Owner=" + Owner +
                 ", Price=" + Price +
                 ", Note='" + Note + '\'' +
                 '}';
@@ -34,5 +37,9 @@ public class GiftCard {
 
     public String getNote() {
         return Note;
+    }
+
+    public Customer getFrom() {
+        return from;
     }
 }
