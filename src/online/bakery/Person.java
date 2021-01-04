@@ -81,7 +81,15 @@ public class Person extends Account implements Confectioner{
 
 
     public boolean addOrder(Order order,List<SweetType> s){
-        return Admin.getInstance().addOrder(order);
+        boolean b = Admin.getInstance().addOrder(order);
+        for(int i=0; i<s.size();i++){
+            if(s.get(i) == SweetType.CREATE_CUSTOMER){
+                Admin.getInstance().addOrderSweet(this,order.getSweets().get(i));
+            }
+        }
+
+        return b;
+
     }
 
 

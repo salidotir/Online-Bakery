@@ -119,6 +119,9 @@ public class Bakery extends Account implements Confectioner {
             if(s.get(i) == SweetType.READY) {
                 Admin.getInstance().decreaseReadySweetNumber(this,order.getSweets().get(i),1);
             }
+            if(s.get(i) == SweetType.CREATE_CUSTOMER){
+                Admin.getInstance().addOrderSweet(this,order.getSweets().get(i));
+            }
         }
         for(int i=0; i<item.size();i++){
             Admin.getInstance().decreaseBirthdayItemNumber(this,order.getItems().get(i),1);
@@ -188,7 +191,7 @@ public class Bakery extends Account implements Confectioner {
         return Admin.getInstance().getOrderList(this);
     }
 
-    public List<Pair<BirthdayItems, Integer>> getBirthdayItemId() {
+    public List<Pair<BirthdayItems, Integer>> getBirthdayItem() {
         return Admin.getInstance().getBirthdayItem(this);
     }
 
