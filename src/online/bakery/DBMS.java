@@ -14,7 +14,7 @@ import java.util.Scanner;
 
 import javafx.util.Pair;
 import online.bakery.sweets.Rate;
-import online.bakery.sweets.SweetType;
+import online.bakery.sweets.TypeOfSweets;
 import online.bakery.sweets.Sweets;
 
 /**
@@ -816,7 +816,7 @@ public class DBMS {
         ArrayList<String> possibleSweets = new ArrayList<>();
         for (Sweets sweets :
                 listSweets) {
-            if (sweets.getType() == SweetType.CAKE) {
+            if (sweets.getType() == TypeOfSweets.CAKE) {
                 possibleSweets.add(sweets.getName());
             }
 

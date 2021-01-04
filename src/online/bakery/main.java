@@ -14,13 +14,19 @@ import java.util.*;
 public class main {
     public static void main(String[] args) {
         // test4();
-        test_multi_tiered();
-
+        //test_multi_tiered();
+        test_GiftCard();
 //        test1();
 //        test3();
 //        test2();
     }
+    public static void test_GiftCard() {
+        Customer c1 = new Customer("Sara","4444");
+        Customer c2 = new Customer("neg","4444");
+        c1.BuyGiftCardTo(c2);
 
+
+    }
     public static void test_multi_tiered() {
         ArrayList<DecoratorToBuild> decorators = new ArrayList<>();
         decorators.add(new DecoratorToBuild(Decorator.FLOUR, new BigDecimal(100), new BigDecimal(400)));
