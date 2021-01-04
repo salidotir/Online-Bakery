@@ -634,6 +634,22 @@ public class DBMS {
         return true;
     }
 
+    public boolean decreaseBirthdayItemNumber(BirthdayItems birthdayItem, int num, int bakerId) {
+        List<Pair<BirthdayItems,Integer>> list = DBMS.getDBMS().bakerBirthdayItemsMap.get(bakerId);
+        for(int i = 0; i < list.size(); i++){
+            if(list.get(i).getKey() == birthdayItem){
+                int n = list.get(i).getValue()-num;
+                if(n < 0)
+                    n = 0;
+                Pair<BirthdayItems,Integer> pair = new Pair<>(birthdayItem,n);
+                list.set(i,pair);
+                break;
+            }
+        }
+        DBMS.getDBMS().bakerBirthdayItemsMap.put(bakerId,list);
+        return true;
+    }
+
     //~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~
 
     public List<Sweets> getOrderSweets(int bakerId) {
@@ -681,6 +697,22 @@ public class DBMS {
         return true;
     }
 
+
+    public boolean decreaseReadySweetNumber(Sweets sweet, int num, int bakerId) {
+        List<Pair<Sweets,Integer>> list = DBMS.getDBMS().bakerReadySweetMap.get(bakerId);
+        for(int i = 0; i < list.size(); i++){
+            if(list.get(i).getKey() == sweet){
+                int n = list.get(i).getValue()-num;
+                if(n < 0)
+                    n = 0;
+                Pair<Sweets,Integer> pair = new Pair<>(sweet,n);
+                list.set(i,pair);
+                break;
+            }
+        }
+        DBMS.getDBMS().bakerReadySweetMap.put(bakerId,list);
+        return true;
+    }
     //~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~
 
 
@@ -740,13 +772,9 @@ public class DBMS {
 
     }
 
-    public boolean decreaseReadySweetNumber(Sweets sweets, int num, int bakerId) {
-        return true;
-    }
 
-    public boolean decreaseBirthdayItemNumber(BirthdayItems birthdayItems, int num, int bakerId) {
-        return true;
-    }
+
+
 
     public List<Order> getListOfOrdersBaker(int bakerId) {
         List<Order> orders = new ArrayList<Order>();
