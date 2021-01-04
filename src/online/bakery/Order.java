@@ -212,10 +212,10 @@ public class Order {
             boolean result = sweet_score.replace(sweet, null , score);
 
             if(result){
-                double prevoius = sweet.getScore();
-                sweet.addScore(score);
-                double next = sweet.getScore();
-                Staff.setScore(prevoius, next ,sweet);
+                //double prevoius = sweet.getScore();
+                //sweet.addScore(score);
+                //double next = sweet.getScore();
+                Staff.setScore(score,sweet);
                 return true;
             }
             else
@@ -274,5 +274,13 @@ public class Order {
                 "payment status: " + this.payment.getPaymentStatus() + "\n" +
                 "____________________________\n";
         return s;
+    }
+
+    public String getCustomerProfile() {
+        return customer.getProfile();
+    }
+
+    public int getStaffId() {
+        return Staff.getID();
     }
 }

@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javafx.util.Pair;
+import online.bakery.sweets.Rate;
+import online.bakery.sweets.Sweets;
 
 /**
  *
@@ -181,6 +183,70 @@ public class Admin extends Account{
     }
     public boolean editBakery(Bakery bakery){
         return DBMS.getDBMS(this).editBakery(bakery.getID(),bakery.getName(),bakery.getDescription(),bakery.getFirstname(),bakery.getLastname(),bakery.getAddress(),bakery.getContactNo());
+    }
+
+    public boolean setScore(Confectioner confectioner, Rate score, int sweetId) {
+        return DBMS.getDBMS(this).setScoreSweets(score,sweetId,confectioner.getID());
+    }
+
+    public double getScoreBaker(Confectioner confectioner) {
+        return DBMS.getDBMS(this).getScoreBaker(confectioner.getID());
+    }
+
+    public boolean addOrderSweet(Confectioner confectioner, Sweets sweet) {
+        return DBMS.getDBMS(this).addOrderSweet(sweet,confectioner.getID());
+    }
+
+    public boolean addReadySweet(Bakery bakery, Sweets sweet, int number) {
+        return DBMS.getDBMS(this).addReadySweet(sweet,number,bakery.getID());
+    }
+
+    public boolean addBirthdayItem(Bakery bakery, BirthdayItems item, int number) {
+        return DBMS.getDBMS(this).addBirthdayItem(item,number,bakery.getID());
+    }
+
+    public boolean deleteReadySweet(Bakery bakery, Sweets sweet, int number) {
+        return DBMS.getDBMS(this).deleteReadySweet(sweet,bakery.getID());
+    }
+
+    public boolean deleteOrderSweet(Confectioner confectioner, Sweets sweet) {
+        return DBMS.getDBMS(this).deleteOrderSweet(sweet,confectioner.getID());
+    }
+
+    public boolean deleteBirthdayItem(Bakery bakery, BirthdayItems birthdayItem) {
+        return DBMS.getDBMS(this).deleteBirthdayItem(birthdayItem,bakery.getID());
+    }
+
+    public boolean decreaseReadySweetNumber(Bakery bakery, Sweets sweets, int num) {
+        return DBMS.getDBMS(this).decreaseReadySweetNumber(sweets,num,bakery.getID());
+    }
+
+    public boolean decreaseBirthdayItemNumber(Bakery bakery, BirthdayItems birthdayItems, int num) {
+        return DBMS.getDBMS(this).decreaseBirthdayItemNumber(birthdayItems,num,bakery.getID());
+    }
+
+    public List<Pair<Sweets, Integer>> getReadySweets(Bakery bakery) {
+        return DBMS.getDBMS(this).getReadySweets(bakery.getID());
+    }
+
+    public List<Sweets> getOrderSweets(Confectioner confectioner) {
+        return DBMS.getDBMS(this).getOrderSweets(confectioner.getID());
+    }
+
+    public List<Order> getOrderList(Confectioner confectioner) {
+        return DBMS.getDBMS(this).getListOfOrdersBaker(confectioner.getID());
+    }
+
+    public List<Pair<BirthdayItems, Integer>> getBirthdayItem(Bakery bakery) {
+        return DBMS.getDBMS(this).getBirthdayItems(bakery.getID());
+    }
+
+    public List<Discount> getDiscount(Confectioner confectioner) {
+        return DBMS.getDBMS(this).getDiscountsBaker(confectioner.getID());
+    }
+
+    public boolean addDiscount(Confectioner confectioner, Discount discount) {
+        return DBMS.getDBMS(this).addDiscount(discount);
     }
 }
 
