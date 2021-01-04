@@ -4,4 +4,5 @@ public enum SweetType {
     CAKE,
     TART,
     COOKIE,
+    UNKNOWN,
 }

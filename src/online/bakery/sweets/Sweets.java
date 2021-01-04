@@ -10,6 +10,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public abstract class Sweets {
 
     protected double Score = 0.0;
+    protected String name="";
     protected int NumCustomerForScore = 0;
     protected int SweetId;
     public static AtomicInteger atomicInteger = new AtomicInteger(0);
@@ -58,6 +59,7 @@ public abstract class Sweets {
     @Override
     public String toString() {
         return type.toString() + "{" +
+                ", Name=" + name +
                 ", SweetId=" + SweetId +
                 ", description='" + description + '\'' +
                 ", TOTAL_Grams=" + getTOTAL_Grams().toString() +
@@ -65,6 +67,18 @@ public abstract class Sweets {
                 ", Score=" + Score +
                 ", NumCustomerForScore=" + NumCustomerForScore +
                 '}';
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setImages(ArrayList<String> images) {
+        Images = images;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public void addScore(Rate rate) {
