@@ -16,29 +16,38 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author melika
  */
 abstract public class Account {
-    static AtomicInteger atomicInteger = new AtomicInteger(2);
+    static AtomicInteger atomicInteger = new AtomicInteger(0);
     protected int ID;
-    String Address = null;
-    String ContactNo;
+    private String Address = null;
+    private String ContactNo;
 
-    Date dateCreated;
+    private final Date dateCreated;
     
     //for bakery name of manger 
-    String Firstname;
-    String Lastname; 
-    String username;
-    String password;
-    
+    private String Firstname;
+    private String Lastname; 
+    private String username;
+    private String password;
+    private String activeness;
+    private boolean isLogedIn;
+    private Date lastLoginTime;
     Role role;
     
     public Account() {
-        atomicInteger.incrementAndGet();
         this.ID = atomicInteger.incrementAndGet();
         this.dateCreated = new Date();
     }
 
     public int getID() {
         return ID;
+    }
+    
+    public String getActiveness() {
+        return activeness;
+    }
+
+    public void setActiveness(String activeness) {
+        this.activeness = activeness;
     }
 
     public Date getDateCreated() {
@@ -77,29 +86,48 @@ abstract public class Account {
         this.Lastname = Lastname;
     }
     
+    public String getProfile() {
+        String personP = "Name : " + this.Firstname + " " + this.Lastname + "\n" 
+                + "Number : " + this.ContactNo + "\n" + "Address : " + this.Address + "\n"
+                + "Activeness : " + this.activeness + "\n";
+        return personP;
+    }
+    
     public boolean SignUp(String username, String password, Role role){
-        if( Login.SignUp(username, password, role)){
+        if(!isLogedIn && Login.SignUp(username, password, role)){
             this.username = username;
             this.password = password;
+            this.role = role;
+            this.isLogedIn = true;
+            this.lastLoginTime = new Date();
             return true;
         }else
             return false;
     }
     
     public boolean Login(String username, String password, Role role){
-        return Login.ValidateLogin(username, password, role);
+        if(!isLogedIn && Login.ValidateLogin(username, password, role)){
+            isLogedIn = true;
+            lastLoginTime = new Date();
+            return true;
+        }else
+            return false;
     }
     
-    public void LogOut(){
-        Login.Logout();
+    public boolean LogOut(){
+        if(isLogedIn){
+            isLogedIn = false;
+            return true;
+        }else
+            return false;
     }
     
     public Date getLastLogin(){
-        return Login.lastLoginTime;
+        return lastLoginTime;
     }
     
     public AbstractMap.SimpleEntry forgotPassword(){
-        if (!Login.isLogedIn){
+        if (!isLogedIn){
             System.out.println("Please answer these security questions.\n");
             boolean result = true;
             List<String> actuallAnswers = Admin.getInstance().getAnswer(this.username);
@@ -134,14 +162,14 @@ abstract public class Account {
                     else
                         return new AbstractMap.SimpleEntry(false, "No password is set");
                 }else
-                    return new AbstractMap.SimpleEntry(false, "You have no permission to change password without answering security questions");
+                    return new AbstractMap.SimpleEntry(false, "You have no permission to change password without answering correctly to security questions");
             }
         }else
             return new AbstractMap.SimpleEntry(false, "You are loged in so use change password.");
     }
     
     public AbstractMap.SimpleEntry changePassword(){
-        if (Login.isLogedIn){
+        if (isLogedIn){
             Scanner scan = new Scanner(System.in);
             System.out.printf("Enter new password: ");
             String pass = scan.next();

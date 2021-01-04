@@ -6,8 +6,6 @@
 package online.bakery;
 
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
 
@@ -15,43 +13,36 @@ import java.util.Scanner;
  *
  * @author melika
  */
-public class Login {    
-    static Date lastLoginTime;
-    static boolean isLogedIn;
-
+public class Login {   
+    
     public static boolean SignUp(String username, String password, Role role){
-        if (Admin.getInstance().hasEntry(username, password))
+        if (role == Role.ADMIN){
             return false;
-        else{
-            Admin.getInstance().addEntry(username, password);
-            lastLoginTime = new Date();
-            List<String> answers = new ArrayList<String>();
-            for (String q : Admin.getInstance().getQuestions()) {
-                Scanner scan = new Scanner(System.in);
-                System.out.printf(q);
-                String ans = scan.nextLine();
-                answers.add(ans);
+        }else{
+            if (Admin.getInstance().hasEntry(username, password)){
+                return false;
             }
-            Admin.getInstance().setAnswers(username, answers);
-            return true;
+            else{
+                Admin.getInstance().addEntry(username, password);
+                List<String> answers = new ArrayList<>();
+                Admin.getInstance().getQuestions().stream().map((q) -> {
+                    Scanner scan = new Scanner(System.in);
+                    System.out.printf(q);
+                    String ans = scan.nextLine();
+                    return ans;
+                }).forEachOrdered((ans) -> {
+                    answers.add(ans);
+                });
+                Admin.getInstance().setAnswers(username, answers);
+                return true;
+            }
         }
     }
     
     public static boolean ValidateLogin(String username, String password, Role role){
         if(!Admin.getInstance().hasEntry(username, password) || !Admin.getInstance().hasSalt(username)){
             return false;
-        }
-       
-        boolean result = Admin.getInstance().checkPasword(username , password);
-        if(result){
-            lastLoginTime = new Date();
-            isLogedIn = true;
-            return result;
         }else
-            return false;
-    }
-    
-    public static void Logout(){
-        isLogedIn = false;
+            return Admin.getInstance().checkPasword(username , password);
     }
 }
