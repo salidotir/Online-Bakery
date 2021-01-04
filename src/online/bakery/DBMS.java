@@ -5,6 +5,7 @@ package online.bakery;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -359,7 +360,7 @@ public class DBMS {
         String saltedAndPepperedPassword = password + salt + getPepper();
         String passwordHash = getSimpleHash(saltedAndPepperedPassword);
         String storedPasswordHash = DBMS.getDBMS().usernamePasswordTable.get(username);
-        return passwordHash == storedPasswordHash;
+        return passwordHash.equals(storedPasswordHash);
     }
 
     public boolean hasEntry(String username, String password) {
@@ -418,24 +419,75 @@ public class DBMS {
     }
 
     public boolean addCustomer(Customer customer) {
-        if (DBMS.getDBMS().customers.contains(customer) == true) {
+        if (DBMS.getDBMS().customers.contains(customer)) {          
+            return false;
+        }else{
+            DBMS.getDBMS().customers.add(customer);
             int index = DBMS.getDBMS().customers.indexOf(customer);
             DBMS.getDBMS().customers.get(index).setActiveness("Active");
             return true;
         }
-        DBMS.getDBMS().customers.add(customer);
-        return true;
     }
-
+    
     public boolean removeCustomer(Customer customer) {
         int index = DBMS.getDBMS().customers.indexOf(customer);
         DBMS.getDBMS().customers.get(index).setActiveness("Inactive");
-        DBMS.getDBMS().customers.remove(index);
         return true;
     }
 
     //~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~    
+    
+    public AbstractMap.SimpleEntry toggleActiveness(Account account){
+        switch(account.role){ 
+            case CUSTOMER:{
+                if (DBMS.getDBMS().customers.contains(account)){
+                    int index = DBMS.getDBMS().customers.indexOf(account);
+                    String active = DBMS.getDBMS().customers.get(index).getActiveness();
+                    if (active.equals("Active")){
+                        DBMS.getDBMS().customers.get(index).setActiveness("Inactive");
+                        return new AbstractMap.SimpleEntry(true, "Inactive"); 
+                    }else{
+                        DBMS.getDBMS().customers.get(index).setActiveness("Active");
+                        return new AbstractMap.SimpleEntry(true, "Active");
+                    }
+                }else
+                    return new AbstractMap.SimpleEntry(false, "There is no such Customer");
+            }   
+            case BAKERY:{
+                if (DBMS.getDBMS().bakeries.contains(account)){
+                    int index = DBMS.getDBMS().bakeries.indexOf(account);
+                    String active = DBMS.getDBMS().bakeries.get(index).getActiveness();
+                    if (active.equals("Active")){
+                        DBMS.getDBMS().bakeries.get(index).setActiveness("Inactive");
+                        return new AbstractMap.SimpleEntry(true, "Inactive"); 
+                    }else{
+                        DBMS.getDBMS().bakeries.get(index).setActiveness("Active");
+                        return new AbstractMap.SimpleEntry(true, "Active");
+                    }
+                }else
+                    return new AbstractMap.SimpleEntry(false, "There is no such Customer");
+            }
+            case BAKER:{
+                if (DBMS.getDBMS().bakers.contains(account)){
+                    int index = DBMS.getDBMS().bakers.indexOf(account);
+                    String active = DBMS.getDBMS().bakers.get(index).getActiveness();
+                    if (active.equals("Active")){
+                        DBMS.getDBMS().bakers.get(index).setActiveness("Inactive");
+                        return new AbstractMap.SimpleEntry(true, "Inactive"); 
+                    }else{
+                        DBMS.getDBMS().bakers.get(index).setActiveness("Active");
+                        return new AbstractMap.SimpleEntry(true, "Active");
+                    }
+                }else
+                    return new AbstractMap.SimpleEntry(false, "There is no such Customer");
+            }
+            default:
+                return new AbstractMap.SimpleEntry(false, "Can not toggle.");
+        }
+    }
 
+    //~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~  
+    
     public List<Employee> getListOfEmployees() {
         return DBMS.getDBMS().employees;
     }

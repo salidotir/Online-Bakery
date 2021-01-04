@@ -11,6 +11,7 @@ package online.bakery;
  */
 public enum Role {
     CUSTOMER,
+    BAKERY,
     BAKER,
     EMPLOEE,
     ADMIN

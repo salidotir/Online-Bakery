@@ -5,6 +5,7 @@
  */
 package online.bakery;
 
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -77,7 +78,7 @@ public class Admin extends Account{
     
     boolean AskPermission(String username){
         // check if this username has option to change password without answering security Q&A
-        return true;
+        return false;
     }
     
     boolean hasEntry(String username, String password){
@@ -94,7 +95,20 @@ public class Admin extends Account{
     } 
     
     boolean createCustomer(Customer customer){
-        return DBMS.getDBMS(this).addCustomer(customer);
+        if (DBMS.getDBMS(this).addCustomer(customer)){
+            customer.setActiveness("Active");
+            return true;
+        }else
+            return false;
+    }
+    
+    boolean toggleActiveness(Account account){
+        AbstractMap.SimpleEntry result = DBMS.getDBMS(this).toggleActiveness(account);
+        if ((boolean) result.getKey()){
+            account.setActiveness((String)result.getValue());
+            return true;
+        }else
+            return false;
     }
     
     List<Customer> viewCustomers(){

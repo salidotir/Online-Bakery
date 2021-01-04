@@ -17,11 +17,9 @@ public class Bakery extends Account implements Confectioner {
     private String description;
 
 
-    public Bakery(String name, String username, String password, String firstName, String lastName, String description, String number, String address) {
+    public Bakery(String name, String username, String password, String description, String number, String address) {
         super();
-        super.SignUp(username, password, Role.BAKER);
-        super.setFirstname(firstName);
-        super.setLastname(lastName);
+        super.SignUp(username, password, Role.BAKERY);
         this.name = name;
         this.description = description;
         super.setContactNo(number);
