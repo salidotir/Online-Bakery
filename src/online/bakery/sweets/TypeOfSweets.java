@@ -1,6 +1,6 @@
 package online.bakery.sweets;
 
-public enum SweetType {
+public enum TypeOfSweets {
     CAKE,
     TART,
     COOKIE,
