@@ -104,4 +104,7 @@ public abstract class Sweets {
     public BigDecimal getTOTAL_COST() {
         return TOTAL_COST;
     }
+    public BigDecimal get_OderCost(){
+        return TOTAL_COST.add(fee);
+    }
 }
