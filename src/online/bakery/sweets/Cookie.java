@@ -11,7 +11,7 @@ public class Cookie extends Sweets {
 
     public Cookie(CookieBuilder builder) {
 
-        this.type=SweetType.COOKIE;
+        this.type= TypeOfSweets.COOKIE;
         this.description = "Cookie: ";
         if (builder.description!=null){
             this.description =builder.description;}

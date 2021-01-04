@@ -10,7 +10,7 @@ public class Cake extends Sweets {
 
     public Cake(CakeBuilder builder) {
 
-        this.type=SweetType.CAKE;
+        this.type= TypeOfSweets.CAKE;
         this.description="Cake: ";
         if (builder.description!=null){
         this.description =builder.description;}

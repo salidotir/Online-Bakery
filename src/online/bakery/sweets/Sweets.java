@@ -1,8 +1,6 @@
 package online.bakery.sweets;
 
 
-import online.bakery.Customer;
-
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -19,10 +17,10 @@ public abstract class Sweets {
     public BigDecimal TOTAL_COST = new BigDecimal(0);
     protected BigDecimal fee;
     protected ArrayList<String> Images = new ArrayList<>();
-    protected SweetType type;
+    protected TypeOfSweets type;
 
 
-    public SweetType getType() {
+    public TypeOfSweets getType() {
         return type;
     }
 
@@ -73,8 +71,8 @@ public abstract class Sweets {
         this.name = name;
     }
 
-    public void setImages(ArrayList<String> images) {
-        Images = images;
+    public void addImage(String  image) {
+        Images.add( image);
     }
 
     public String getName() {

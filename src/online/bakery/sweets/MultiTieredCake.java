@@ -6,7 +6,6 @@ import online.bakery.decorators.DesignDecoration;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Map;
 
 public class MultiTieredCake extends Sweets {
     int tier;
@@ -20,7 +19,7 @@ public class MultiTieredCake extends Sweets {
             System.out.println("tire not matches to cakes.");
         } else {
 
-            this.type = SweetType.CAKE;
+            this.type = TypeOfSweets.CAKE;
             this.tier = tier;
             this.CakeWithDesign = cakeWithDesign;
             this.description = "Multi Tiered Cake " + getDescription();

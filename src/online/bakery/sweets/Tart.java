@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class Tart extends Sweets {
 
     public Tart(TartBuilder builder) {
-        this.type=SweetType.TART;
+        this.type= TypeOfSweets.TART;
         this.description = "Tart: ";
         if (builder.description!=null){
             this.description =builder.description;}
