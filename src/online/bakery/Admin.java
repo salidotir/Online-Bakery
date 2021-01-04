@@ -175,5 +175,12 @@ public class Admin extends Account{
     public boolean deliverOrder(Order order) {
         return DBMS.getDBMS(this).deliverOrder(order);
     }
+
+    public boolean editBaker(Person person){
+        return DBMS.getDBMS(this).editBaker(person.getID(),person.getName(),person.getDescription(),person.getFirstname(),person.getLastname(),person.getAddress(),person.getContactNo());
+    }
+    public boolean editBakery(Bakery bakery){
+        return DBMS.getDBMS(this).editBakery(bakery.getID(),bakery.getName(),bakery.getDescription(),bakery.getFirstname(),bakery.getLastname(),bakery.getAddress(),bakery.getContactNo());
+    }
 }
 
