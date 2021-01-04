@@ -40,5 +40,7 @@ public class Discount {
         this.end = end;
     }
 
-
+    public int getConfectionerId() {
+        return confectionerId;
+    }
 }
