@@ -11,8 +11,6 @@ import java.math.BigDecimal;
 import java.util.*;
 
 public class Person extends Account implements Confectioner{
-
-    private final int  id ;
     private String name;
     private String description;
 
@@ -21,7 +19,6 @@ public class Person extends Account implements Confectioner{
 
     public Person(String name, String username, String password,String firstName, String lastName, String description,String number) {
         super();
-        this.id = super.ID;
         super.SignUp(username, password, Role.BAKER);
         super.setFirstname(firstName);
         super.setLastname(lastName);
@@ -146,13 +143,14 @@ public class Person extends Account implements Confectioner{
         return Admin.getInstance().getDiscount(this);
     }
 
+    @Override
     public String getProfile() {
-        String bakeryP = name +"\n" + description + "\n" + "Number : " + super.getContactNo() + "\n" + "Address : " + super.getAddress() + "\n" + "Score : " +Admin.getInstance().getScoreBaker(this) + "/5 + \n" ;
+        String bakeryP = name +"\n" + description + "\n" + super.getProfile() + "Score : " +Admin.getInstance().getScoreBaker(this) + "/5 + \n" ;
         return bakeryP;
     }
 
     public boolean addNote(Note note, String extraText) {
-        if (this.id == note.getNoteSellerId()) {
+        if (this.getID() == note.getNoteSellerId()) {
             note.setNoteSellerText(extraText);
         }
         return true;

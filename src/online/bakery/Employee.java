@@ -21,13 +21,13 @@ public class Employee extends Account{
         super.setFirstname(FirstName);
         super.setLastname(LastName);
         this.score = 0;
-//        this.employeeId = super.ID;
         this.isBusy = false;
         Admin.getInstance().createEmploee(this); 
     }
 
+    @Override
     public String getProfile() {
-        return "First name: " + super.getFirstname() + " | Last name: " + super.getLastname() + " | Id: " + this.getID() + " | Score: " + score + " | is busy: " + isBusy;
+        return super.getProfile() + "Score: " + score + "\nis busy: " + isBusy + "\n";
     }
 
     /**

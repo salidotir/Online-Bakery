@@ -16,17 +16,14 @@ import online.bakery.sweets.Sweets;
  * @author melika
  */
 public class Customer extends Account {
-    private final int CustomerID;
     private final Wallet wallet;
     private List<Order> Orders = new ArrayList<Order>();
     private List<Sweets> designs = new ArrayList<Sweets>();
-    private String activeness;
     private ArrayList<GiftCard> GiftCards=new ArrayList<>();
 
 
     public Customer(String username, String password) {
         super();
-        this.CustomerID = super.ID;
         Wallet w = new Wallet();
         this.wallet = w;
         super.SignUp(username, password, Role.CUSTOMER);
@@ -161,15 +158,6 @@ public class Customer extends Account {
         return Admin.getInstance().SaveGiftCartForCustomer(customer, giftCard);
     }
 
-
-    public String getActiveness() {
-        return activeness;
-    }
-
-    public void setActiveness(String activeness) {
-        this.activeness = activeness;
-    }
-
     public Wallet getWallet() {
         return wallet;
     }
@@ -188,11 +176,6 @@ public class Customer extends Account {
             ids.add(order.getOrderId());
         }
         return ids;
-    }
-
-    public String getProfile() {
-        String personP = super.getFirstname() + " " + super.getLastname() + "\n" + "Number : " + super.getContactNo() + "\n" + "Address : " + super.getAddress() + "\n";
-        return personP;
     }
 
     public Order createNewSweet(List<Sweets> sweetlist, List<BirthdayItems> items) {
