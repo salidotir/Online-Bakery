@@ -27,6 +27,10 @@ public abstract class Sweets {
 
     public abstract BigDecimal cost();
 
+    public int getNumCustomerForScore() {
+        return NumCustomerForScore;
+    }
+
     public int getSweetId() {
         return SweetId;
     }
