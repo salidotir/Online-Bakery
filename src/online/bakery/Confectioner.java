@@ -33,9 +33,9 @@ public interface Confectioner {
 
     boolean addNote(Note note, String extraText);
 
-    boolean addOrderSweet(Sweets s);
+    boolean addOrderSweet();
     List<Sweets> getOrderSweet();
-    boolean deleteOrderSweet(Sweets s);
+    boolean deleteOrderSweet(Sweets sweet);
 
 
 

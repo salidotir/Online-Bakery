@@ -57,9 +57,16 @@ public class Person extends Account implements Confectioner{
 
 
 
-    /*public boolean addOrderSweet(Sweets sweet){
-        Admin.getInstance().addOrderSweet(this,sweet);
-    }*/
+
+
+    public boolean addOrderSweet(){
+        Sweets sweet;
+        return Admin.getInstance().addOrderSweet(this,sweet);
+    }
+
+    public boolean deleteOrderSweet(Sweets sweet){
+        return Admin.getInstance().deleteOrderSweet(this,sweet);
+    }
 
 
 

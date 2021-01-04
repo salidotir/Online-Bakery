@@ -58,16 +58,33 @@ public class Bakery extends Account implements Confectioner {
 
     //public boolean addPost(Sweets sweet){this.post.add(sweet);}
 
-    public boolean addReadySweet(Sweets sweet,int number){
+    public boolean addReadySweet(){
+        Sweets sweet;
+        int number;
         return Admin.getInstance().addSweet(this,sweet,number);
     }
 
-    public boolean addOrderSweet(Sweets sweet){
+    public boolean addOrderSweet(){
+        Sweets sweet;
         return Admin.getInstance().addOrderSweet(this,sweet);
     }
 
-    public boolean addBirthdayItem(BirthdayItems item,int number) {
+    public boolean addBirthdayItem() {
+        BirthdayItems item;
+        int number;
         return Admin.getInstance().addBirthdayItem(this,item,number);
+    }
+
+    public boolean deleteReadySweet(Sweets sweet,int number){
+        return Admin.getInstance().deleteReadySweet(this,sweet,number);
+    }
+
+    public boolean deleteOrderSweet(Sweets sweet){
+        return Admin.getInstance().deleteOrderSweet(this,sweet);
+    }
+
+    public boolean deleteBirthdayItem(BirthdayItems birthdayItem){
+        return Admin.getInstance().deleteBirthdayItem(this,birthdayItem);
     }
 
 
