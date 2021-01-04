@@ -248,5 +248,18 @@ public class Admin extends Account{
     public boolean addDiscount(Confectioner confectioner, Discount discount) {
         return DBMS.getDBMS(this).addDiscount(discount);
     }
+    ////////////////////////////////////////////////////////////////////Negin
+    public ArrayList<String> GetAllPossibleTypeOfSweets(Confectioner confectioner){
+
+        return DBMS.getDBMS(this).GetAllPossibleTypeOfSweets(confectioner);
+    }
+    public Sweets  GetSweetsFromConfectioner(Confectioner confectioner, String name){
+        return DBMS.getDBMS(this).GetSweetsFromConfectioner(confectioner,name);
+
+    }
+    public ArrayList<String >GetAllPossibleTypeOfCake(Confectioner confectioner){
+        return DBMS.getDBMS(this).GetAllPossibleTypeOfCake(confectioner);
+
+    }
 }
 
