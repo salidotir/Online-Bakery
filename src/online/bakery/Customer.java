@@ -21,7 +21,8 @@ public class Customer extends Account {
     private List<Order> Orders = new ArrayList<Order>();
     private List<Sweets> designs = new ArrayList<Sweets>();
     private String activeness;
-    private ArrayList<GiftCard> GiftCards;
+    private ArrayList<GiftCard> GiftCards=new ArrayList<>();
+
 
     public Customer(String username, String password) {
         super();
@@ -31,12 +32,21 @@ public class Customer extends Account {
         super.SignUp(username, password, Role.CUSTOMER);
         Admin.getInstance().createCustomer(this);
     }
+
     public ArrayList<GiftCard> GetAllGiftCards(){
         return Admin.getInstance().GetAllGiftCards(this);
     }
 
-    public void ShowReceivedGiftCard() {
-        return Admin.getInstance().ShowReceivedGiftCard();
+    public void addGiftCard(GiftCard giftCards) {
+        GiftCards.add( giftCards);
+    }
+
+    public ArrayList<GiftCard> getGiftCards() {
+        return GiftCards;
+    }
+
+    public void ShowReceivedGiftCard(GiftCard giftCard) {
+        System.out.println(giftCard.toString());
 
 
     }
@@ -143,9 +153,9 @@ public class Customer extends Account {
         System.out.println(note);
         GiftCard giftCard;
         if (line.equals("")) {
-            giftCard = new GiftCard(customer, price, note.toString());
+            giftCard = new GiftCard(customer, price, note.toString(),this);
         } else {
-            giftCard = new GiftCard(customer, price, null);
+            giftCard = new GiftCard(customer, price, null,this);
         }
 
         return Admin.getInstance().SaveGiftCartForCustomer(customer, giftCard);
