@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import javafx.util.Pair;
+import online.bakery.sweets.Rate;
+import online.bakery.sweets.Sweets;
 
 /**
  *
@@ -44,7 +46,12 @@ public class DBMS {
     private List<Employee> employees; 
    
     private List<String> securityQuestions;
-    private Map<String, List<String>> usernameAnswersTable; 
+    private Map<String, List<String>> usernameAnswersTable;
+
+    private Map<Integer, List<Pair<Sweets,Integer>>> bakerReadySweetMap;
+    private Map<Integer, List<Sweets>> bakerOrderSweetMap;
+    private Map<Integer, List<Pair<BirthdayItems,Integer>>> bakerBirthdayItemsMap;
+    private List<Discount> discounts;
     
     private DBMS() {
         this.customers = new ArrayList<Customer>();
@@ -58,7 +65,12 @@ public class DBMS {
         this.usernameAnswersTable = new HashMap<String, List<String>>();
         this.admins = new ArrayList<Admin>();
         this.vehicles = new ArrayList<Vehicle>();
-        this.orderEmployeeMap = new HashMap<Pair<Order, Integer>, Pair<List<Employee>, Vehicle>>(); 
+        this.orderEmployeeMap = new HashMap<Pair<Order, Integer>, Pair<List<Employee>, Vehicle>>();
+
+        this.bakerReadySweetMap = new HashMap<Integer, List<Pair<Sweets,Integer>>>();
+        this.bakerOrderSweetMap = new HashMap<Integer, List<Sweets>>();
+        this.bakerBirthdayItemsMap = new HashMap<Integer, List<Pair<BirthdayItems,Integer>>>();
+        this.discounts = new ArrayList<Discount>();
     }
     
     // function to give access to dbms only for admin
@@ -187,7 +199,7 @@ public class DBMS {
     // functions to edit informations in bakeries, bakers, customers & employee
     
     // edit bakery information -> gets all fileds again and set them all again
-    public boolean editBakery(int id, String name, String discreption, String firstName, String lastName, String address, String contactNo) {
+    public boolean editBakery(int id, String name, String description, String firstName, String lastName, String address, String contactNo) {
         int index = -1;
         for(int i= 0; i < DBMS.getDBMS().bakeries.size(); i++) {
             if(DBMS.getDBMS().bakeries.get(i).getID() == id) {
@@ -201,7 +213,7 @@ public class DBMS {
         
         // change fields
         DBMS.getDBMS().bakeries.get(index).setName(name);
-        DBMS.getDBMS().bakeries.get(index).setDescription(discreption);
+        DBMS.getDBMS().bakeries.get(index).setDescription(description);
         DBMS.getDBMS().bakeries.get(index).setFirstname(firstName);
         DBMS.getDBMS().bakeries.get(index).setLastname(lastName);
         DBMS.getDBMS().bakeries.get(index).setAddress(address);
@@ -210,7 +222,7 @@ public class DBMS {
     }
     
     // edit baker information
-    public boolean editBaker(int id, String discreption, String firstName, String lastName, String address, String contactNo) {
+    public boolean editBaker(int id,String name, String description, String firstName, String lastName, String address, String contactNo) {
         int index = -1;
         for(int i= 0; i < DBMS.getDBMS().bakers.size(); i++) {
             if(DBMS.getDBMS().bakers.get(i).getID() == id) {
@@ -223,7 +235,8 @@ public class DBMS {
         }
         
         // change fields
-        DBMS.getDBMS().bakers.get(index).setDescription(discreption);
+        DBMS.getDBMS().bakers.get(index).setName(name);
+        DBMS.getDBMS().bakers.get(index).setDescription(description);
         DBMS.getDBMS().bakers.get(index).setFirstname(firstName);
         DBMS.getDBMS().bakers.get(index).setLastname(lastName);
         DBMS.getDBMS().bakers.get(index).setAddress(address);
@@ -573,5 +586,141 @@ public class DBMS {
         }
         return false;
     }
+
+    //~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~
+
+    public List<Discount> getDiscounts() { return DBMS.getDBMS().discounts; }
+
+    public boolean addDiscount(Discount discount){
+        DBMS.getDBMS().discounts.add(discount);
+        return true;
+    }
+
+
+    //~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~
+
+    public List<Pair<BirthdayItems,Integer>> getBirthdayItems(int bakerId) {
+        List<Pair<BirthdayItems,Integer>> b = DBMS.getDBMS().bakerBirthdayItemsMap.get(bakerId);
+        return b;
+    }
+
+    public boolean addBirthdayItem(BirthdayItems birthdayItem , int num , int bakerId){
+        List<Pair<BirthdayItems,Integer>> list = DBMS.getDBMS().bakerBirthdayItemsMap.get(bakerId);
+        Pair<BirthdayItems,Integer> p = new Pair<BirthdayItems,Integer>(birthdayItem,num);
+        list.add(p);
+        DBMS.getDBMS().bakerBirthdayItemsMap.put(bakerId,list);
+        return true;
+    }
+
+    public boolean deleteBirthdayItem(BirthdayItems birthdayItem , int num , int bakerId){
+        List<Pair<BirthdayItems,Integer>> list = DBMS.getDBMS().bakerBirthdayItemsMap.get(bakerId);
+        Pair<BirthdayItems,Integer> p = new Pair<BirthdayItems,Integer>(birthdayItem,num);
+        for(int i = 0; i < list.size(); i++){
+            if(list.get(i).getKey() == birthdayItem){
+                list.remove(i);
+                break;
+            }
+        }
+        DBMS.getDBMS().bakerBirthdayItemsMap.put(bakerId,list);
+        return true;
+    }
+
+    //~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~
+
+    public List<Sweets> getOrderSweet(int bakerId) {
+        return DBMS.getDBMS().bakerOrderSweetMap.get(bakerId);
+    }
+
+    public boolean addOrderSweet(Sweets sweet , int bakerId){
+        List<Sweets> list = DBMS.getDBMS().bakerOrderSweetMap.get(bakerId);
+        list.add(sweet);
+        DBMS.getDBMS().bakerOrderSweetMap.put(bakerId,list);
+        return true;
+    }
+
+    public boolean deleteOrderSweet(Sweets sweet , int bakerId){
+        List<Sweets> list = DBMS.getDBMS().bakerOrderSweetMap.get(bakerId);
+        list.remove(sweet);
+        DBMS.getDBMS().bakerOrderSweetMap.put(bakerId,list);
+        return true;
+    }
+
+    //~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~
+
+    public List<Pair<Sweets,Integer>> getReadySweets(int bakerId ){
+        return DBMS.getDBMS().bakerReadySweetMap.get(bakerId);
+    }
+
+
+    public boolean addReadySweet(Sweets sweet ,int num, int bakerId){
+        List<Pair<Sweets,Integer>> list = DBMS.getDBMS().bakerReadySweetMap.get(bakerId);
+        Pair <Sweets,Integer> p = new Pair<Sweets,Integer>(sweet,num);
+        list.add(p);
+        DBMS.getDBMS().bakerReadySweetMap.put(bakerId,list);
+        return true;
+    }
+
+    public boolean deleteReadySweet(Sweets sweet , int bakerId){
+        List<Pair<Sweets,Integer>> list = DBMS.getDBMS().bakerReadySweetMap.get(bakerId);
+        for(int i = 0; i < list.size(); i++){
+            if(list.get(i).getKey() == sweet){
+                list.remove(i);
+                break;
+            }
+        }
+        DBMS.getDBMS().bakerReadySweetMap.put(bakerId,list);
+        return true;
+    }
+
+    //~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~
+
+
+    public boolean setScoreSweets(Rate score, int sweetId, int bakerId){
+        List<Pair<Sweets,Integer>> listR = DBMS.getDBMS().bakerReadySweetMap.get(bakerId);
+        boolean b = false;
+        for(int i = 0; i< listR.size();i++){
+            if(listR.get(i).getKey().getSweetId() == sweetId){
+                listR.get(i).getKey().addScore(score);
+                b = true;
+                break;
+            }
+        }
+        if(b == false){
+            List<Sweets> listO = DBMS.getDBMS().bakerOrderSweetMap.get(bakerId);
+            for(int i = 0; i< listO.size();i++){
+                if(listO.get(i).getSweetId() == sweetId){
+                    listO.get(i).addScore(score);
+                    b = true;
+                    break;
+                }
+            }
+            if(b == true){
+                DBMS.getDBMS().bakerOrderSweetMap.put(bakerId,listO);
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+        else{
+            DBMS.getDBMS().bakerReadySweetMap.put(bakerId,listR);
+            return true;
+        }
+
+    }
+
+
+
+    //~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~
+
+
+
+
+    //~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~
+
+
+    //~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~
+
+
  
 }
