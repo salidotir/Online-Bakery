@@ -16,12 +16,10 @@ public class Person extends Account implements Confectioner{
 
 
 
-
-    public Person(String name, String username, String password,String firstName, String lastName, String description,String number) {
+    public Person(String name, String username, String password, String description,String number, String address) {
         super();
         super.SignUp(username, password, Role.BAKER);
-        super.setFirstname(firstName);
-        super.setLastname(lastName);
+        super.setAddress(address);
         this.name = name;
         this.description = description;
         super.setContactNo(number);

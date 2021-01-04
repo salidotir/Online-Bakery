@@ -21,6 +21,7 @@ public class Vehicle {
         this.plaque = plaque;
         this.vehicleType = vehicleType;
         this.isBusy = false;
+        Admin.getInstance().addVehicle(this);
     }
 
     /**
