@@ -591,6 +591,16 @@ public class DBMS {
 
     public List<Discount> getDiscounts() { return DBMS.getDBMS().discounts; }
 
+    public List<Discount> getDiscountsBaker(int bakerId) {
+        List<Discount> list = new ArrayList<Discount>();
+        for (Discount discount :DBMS.getDBMS().discounts){
+            if(discount.getConfectionerId() == bakerId){
+                list.add(discount);
+            }
+        }
+        return list;
+    }
+
     public boolean addDiscount(Discount discount){
         DBMS.getDBMS().discounts.add(discount);
         return true;
@@ -612,9 +622,8 @@ public class DBMS {
         return true;
     }
 
-    public boolean deleteBirthdayItem(BirthdayItems birthdayItem , int num , int bakerId){
+    public boolean deleteBirthdayItem(BirthdayItems birthdayItem , int bakerId){
         List<Pair<BirthdayItems,Integer>> list = DBMS.getDBMS().bakerBirthdayItemsMap.get(bakerId);
-        Pair<BirthdayItems,Integer> p = new Pair<BirthdayItems,Integer>(birthdayItem,num);
         for(int i = 0; i < list.size(); i++){
             if(list.get(i).getKey() == birthdayItem){
                 list.remove(i);
@@ -627,7 +636,7 @@ public class DBMS {
 
     //~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~
 
-    public List<Sweets> getOrderSweet(int bakerId) {
+    public List<Sweets> getOrderSweets(int bakerId) {
         return DBMS.getDBMS().bakerOrderSweetMap.get(bakerId);
     }
 
@@ -709,6 +718,45 @@ public class DBMS {
 
     }
 
+    public double getScoreBaker(int bakerId) {
+        List<Pair<Sweets,Integer>> listR = DBMS.getDBMS().bakerReadySweetMap.get(bakerId);
+        double sumScore = 0;
+        int numSweet = 0;
+        for(int i = 0; i< listR.size();i++){
+            if(listR.get(i).getKey().getNumCustomerForScore() != 0){
+                sumScore += listR.get(i).getKey().getScore();
+                numSweet += 1;
+            }
+        }
+        List<Sweets> listO = DBMS.getDBMS().bakerOrderSweetMap.get(bakerId);
+        for(int i = 0; i< listO.size();i++){
+            if(listO.get(i).getSweetId() != 0){
+                sumScore += listR.get(i).getKey().getScore();
+                numSweet += 1;
+            }
+        }
+        double score = sumScore / numSweet;
+        return score;
+
+    }
+
+    public boolean decreaseReadySweetNumber(Sweets sweets, int num, int bakerId) {
+        return true;
+    }
+
+    public boolean decreaseBirthdayItemNumber(BirthdayItems birthdayItems, int num, int bakerId) {
+        return true;
+    }
+
+    public List<Order> getListOfOrdersBaker(int bakerId) {
+        List<Order> orders = new ArrayList<Order>();
+        for (Order order :DBMS.getDBMS().orders){
+            if(order.getStaffId() == bakerId){
+                orders.add(order);
+            }
+        }
+        return orders;
+    }
 
 
     //~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~

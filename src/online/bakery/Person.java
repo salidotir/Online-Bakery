@@ -48,7 +48,7 @@ public class Person extends Account implements Confectioner{
     public String getDescription() { return description; }
 
     public double getScore() {
-        return Admin.getInstance().getScore(this);
+        return Admin.getInstance().getScoreBaker(this);
     }
 
     public boolean setScore(Rate score, Sweets sweet) {
@@ -139,7 +139,7 @@ public class Person extends Account implements Confectioner{
     }
 
     public String getProfile() {
-        String bakeryP = name +"\n" + description + "\n" + "Number : " + super.getContactNo() + "\n" + "Address : " + super.getAddress() + "\n" + "Score : " +Admin.getInstance().getScore(this) + "/5 + \n" ;
+        String bakeryP = name +"\n" + description + "\n" + "Number : " + super.getContactNo() + "\n" + "Address : " + super.getAddress() + "\n" + "Score : " +Admin.getInstance().getScoreBaker(this) + "/5 + \n" ;
         return bakeryP;
     }
 
