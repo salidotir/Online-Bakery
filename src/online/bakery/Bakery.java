@@ -1,6 +1,9 @@
 package online.bakery;
 
 import javafx.util.Pair;
+import online.bakery.decorators.Decorator;
+import online.bakery.decorators.DecoratorToBuild;
+import online.bakery.sweets.Cake;
 import online.bakery.sweets.Rate;
 import online.bakery.sweets.Sweets;
 
@@ -59,19 +62,38 @@ public class Bakery extends Account implements Confectioner {
     //public boolean addPost(Sweets sweet){this.post.add(sweet);}
 
     public boolean addReadySweet(){
-        Sweets sweet;
-        int number;
-        return Admin.getInstance().addSweet(this,sweet,number);
+        ArrayList<Sweets> ss = new ArrayList<Sweets>();
+        ArrayList<DecoratorToBuild> decorators = new ArrayList<DecoratorToBuild>();
+        decorators.add(new DecoratorToBuild(Decorator.FLOUR, new BigDecimal(100), new BigDecimal(400)));
+        decorators.add(new DecoratorToBuild(Decorator.SUGAR, new BigDecimal(300), new BigDecimal(40)));
+        decorators.add(new DecoratorToBuild(Decorator.BAKING_POWDER, new BigDecimal(200), new BigDecimal(500)));
+        Sweets sweet = new Cake.CakeBuilder(decorators).build();
+
+        System.out.println(sweet.description);
+        Scanner scan = new Scanner(System.in);
+        System.out.printf("Please Enter Number for this Sweet : ");
+        int number = scan.nextInt();
+
+        return Admin.getInstance().addReadySweet(this,sweet,number);
     }
 
     public boolean addOrderSweet(){
-        Sweets sweet;
+        ArrayList<Sweets> ss = new ArrayList<Sweets>();
+        ArrayList<DecoratorToBuild> decorators = new ArrayList<DecoratorToBuild>();
+        decorators.add(new DecoratorToBuild(Decorator.FLOUR, new BigDecimal(100), new BigDecimal(400)));
+        decorators.add(new DecoratorToBuild(Decorator.SUGAR, new BigDecimal(300), new BigDecimal(40)));
+        decorators.add(new DecoratorToBuild(Decorator.BAKING_POWDER, new BigDecimal(200), new BigDecimal(500)));
+        Sweets sweet = new Cake.CakeBuilder(decorators).build();
         return Admin.getInstance().addOrderSweet(this,sweet);
     }
 
     public boolean addBirthdayItem() {
-        BirthdayItems item;
-        int number;
+        BigDecimal cost = new BigDecimal("20000");
+        BirthdayItems item = new Candle("اکلیلی" ,cost, " عدد ۲" ,"قرمز");
+        System.out.println(item.getDescription());
+        Scanner scan = new Scanner(System.in);
+        System.out.printf("Please Enter Number for this BirthdayItem : ");
+        int number = scan.nextInt();
         return Admin.getInstance().addBirthdayItem(this,item,number);
     }
 
@@ -156,10 +178,10 @@ public class Bakery extends Account implements Confectioner {
 //        return post;
 //    }
 
-    public Map<Sweets , Integer> getReadySweet() { return Admin.getInstance().getReadySweet(this); }
+    public List<Pair<Sweets , Integer>> getReadySweets() { return Admin.getInstance().getReadySweets(this); }
 
-    public List<Sweets> getOrderSweet() {
-        return Admin.getInstance().getOrderSweet(this);
+    public List<Sweets> getOrderSweets() {
+        return Admin.getInstance().getOrderSweets(this);
     }
 
     public List<Order> getOrderList() {

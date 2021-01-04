@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface Confectioner {
 
-
+    int getID();
     double getScore();
     boolean setScore(Rate score, Sweets sweet);
 
@@ -34,7 +34,7 @@ public interface Confectioner {
     boolean addNote(Note note, String extraText);
 
     boolean addOrderSweet();
-    List<Sweets> getOrderSweet();
+    List<Sweets> getOrderSweets();
     boolean deleteOrderSweet(Sweets sweet);
 
 
