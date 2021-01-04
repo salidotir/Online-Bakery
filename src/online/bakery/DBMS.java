@@ -14,6 +14,7 @@ import java.util.Scanner;
 
 import javafx.util.Pair;
 import online.bakery.sweets.Rate;
+import online.bakery.sweets.SweetType;
 import online.bakery.sweets.Sweets;
 
 /**
@@ -811,16 +812,39 @@ public class DBMS {
     }
 
     public ArrayList<String> GetAllPossibleTypeOfCake(Confectioner confectioner) {
-        List<Pair<Sweets, Integer>> listSweets = DBMS.getDBMS().bakerReadySweetMap.get(confectioner.getID());
+        List<Sweets> listSweets = DBMS.getDBMS().bakerOrderSweetMap.get(confectioner.getID());
         ArrayList<String> possibleSweets = new ArrayList<>();
-        for (Pair<Sweets, Integer> sweets :
+        for (Sweets sweets :
                 listSweets) {
-            if (sweets.getValue() > 0) {
-                possibleSweets.add(sweets.getKey().getName());
+            if (sweets.getType() == SweetType.CAKE) {
+                possibleSweets.add(sweets.getName());
             }
 
         }
         return possibleSweets;
+    }
+
+    public Boolean SaveGiftCartForCustomer(Customer customer, GiftCard giftCard) {
+        for (int i = 0; i < DBMS.getDBMS().customers.size(); i++) {
+            if (DBMS.getDBMS().customers.get(i) == customer) {
+                DBMS.getDBMS().customers.get(i).addGiftCard(giftCard);
+                DBMS.getDBMS().customers.get(i).ShowReceivedGiftCard(giftCard);
+                break;
+            }
+        }
+
+
+        return true;
+    }
+
+    public ArrayList<GiftCard> GetAllGiftCards(Customer customer) {
+        for (int i = 0; i < DBMS.getDBMS().customers.size(); i++) {
+            if (DBMS.getDBMS().customers.get(i) == customer) {
+                return DBMS.getDBMS().customers.get(i).getGiftCards();
+
+            }
+        }
+        return null;
     }
 
 
