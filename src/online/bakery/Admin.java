@@ -261,5 +261,14 @@ public class Admin extends Account{
         return DBMS.getDBMS(this).GetAllPossibleTypeOfCake(confectioner);
 
     }
+    public Boolean SaveGiftCartForCustomer(Customer customer, GiftCard giftCard){
+        return DBMS.getDBMS(this).SaveGiftCartForCustomer(customer,giftCard);
+
+
+    }
+    public ArrayList<GiftCard>GetAllGiftCards(Customer customer){
+        return DBMS.getDBMS(this).GetAllGiftCards(customer);
+
+    }
 }
 
