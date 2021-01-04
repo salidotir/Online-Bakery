@@ -1,5 +1,7 @@
 package online.bakery;
 
+import javafx.util.Pair;
+import online.bakery.sweets.Rate;
 import online.bakery.sweets.Sweets;
 
 import java.util.*;
@@ -7,96 +9,122 @@ import java.util.*;
 public class Person extends Account implements Confectioner{
 
     private final int  id ;
+    private String name;
     private String description;
-    private double score;
-    private int numScore;
-    private List<Sweets> post = new ArrayList<Sweets>(); // post id
-    private List<Order> orderList = new ArrayList<Order>(); // list order id
-    private List<Discount> discountList = new ArrayList<Discount>();
 
 
 
-    public Person( String username, String password,String firstName, String lastName, String description,String number) {
+
+    public Person(String name, String username, String password,String firstName, String lastName, String description,String number) {
         super();
         this.id = super.ID;
         super.SignUp(username, password, Role.BAKER);
         super.setFirstname(firstName);
         super.setLastname(lastName);
+        this.name = name;
         this.description = description;
         super.setContactNo(number);
-        this.score = 5;
-        this.numScore = 0;
         Admin.getInstance().createPerson(this); 
     }
 
-    public String getDescription() {
-        return description;
+    public String getName() {
+        return name;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public boolean setName(String name) {
+        this.name = name;
+        return Admin.getInstance().editBaker(this);
     }
+
+    public boolean setDescription(String description) {
+        this.description = description;
+        return Admin.getInstance().editBaker(this);
+    }
+
+    public String getDescription() { return description; }
 
     public double getScore() {
-        return score;
+        return Admin.getInstance().getScore(this);
     }
 
-    public void setScore(double lastScore,double newScore, Sweets sweet) {
-        this.score = (score*numScore - lastScore + newScore) / (numScore + 1) ;
-        numScore += 1;
+    public boolean setScore(Rate score, Sweets sweet) {
+        return Admin.getInstance().setScore(this,score,sweet.getSweetId());
     }
 
 
-    public void addPost(Sweets sweet){this.post.add(sweet);}
+
+    //public boolean addPost(Sweets sweet){this.post.add(sweet);}
 
 
 
-    public void addOrder(Order order,List<SweetType> s){this.orderList.add(order);}
+    /*public boolean addOrderSweet(Sweets sweet){
+        Admin.getInstance().addOrderSweet(this,sweet);
+    }*/
 
 
-    public ConfectionerStatus sweetToOrder(List<Sweets> s,List<SweetType> st,Customer c){
+
+
+    public boolean addOrder(Order order,List<SweetType> s){
+        Admin.getInstance().addOrder(order);
+    }
+
+
+    public List<ConfectionerStatus> acceptOrder(Order order,List<SweetType> st){
+        List<ConfectionerStatus> out = new ArrayList<ConfectionerStatus>();
         System.out.println("Customer");
-        System.out.println(c.getProfile());
-
+        System.out.println(order.getCustomerProfile());
+        System.out.println("Sweet");
+        List<Sweets> s = order.getSweets();
         for (int i = 0;i < s.size();i++) {
-            System.out.println("Sweet");
+
             System.out.println(st.get(i));
             System.out.println(s.get(i).description);
             System.out.println(s.get(i).getTOTAL_Grams());
             System.out.println(s.get(i).getTOTAL_COST());
-        }
-        int indexCS = 1;
-        for (ConfectionerStatus CS : ConfectionerStatus.values()) {
-            System.out.println(indexCS + " : " + CS);
-            indexCS += 1;
-        }
-        Scanner scan = new Scanner(System.in);
-        System.out.printf("Please Enter your Status for this Order : ");
-        int num = scan.nextInt();
 
-        return ConfectionerStatus.values()[num - 1];
+            int indexCS = 1;
+            for (ConfectionerStatus CS : ConfectionerStatus.values()) {
+                System.out.println(indexCS + " : " + CS);
+                indexCS += 1;
+            }
+            Scanner scan = new Scanner(System.in);
+            System.out.printf("Please Enter your Status for this Order : ");
+            int num = scan.nextInt();
+            out.add(ConfectionerStatus.values()[num - 1]);
+        }
+
+        return out;
+
     }
 
-    public List<Sweets> getPost() {
-        return post;
+
+
+
+//    public List<Sweets> getPost() {
+//        return post;
+//    }
+
+
+    public List<Sweets> getOrderSweet() {
+        return Admin.getInstance().getOrderSweet(this);
     }
-
-
 
     public List<Order> getOrderList() {
-        return orderList;
+        return Admin.getInstance().getOrderList(this);
     }
 
-    public void addDiscount(Discount discount){this.discountList.add(discount);}
+
+
+    public boolean addDiscount(Discount discount){
+        return Admin.getInstance().addDiscount(this,discount);}
 
     public List<Discount> getDiscountList() {
-        return discountList;
+        return Admin.getInstance().getDiscount(this);
     }
 
-
     public String getProfile() {
-        String personP = super.getFirstname() +" " + super.getLastname() +"\n" + description + "\n" + "Number : " + super.getContactNo() + "\n" + "\n" + "Score : " + score + "/5 "  + "(" + numScore + ") \n";
-        return personP;
+        String bakeryP = name +"\n" + description + "\n" + "Number : " + super.getContactNo() + "\n" + "Address : " + super.getAddress() + "\n" + "Score : " +Admin.getInstance().getScore(this) + "/5 + \n" ;
+        return bakeryP;
     }
 
     public boolean addNote(Note note, String extraText) {

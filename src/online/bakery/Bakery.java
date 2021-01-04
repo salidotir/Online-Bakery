@@ -1,5 +1,7 @@
 package online.bakery;
 
+import javafx.util.Pair;
+import online.bakery.sweets.Rate;
 import online.bakery.sweets.Sweets;
 
 import java.math.BigDecimal;
@@ -10,14 +12,6 @@ public class Bakery extends Account implements Confectioner {
     private final int id ;
     private String name;
     private String description;
-    private double score;
-    private int numScore;
-    private List<Sweets> post = new ArrayList<Sweets>(); // post id
-    private  Map<Sweets , Integer> readySweet  = new HashMap<Sweets , Integer>(); //list of sweets and number is ready to buy
-    private List<Sweets> menu = new ArrayList<Sweets>(); //List of sweets id to order
-    private List<Order> orderList = new ArrayList<Order>(); // list order id
-    private  Map<BirthdayItems , Integer> birthdayItem = new HashMap<BirthdayItems , Integer>(); //list of sweets and number is ready to buy
-    private List<Discount> discountList = new ArrayList<Discount>();
 
 
 
@@ -32,8 +26,7 @@ public class Bakery extends Account implements Confectioner {
         this.description = description;
         super.setContactNo(number);
         super.setAddress(address);
-        this.score = 5;
-        this.numScore = 0;
+
         Admin.getInstance().createBakery(this); 
     }
 
@@ -41,54 +34,66 @@ public class Bakery extends Account implements Confectioner {
         return name;
     }
 
-    public void setName(String name) {
+    public boolean setName(String name) {
         this.name = name;
+        return Admin.getInstance().editBakery(this);
     }
 
-    public void setDescription(String description) { this.description = description; }
+    public boolean setDescription(String description) {
+        this.description = description;
+        return Admin.getInstance().editBakery(this);
+    }
 
     public String getDescription() { return description; }
 
     public double getScore() {
-        return score;
+        return Admin.getInstance().getScore(this);
     }
 
-    public void setScore(double lastScore,double newScore, Sweets sweet) {
-        this.score = (score*numScore - lastScore + newScore) / (numScore + 1) ;
-        numScore += 1;
+    public boolean setScore(Rate score, Sweets sweet) {
+        return Admin.getInstance().setScore(this,score,sweet.getSweetId());
     }
 
 
 
-    public void addPost(Sweets sweet){this.post.add(sweet);}
+    //public boolean addPost(Sweets sweet){this.post.add(sweet);}
 
-    public void addReadySweet(Sweets sweet,int number){this.readySweet.put(sweet,number);}
+    public boolean addReadySweet(Sweets sweet,int number){
+        return Admin.getInstance().addSweet(this,sweet,number);
+    }
 
-    public void addOrder(Order order,List<SweetType> s){
-        this.orderList.add(order);
-        List<Sweets> sweet = new ArrayList<Sweets>(order.getSweets());
+    public boolean addOrderSweet(Sweets sweet){
+        return Admin.getInstance().addOrderSweet(this,sweet);
+    }
+
+    public boolean addBirthdayItem(BirthdayItems item,int number) {
+        return Admin.getInstance().addBirthdayItem(this,item,number);
+    }
+
+
+    public boolean addOrder(Order order,List<SweetType> s){
+        //this.orderList.add(order);
+        boolean b =Admin.getInstance().addOrder(order);
+        //List<Sweets> sweet = new ArrayList<Sweets>(order.getSweets());
         List <BirthdayItems> item = order.getItems();
-        for(int i=0; i<sweet.size();i++){
+        for(int i=0; i<s.size();i++){
             if(s.get(i) == SweetType.READY) {
-                int n = readySweet.get(sweet.get(i));
-                readySweet.put(sweet.get(i),n-1);
+                Admin.getInstance().decreaseReadySweetNumber(this,order.getSweets().get(i),1);
             }
         }
         for(int i=0; i<item.size();i++){
-            int n = birthdayItem.get(item.get(i));
-            birthdayItem.put(item.get(i),n-1);
+            Admin.getInstance().decreaseBirthdayItemNumber(this,order.getItems().get(i),1);
         }
+        return b;
     }
 
-    public void addMenu(Sweets sweet){this.menu.add(sweet);}
 
-    public void addBirthdayItem(BirthdayItems item,int number) {this.birthdayItem.put(item,number);}
-
-    public List<ConfectionerStatus> sweetToOrder(List<Sweets> s,List<SweetType> st,BirthdayItems b,Customer c){
+    public List<ConfectionerStatus> acceptOrder(Order order,List<SweetType> st){
         List<ConfectionerStatus> out = new ArrayList<ConfectionerStatus>();
         System.out.println("Customer");
-        System.out.println(c.getProfile());
+        System.out.println(order.getCustomerProfile());
         System.out.println("Sweet");
+        List<Sweets> s = order.getSweets();
         for (int i = 0;i < s.size();i++) {
 
             System.out.println(st.get(i));
@@ -106,9 +111,11 @@ public class Bakery extends Account implements Confectioner {
             int num = scan.nextInt();
             out.add(ConfectionerStatus.values()[num - 1]);
         }
-        System.out.println("BirthdayItems");
-        for (int i = 0;i < s.size();i++) {
-            System.out.println(b.getDescription());
+        List<BirthdayItems> b = order.getItems();
+        if( b.size() > 0)
+            System.out.println("BirthdayItems");
+        for (int i = 0;i < b.size();i++) {
+            System.out.println(b.get(i).getDescription());
 
             int indexCS = 1;
             for (ConfectionerStatus CS : ConfectionerStatus.values()) {
@@ -128,32 +135,32 @@ public class Bakery extends Account implements Confectioner {
 
 
 
-    public List<Sweets> getPost() {
-        return post;
-    }
+//    public List<Sweets> getPost() {
+//        return post;
+//    }
 
-    public Map<Sweets , Integer> getReadySweet() { return readySweet; }
+    public Map<Sweets , Integer> getReadySweet() { return Admin.getInstance().getReadySweet(this); }
 
-    public List<Sweets> getMenu() {
-        return menu;
+    public List<Sweets> getOrderSweet() {
+        return Admin.getInstance().getOrderSweet(this);
     }
 
     public List<Order> getOrderList() {
-        return orderList;
+        return Admin.getInstance().getOrderList(this);
     }
 
-    public Map<BirthdayItems, Integer> getBirthdayItemId() {
-        return birthdayItem;
+    public List<Pair<BirthdayItems, Integer>> getBirthdayItemId() {
+        return Admin.getInstance().getBirthdayItem(this);
     }
 
-    public void addDiscount(Discount discount){this.discountList.add(discount);}
+    public boolean addDiscount(Discount discount){return Admin.getInstance().addDiscount(this,discount);}
 
     public List<Discount> getDiscountList() {
-        return discountList;
+        return Admin.getInstance().getDiscount(this);
     }
 
     public String getProfile() {
-        String bakeryP = name +"\n" + description + "\n" + "Number : " + super.getContactNo() + "\n" + "Address : " + super.getAddress() + "\n" + "Score : " +score + "/5 " + "(" + numScore + ") \n" ;
+        String bakeryP = name +"\n" + description + "\n" + "Number : " + super.getContactNo() + "\n" + "Address : " + super.getAddress() + "\n" + "Score : " +Admin.getInstance().getScore(this) + "/5 + \n" ;
         return bakeryP;
     }
 

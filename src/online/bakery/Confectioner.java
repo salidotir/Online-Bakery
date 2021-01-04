@@ -1,30 +1,46 @@
 package online.bakery;
 
+import online.bakery.sweets.Rate;
 import online.bakery.sweets.Sweets;
 
 import java.util.List;
 
 public interface Confectioner {
 
-    void setScore(double lastScore,double newScore, Sweets sweet);
 
-    void setDescription(String description);
+    double getScore();
+    boolean setScore(Rate score, Sweets sweet);
+
+    String getDescription();
+    boolean setDescription(String description);
+
+    String getName();
+    boolean setName(String name);
 
     String getProfile();
 
-    double getScore();
-    String getDescription();
-    List<Sweets> getPost();
+
+
     List<Order> getOrderList();
+    //boolean addOrder(Order order,List<SweetType> s);
 
+    //List<Sweets> getPost();
+    //boolean addPost(Sweets sweet);
 
-    void addPost(Sweets sweet);
-    void addOrder(Order order,List<SweetType> s);
+    List<ConfectionerStatus> acceptOrder(Order order,List<SweetType> st);
 
-    //ConfectionerStatus sweetToOrder(List<Sweets> s,List<SweetType> st,Customer c);
-    void addDiscount(Discount discount);
+    boolean addDiscount(Discount discount);
 
     boolean addNote(Note note, String extraText);
+
+    boolean addOrderSweet(Sweets s);
+    List<Sweets> getOrderSweet();
+    boolean deleteOrderSweet(Sweets s);
+
+
+
+
+
 
 
 
