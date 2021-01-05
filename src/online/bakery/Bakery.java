@@ -274,8 +274,12 @@ public class Bakery extends Account implements Confectioner {
         return Admin.getInstance().getBirthdayItem(this);
     }
 
-    public boolean addDiscount(Discount discount) {
-        return Admin.getInstance().addDiscount(this, discount);
+    public boolean addDiscount(String name , int percent,Date start , Date end, int max) {
+        if(percent<= 100 && percent > 0){
+            Discount d = new Discount(name, percent, start, end, this.getID(), max);
+            return Admin.getInstance().addDiscount(d);
+        }else
+            return false;
     }
 
     public List<Discount> getDiscountList() {

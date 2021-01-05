@@ -1,5 +1,6 @@
 package online.bakery;
 
+import java.util.Date;
 import online.bakery.sweets.Rate;
 import online.bakery.sweets.Sweets;
 
@@ -29,7 +30,7 @@ public interface Confectioner {
 
     List<ConfectionerStatus> acceptOrder(Order order,List<SweetType> st);
 
-    boolean addDiscount(Discount discount);
+    boolean addDiscount(String name , int percent,Date start , Date end, int max);
 
     boolean addNote(Note note, String extraText);
 
