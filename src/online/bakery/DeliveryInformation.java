@@ -18,7 +18,7 @@ public class DeliveryInformation {
     static AtomicInteger atomicInteger = new AtomicInteger(0);
     private int deliveryId;
 
-    BigDecimal transferPrice;
+    private BigDecimal transferPrice;
     private String deliveryAddress;
     private Date deliveryTime;                      // date & time the customer wants to recieve order.
                                                     // deliveruTime is not final because customer can change the delivery time later if accepted by the seller.
@@ -30,7 +30,7 @@ public class DeliveryInformation {
         this.deliveryId = atomicInteger.incrementAndGet();
         
         this.deliveryTime = deliveryTime;
-        this.deliveryAddress = deliveryAddress;             // maybe no need to deliver the order.
+        this.deliveryAddress = deliveryAddress;
         this.actualDeliveryTime = null;                     // filled after order is delivered.
         this.transferPrice = transferPrice;
     }
@@ -117,5 +117,12 @@ public class DeliveryInformation {
      */
     public void setDeliveryId(int deliveryId) {
         this.deliveryId = deliveryId;
+    }
+    
+    /**
+     * @return the transferPrice
+     */
+    public BigDecimal getTransferPrice() {
+        return transferPrice;
     }
 }
