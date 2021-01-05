@@ -25,7 +25,6 @@ public class Order {
     private Confectioner Staff;
     private Payment payment;
     private Date expectedDeliveryTime;
-    private Date actualDeliveryTime;
     private DeliveryInformation delivery = null;
     
     public Order(Customer customer, List<Sweets> Sweets, List<BirthdayItems> items, Date expectedDeliveryTime) {
@@ -167,7 +166,7 @@ public class Order {
         System.out.println("finish");
         if(orderStatus == OrderStatus.DONE){
             orderStatus = OrderStatus.DELIVERED;
-            this.actualDeliveryTime = actuallDelivery; 
+            delivery.setActualDeliveryTime(actuallDelivery);
             return true;
         }else
             return false;
@@ -207,6 +206,14 @@ public class Order {
     
     public DeliveryInformation getDelivery(){
         return delivery;
+    }
+
+    public Date getExpectedDeliveryTime() {
+        return expectedDeliveryTime;
+    }
+
+    public Date getActualDeliveryTime() {
+        return delivery.getActualDeliveryTime();
     }
     
     public boolean addScore(Sweets sweet, Rate score){
@@ -270,6 +277,8 @@ public class Order {
         s = "Order information:\n" +
                 "order id: " + this.orderId + "\n" +
                 "order status: "+ this.orderStatus + "\n" +
+                "expected delivery time: "+ this.expectedDeliveryTime + "\n"+
+                "actuall delivery time: "+ this.delivery.getActualDeliveryTime() + "\n"+
                 "coefectioner profile: " + this.Staff.getProfile() + "\n" +
                 "****************\n"+
                 "customer id: " + this.customer.getID() + "\n" +

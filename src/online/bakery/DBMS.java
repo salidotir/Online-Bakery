@@ -291,13 +291,6 @@ public class DBMS {
 
     //~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~ 
 
-    // set actual delivery time for a specific order in delivery information list
-    public boolean setActualDeliveryTime(Order order, Date actualDeliveryTime) {
-        int index = DBMS.getDBMS().orders.indexOf(order);
-        DBMS.getDBMS().orders.get(index).getDelivery().setActualDeliveryTime(actualDeliveryTime);
-        return true;
-    }
-
     // set payment status for a specific order in payments list
     public boolean setPaymentStatus(Order order, PaymentStatus paymentStatus) {
         for (Order ord : DBMS.getDBMS().orders) {
@@ -513,7 +506,7 @@ public class DBMS {
         DBMS.getDBMS().orders.add(order);
         return true;
     }
-
+    
     public boolean setOrderFinish(int orderId, Date actuallDelivery){
        AbstractMap.SimpleEntry res = DBMS.getDBMS().getOrderByID(orderId);
        if ((boolean)res.getKey()){
