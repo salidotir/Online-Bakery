@@ -7,6 +7,7 @@ package online.bakery;
 
 import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import javafx.util.Pair;
@@ -202,8 +203,8 @@ public class Admin extends Account{
         return DBMS.getDBMS(this).getOrderByID(orderId);
     }
     
-    public boolean deliverOrder(Order order) {
-        return DBMS.getDBMS(this).deliverOrder(order);
+    public boolean deliverOrder(Order order, Date actuallDelivery) {
+        return DBMS.getDBMS(this).deliverOrder(order, actuallDelivery);
     }
 
     public boolean editBaker(Person person){

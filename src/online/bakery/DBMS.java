@@ -514,11 +514,11 @@ public class DBMS {
         return true;
     }
 
-    public boolean setOrderFinish(int orderId){
+    public boolean setOrderFinish(int orderId, Date actuallDelivery){
        AbstractMap.SimpleEntry res = DBMS.getDBMS().getOrderByID(orderId);
        if ((boolean)res.getKey()){
            Order order = (Order)res.getValue();
-           return order.finishOrder();
+           return order.finishOrder(actuallDelivery);
        }else
            return false;
     }
@@ -636,12 +636,12 @@ public class DBMS {
     // 1. Order status -> delivered
     // 2. Employee isBusy -> false
     // 3. Vehicle isBusy -> false
-    public boolean deliverOrder(Order order) {
+    public boolean deliverOrder(Order order, Date actullDelivery) {
         //System.out.println(DBMS.getDBMS().getListOfOrders().get(0).getOrderStatus());
         for (Map.Entry<Pair<Integer, Integer>, Pair<List<Employee>, Vehicle>> entry : orderEmployeeMap.entrySet()) {
             if (entry.getKey().getKey() == order.getOrderId()) {
                 // set order status delivered
-                boolean result = DBMS.getDBMS().setOrderFinish(entry.getKey().getKey());
+                boolean result = DBMS.getDBMS().setOrderFinish(entry.getKey().getKey(), actullDelivery);
                 if(result){
                     // set employees isBusy false
                     int size = entry.getValue().getKey().size();

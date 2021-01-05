@@ -163,10 +163,11 @@ public class Order {
             return false;
     }
     
-    public boolean finishOrder(){
+    public boolean finishOrder(Date actuallDelivery){
         System.out.println("finish");
         if(orderStatus == OrderStatus.DONE){
             orderStatus = OrderStatus.DELIVERED;
+            this.actualDeliveryTime = actuallDelivery; 
             return true;
         }else
             return false;

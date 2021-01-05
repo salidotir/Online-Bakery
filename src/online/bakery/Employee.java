@@ -52,8 +52,9 @@ public class Employee extends Account{
 
     public boolean deliverOrder(Order order) {
         this.setIsBusy(false);
-        order.finishOrder();
-        Admin.getInstance().deliverOrder(order);
+        Date actuall = new Date();
+        order.finishOrder(actuall);
+        Admin.getInstance().deliverOrder(order, actuall);
         return true;
     }
     
