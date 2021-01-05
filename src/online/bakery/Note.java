@@ -19,7 +19,7 @@ public class Note {
     private final int orderId;
     private final int noteSellerId;
     private final int noteCustomerId;
-    private final int noteEmployeeId;          // maybe no need to employee for delivering the order
+    private int noteEmployeeId;
     
     private String noteSellerText;          // any note seller wants to add
     private String noteCustomerText;        // any note customer wants to add
@@ -32,13 +32,13 @@ public class Note {
      * @param customerId
      * set these 2 parameters in the constructor, if customer or employee added a note, set their id fields.
      */
-    public Note(int orderId, int sellerId, int customerId, int employeeId) {
+    public Note(int orderId, int sellerId, int customerId) {
         this.noteId = atomicInteger.incrementAndGet();
         
         this.orderId = orderId;
         this.noteSellerId = sellerId;
         this.noteCustomerId = customerId;
-        this.noteEmployeeId = employeeId;
+        //this.noteEmployeeId = employeeId;         // employee is not set at first
         
         this.noteSellerText = "";
         this.noteCustomerText = "";
@@ -90,8 +90,9 @@ public class Note {
     /**
      * @param noteSellerText the noteSellerText to set
      */
-    public void setNoteSellerText(String noteSellerText) {
+    public boolean setNoteSellerText(String noteSellerText) {
         this.noteSellerText = noteSellerText;
+        return true;
     }
 
     /**
@@ -104,8 +105,9 @@ public class Note {
     /**
      * @param noteCustomerText the noteCustomerText to set
      */
-    public void setNoteCustomerText(String noteCustomerText) {
+    public boolean setNoteCustomerText(String noteCustomerText) {
         this.noteCustomerText = noteCustomerText;
+        return true;
     }
 
     /**
@@ -118,8 +120,14 @@ public class Note {
     /**
      * @param noteEmployeeText the noteEmployeeText to set
      */
-    public void setNoteEmployeeText(String noteEmployeeText) {
+    public boolean setNoteEmployeeText(String noteEmployeeText) {
         this.noteEmployeeText = noteEmployeeText;
+        return true;
+    }
+    
+    public boolean setNoteEmployeeId(int id) {
+        this.noteEmployeeId = id;
+        return true;
     }
     
     public String getNoteInformation() {
