@@ -59,11 +59,19 @@ public class DeliverySystem {
             Employee e = Admin.getInstance().getFirstFreeEmployee();
             lst.add(e);
             Vehicle v = Admin.getInstance().getFirstFreeVehicle();
+            // set isbusy of employees & vehicle true
+            // add new order-delivery item to database
             Admin.getInstance().addItemToOrderEmployeeMap(new Pair(ord, new Integer(0)), new Pair(lst, v));
             // update DeliverySystem map
             DeliverySystem.getDeliverySystem().orderEmployeeMap = Admin.getInstance().getOrderEmployeeMap();
         }
         
+        return true;
+    }
+    
+    // all orders are sent to a queue and then are assigned an employee & vehicle to be delivered.
+    public boolean addOrderToOrderQueue(Order order) {
+        this.orderQueue.add(order);
         return true;
     }
 
