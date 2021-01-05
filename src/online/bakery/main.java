@@ -8,6 +8,7 @@ import online.bakery.sweets.*;
 
 import java.lang.reflect.Array;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.*;
 
 
@@ -84,7 +85,15 @@ public class main {
     }
     
    
-    private static void test3(){
+    private static void test3(){Date today=new Date();
+
+        LocalDate todayy = LocalDate.now();
+        LocalDate tomorrow = todayy.plusDays( 3650 ) ;
+        
+        Admin.getInstance().createFirstOrderDiscount("تخفیف اولین سفارش در اپ ما" , 20  
+                , new Date(todayy.getYear()- 1900,todayy.getMonthValue() - 1, todayy.getDayOfMonth())
+                , new Date(tomorrow.getYear()- 1900,tomorrow.getMonthValue() -1,tomorrow.getDayOfMonth()), 20000);        
+        
         ArrayList<Sweets> ss = new ArrayList<Sweets>();
         ArrayList<DecoratorToBuild> decorators = new ArrayList<DecoratorToBuild>();
         decorators.add(new DecoratorToBuild(Decorator.FLOUR, new BigDecimal(100), new BigDecimal(400)));
@@ -101,8 +110,7 @@ public class main {
         Bakery b1 = new Bakery("شب شیرینی","usermane","pass","لحظات زندگی خود را با کمک ما شیرین کنید" , "07131111111" , "تاچارا");
 //        System.out.printf(b1.getProfile());
 
-        Discount d1 = new Discount("تخفیف یلدایی" , 20 , new Date(1399,9,20),new Date(1399,10,1),b1.getID());
-        b1.addDiscount(d1);
+        b1.addDiscount("تخفیف یلدایی" , 20 , new Date(1399,9,20),new Date(1399,10,1),200);
         
         Employee e1 = new Employee("salidotir", "4444", "Sara", "Limooee");
         Employee e2 = new Employee("hello", "1234", "firstname1", "lastname1");
@@ -165,7 +173,7 @@ public class main {
 //                    System.out.println(order.getOrderInformation());
 //                    System.out.println(order.getDelivery().getDeliveryInformation());
 //                }
-                System.out.println("--------");
+                System.out.println("------------------------------------------------------");
                 System.out.println(o1.getOrderInformation());
                 System.out.println(o1.getDelivery().getDeliveryInformation());
                 
@@ -173,8 +181,9 @@ public class main {
                     for(Sweets sweet: o1.getSweets()){
                         o1.addScore(sweet, Rate.FOUR);
                     }
-                    System.out.println(o1.getOrderInformation());
+                    
                 }
+//                System.out.println(o1.getOrderInformation());
             }
         }
         

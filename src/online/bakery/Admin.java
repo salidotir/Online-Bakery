@@ -44,6 +44,15 @@ public class Admin extends Account{
         }
         return INSTANCE;
     }
+    
+    public boolean createFirstOrderDiscount(String name , int percent,Date start , Date end, int max) {
+        if(percent<= 100 && percent > 0){
+            Discount d = new Discount(name, percent, start, end, this.getID(), max);
+            return Admin.getInstance().addDiscount(d);
+        }else
+            return false;
+    }
+    
     void setQuestions(List<String> questions){
         String q1= "how old are you? ";
         questions.add(q1);
@@ -274,11 +283,19 @@ public class Admin extends Account{
         return DBMS.getDBMS(this).getBirthdayItems(bakery.getID());
     }
 
-    public List<Discount> getDiscount(Confectioner confectioner) {
-        return DBMS.getDBMS(this).getDiscountsBaker(confectioner.getID());
+    public List<Discount> getDiscount(int creatorID) {
+        return DBMS.getDBMS(this).getDiscountsBaker(creatorID);
+    }
+    
+    public boolean firstOrder(Customer customer){
+        return DBMS.getDBMS(this).firstOrder(customer);
     }
 
-    public boolean addDiscount(Confectioner confectioner, Discount discount) {
+    public List<Discount> getActiveDiscount(int creatorID){
+        return DBMS.getDBMS(this).getActiveDiscount(creatorID);
+    }
+
+    public boolean addDiscount(Discount discount) {
         return DBMS.getDBMS(this).addDiscount(discount);
     }
     ////////////////////////////////////////////////////////////////////Negin

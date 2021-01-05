@@ -552,6 +552,18 @@ public class DBMS {
            return false;
     }
     
+    public boolean firstOrder(Customer customer){
+        for (Order order: DBMS.getDBMS().orders){
+            if(order.getCustomerId() == customer.getID() && 
+                    order.getOrderStatus() != OrderStatus.ORDERING_BY_CUSTOMER &&
+                    order.getOrderStatus() != OrderStatus.CANCELED_BY_CUSTOMER &&
+                    order.getOrderStatus() != OrderStatus.CANCELED_BY_BAKER){
+                return false;
+            }
+        }
+        return true;
+    }
+    
     //~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~    
 
     public List<Payment> getListOfPayments() {
@@ -704,7 +716,19 @@ public class DBMS {
     public List<Discount> getDiscountsBaker(int bakerId) {
         List<Discount> list = new ArrayList<Discount>();
         for (Discount discount : DBMS.getDBMS().discounts) {
-            if (discount.getConfectionerId() == bakerId) {
+            if (discount.getCreatorID() == bakerId) {
+                list.add(discount);
+            }
+        }
+        return list;
+    }
+    
+    public List<Discount> getActiveDiscount(int id){
+        List<Discount> list = new ArrayList<Discount>();
+        Date today = new Date();
+        for (Discount discount : DBMS.getDBMS().discounts) {
+            if (discount.getCreatorID() == id &&
+                    today.after(discount.getStart()) && today.before(discount.getEnd())) {
                 list.add(discount);
             }
         }
@@ -712,6 +736,8 @@ public class DBMS {
     }
 
     public boolean addDiscount(Discount discount) {
+        System.out.println("dbmsssssssssssssssssssssssssssssss");
+        System.out.println(discount.getID());
         DBMS.getDBMS().discounts.add(discount);
         return true;
     }
