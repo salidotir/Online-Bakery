@@ -143,7 +143,7 @@ public class main {
             result = o1.finalizedOrder();
             if(!result)
                 break;
-            AbstractMap.SimpleEntry res = o1.chooseBaker(b1, stList);
+            AbstractMap.SimpleEntry res = o1.chooseBakery(b1, stList);
             result = (boolean)res.getKey();
             if(!result)
                 break;

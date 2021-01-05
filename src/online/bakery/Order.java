@@ -23,7 +23,9 @@ public class Order {
     static AtomicInteger atomicInteger = new AtomicInteger(0);
     private Map<Sweets,Rate > sweet_score = new HashMap<Sweets,Rate>(); ;  
     private List<BirthdayItems> items;
-    private Confectioner Staff;
+    private Bakery bakery;
+    private Person baker;
+    private int chooseTypeBaker;    // 1 for Bakery; 0 for Person
     private Payment payment;
     private Date expectedDeliveryTime;
     private DeliveryInformation delivery = null;
@@ -88,9 +90,23 @@ public class Order {
             return false;
     }
     
-    public AbstractMap.SimpleEntry chooseBaker(Confectioner staff, List<SweetType> s){
+    public AbstractMap.SimpleEntry chooseBaker(Person staff, List<SweetType> s){
         if(orderStatus == OrderStatus.FINALIZED_BY_CUSTOMER){
-            this.Staff = staff;
+            this.baker = staff;
+            this.bakery = null;
+            this.chooseTypeBaker = 0;
+            List<ConfectionerStatus> cs = staff.acceptOrder(this, s);
+            orderStatus = OrderStatus.PENDING_CHOSEN_BAKER;
+            return new AbstractMap.SimpleEntry(true, cs);
+        }else
+            return new AbstractMap.SimpleEntry(false, null);
+    }
+    
+    public AbstractMap.SimpleEntry chooseBakery(Bakery staff, List<SweetType> s){
+        if(orderStatus == OrderStatus.FINALIZED_BY_CUSTOMER){
+            this.bakery = staff;
+            this.baker = null;
+            this.chooseTypeBaker = 1;
             List<ConfectionerStatus> cs = staff.acceptOrder(this, s);
             orderStatus = OrderStatus.PENDING_CHOSEN_BAKER;
             return new AbstractMap.SimpleEntry(true, cs);
@@ -144,7 +160,12 @@ public class Order {
             PaymentType paymentType = Payment.howToPay();
             this.payment = new Payment(new Date(), cost, description, paymentType);
             customer.addPayment(payment);
-            boolean result = payment.pay(payment, this.customer);
+            boolean result = false;
+            if(chooseTypeBaker == 1)
+                result = payment.pay(payment, this.customer, this.bakery);
+            else if(chooseTypeBaker == 0)
+                result = payment.pay(payment, this.customer, this.baker);
+            
             if(result){
                 orderStatus = OrderStatus.PAYED;
                 return true;
@@ -157,7 +178,10 @@ public class Order {
     public boolean setBakerStatus(List<SweetType> s){
         if(orderStatus == OrderStatus.PAYED){
             orderStatus = OrderStatus.IN_PROGRESS;
-            this.Staff.addOrder(this, s);
+            if(chooseTypeBaker == 1)
+                this.bakery.addOrder(this, s);
+            else if(chooseTypeBaker == 0)
+                this.baker.addOrder(this, s);
             return true;
         }else
             return false;
@@ -234,7 +258,10 @@ public class Order {
                 //double prevoius = sweet.getScore();
                 //sweet.addScore(score);
                 //double next = sweet.getScore();
-                Staff.setScore(score,sweet);
+                if(chooseTypeBaker == 1)
+                    bakery.setScore(score,sweet);
+                else if(chooseTypeBaker == 0)
+                    baker.setScore(score, sweet);
                 return true;
             }
             else
@@ -309,22 +336,30 @@ public class Order {
             newcost = newcost.divide(new BigDecimal(100));
             System.out.println("Cost after discount: ");
             System.out.println(newcost);
+            
+            System.out.println("___________________________Admin terminal______________________________");
+            BigDecimal payAdmin = cost;
+            payAdmin = payAdmin.subtract(newcost);
+            System.out.println("Diffrence Cost: ");
+            System.out.println(payAdmin);
+            if(chooseTypeBaker == 1)
+                Admin.getInstance().payDiscount(payAdmin, this.bakery);
+            else if(chooseTypeBaker == 0)
+                Admin.getInstance().payDiscount(payAdmin, this.baker);
+            System.out.println("___________________________Finish terminal_____________________________");
         }
-        
-        System.out.println("___________________________Admin terminal______________________________");
-        BigDecimal payAdmin = cost;
-        payAdmin = payAdmin.subtract(newcost);
-        System.out.println("Diffrence Cost: ");
-        System.out.println(payAdmin);
-        Admin.getInstance().payDiscount(payAdmin);
-        System.out.println("___________________________Finish terminal_____________________________");
 //            System.out.println("Choose one of Admin discounts from above: ");
 //            Scanner sc = new Scanner(System.in);
 //            int choose = sc.nextInt();
 //            Discount discount = listAdmin.get(choose - 1);
         
         victoryDiscount = null;
-        List<Discount> list = Admin.getInstance().getActiveDiscount(Staff.getID());
+        int tempID = -1;
+        if(chooseTypeBaker == 1)
+            tempID = this.bakery.getID();
+        else if(chooseTypeBaker == 0)
+            tempID = this.baker.getID();
+        List<Discount> list = Admin.getInstance().getActiveDiscount(tempID);
         if(list.size() > 0){
             System.out.println("____Bakery discount___\nActuall Cost: ");
             System.out.println(this.actuallCost);
@@ -385,7 +420,20 @@ public class Order {
             System.out.println("Cost after subtracting: ");
             System.out.println(newcost);
             System.out.println("\n");
+            
+            System.out.println("___________________________Admin terminal______________________________");
+            BigDecimal payAdmin = cost;
+            payAdmin = payAdmin.subtract(newcost);
+            System.out.println("Diffrence Cost: ");
+            System.out.println(payAdmin);
+            if(chooseTypeBaker == 1)
+                Admin.getInstance().payDiscount(payAdmin, this.bakery);
+            else if(chooseTypeBaker == 0)
+                Admin.getInstance().payDiscount(payAdmin, this.baker);
+            System.out.println("___________________________Finish terminal_____________________________");
         }
+        
+        
         return newcost;
     }
     
@@ -419,9 +467,14 @@ public class Order {
         s += "expected delivery time: "+ this.expectedDeliveryTime + "\n";
         if(orderStatus == OrderStatus.DELIVERED)
             s += "actuall delivery time: "+ this.delivery.getActualDeliveryTime() + "\n";
+        s += "****************\n";
+        
+        if(chooseTypeBaker == 1)
+            s += "coefectioner profile: " + this.bakery.getProfile() + "\n";
+        else if(chooseTypeBaker == 0)
+            s += "coefectioner profile: " + this.baker.getProfile() + "\n";
+        
         s +=    "****************\n"+
-                "coefectioner profile: " + this.Staff.getProfile() + "\n" +
-                "****************\n"+
                 "customer profile: \n" + this.customer.getProfile() +
                 "****************\n"+
                 "payment status: " + this.payment.getPaymentStatus() + "\n" +
@@ -434,6 +487,10 @@ public class Order {
     }
 
     public int getStaffId() {
-        return Staff.getID();
+        if(chooseTypeBaker == 1)
+            return bakery.getID();
+        else if(chooseTypeBaker == 0)
+            return baker.getID();
+        return -1;
     }
 }

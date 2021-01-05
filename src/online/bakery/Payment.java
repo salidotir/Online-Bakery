@@ -125,15 +125,15 @@ public class Payment {
         return s;
     }
     
-    public static Payment chargeWallet(Account account, String discreption) {
+    public static Payment chargeWallet(Account source, String discreption) {
         Scanner scan = new Scanner(System.in);
         System.out.println("How much do you want to charge your wallet: ");
         BigDecimal num = scan.nextBigDecimal();
         //scan.close();
         
         Payment pay = new Payment(num, new Date(), discreption);
-        if(Payment.payOnline(pay) == true) {
-            account.getWallet().addAmount(num);
+        if(Payment.payOnline(pay, source) == true) {
+//            source.getWallet().addAmount(num);
             return pay;
         }
         return null;
@@ -153,24 +153,25 @@ public class Payment {
         return PaymentType.values()[num-1];
     }
     
-    public boolean pay(Payment pay, Account account) {
+    public boolean pay(Payment pay, Account source, Account destination) {
         if(pay.getPaymentType() == PaymentType.FROM_WALLET) {
-            return this.payFromWallet(pay, account);
+            return this.payFromWallet(pay, source, destination);
         }
         else if(pay.getPaymentType() == PaymentType.PAY_ONLINE) {
-            return this.payOnline(pay);
+            return this.payOnline(pay, destination);
         }
         pay.setPaymentStatus(PaymentStatus.UNSUCCESSFUL);
         return false;
     }
     
-    private static boolean payFromWallet(Payment pay, Account account) {
-        int res = account.getWallet().getAmount().compareTo(pay.paymentAmount);
+    private static boolean payFromWallet(Payment pay, Account source, Account destination) {
+        int res = source.getWallet().getAmount().compareTo(pay.paymentAmount);
         // res == 0 -> both are equal
         // res == 1 -> wallet > pay amount
         // res == -1 -> pay amount > wallet
         if(res == 0 || res == 1) {
-            account.getWallet().subtractAmount(pay.paymentAmount);
+            source.getWallet().subtractAmount(pay.paymentAmount);
+            destination.getWallet().addAmount(pay.paymentAmount);
             pay.setPaymentStatus(PaymentStatus.SUCCESSFUL);
             return true;
         }
@@ -181,8 +182,9 @@ public class Payment {
         }
     }
     
-    private static boolean payOnline(Payment pay) {
+    private static boolean payOnline(Payment pay, Account destination) {
         pay.setPaymentStatus(PaymentStatus.SUCCESSFUL);
+        destination.getWallet().addAmount(pay.paymentAmount);
         System.out.println("Paid for the order online.\n");
         return true;
     }

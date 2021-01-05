@@ -142,14 +142,22 @@ public class Customer extends Account {
             }
         }
         System.out.println(note);
-        GiftCard giftCard;
-        if (line.equals("")) {
-            giftCard = new GiftCard(customer, price, note.toString(),this);
-        } else {
-            giftCard = new GiftCard(customer, price, null,this);
-        }
+        
+        PaymentType paymentType = Payment.howToPay();
+        Payment payment = new Payment(new Date(), price, "Buy Gift Card", paymentType);
+        this.addPayment(payment);
+        boolean result = payment.pay(payment, this, Admin.getInstance());
+        if(result){
+                GiftCard giftCard;
+                if (line.equals("")) {
+                    giftCard = new GiftCard(customer, price, note.toString(),this);
+                } else {
+                    giftCard = new GiftCard(customer, price, null,this);
+                }
 
-        return Admin.getInstance().SaveGiftCartForCustomer(customer, giftCard);
+                return Admin.getInstance().SaveGiftCartForCustomer(customer, giftCard);
+            }else
+                return false;       
     }
 
     public void addOrder(Order Order) {

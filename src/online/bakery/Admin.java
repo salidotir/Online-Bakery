@@ -52,11 +52,18 @@ public class Admin extends Account{
             return false;
     }
     
-    public boolean payDiscount(BigDecimal cost){
+    public boolean payDiscount(BigDecimal cost, Bakery bakery){
         PaymentType paymentType = Payment.howToPay();
         Payment payment = new Payment(new Date(), cost, "Admin pays cost for discount", paymentType);
         this.addPayment(payment);
-        return payment.pay(payment, this);
+        return payment.pay(payment, this, bakery);
+    }
+    
+    public boolean payDiscount(BigDecimal cost, Person baker){
+        PaymentType paymentType = Payment.howToPay();
+        Payment payment = new Payment(new Date(), cost, "Admin pays cost for discount", paymentType);
+        this.addPayment(payment);
+        return payment.pay(payment, this, baker);
     }
     
     void setQuestions(List<String> questions){
