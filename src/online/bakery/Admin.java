@@ -184,8 +184,12 @@ public class Admin extends Account{
         return DBMS.getDBMS(this).addItemToOrderEmployeeMap(key, value);
     }
     
-    public Map<Pair<Order, Integer>, Pair<List<Employee>, Vehicle>> getOrderEmployeeMap() {
+    public Map<Pair<Integer, Integer>, Pair<List<Employee>, Vehicle>> getOrderEmployeeMap() {
         return DBMS.getDBMS(this).getOrderEmployeeMap();
+    }
+    
+    public AbstractMap.SimpleEntry getOrderByID(int orderId){
+        return DBMS.getDBMS(this).getOrderByID(orderId);
     }
     
     public boolean deliverOrder(Order order) {

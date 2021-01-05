@@ -43,7 +43,7 @@ public class DBMS {
     private static int addOnceAdmin = 1;
 
     private List<Order> orders;
-    private Map<Pair<Order, Integer>, Pair<List<Employee>, Vehicle>> orderEmployeeMap;
+    private Map<Pair<Integer, Integer>, Pair<List<Employee>, Vehicle>> orderEmployeeMap;
     private List<Vehicle> vehicles;
     private List<Employee> employees;
 
@@ -67,7 +67,7 @@ public class DBMS {
         this.usernameAnswersTable = new HashMap<String, List<String>>();
         this.admins = new ArrayList<Admin>();
         this.vehicles = new ArrayList<Vehicle>();
-        this.orderEmployeeMap = new HashMap<Pair<Order, Integer>, Pair<List<Employee>, Vehicle>>();
+        this.orderEmployeeMap = new HashMap<Pair<Integer, Integer>, Pair<List<Employee>, Vehicle>>();
 
         this.bakerReadySweetMap = new HashMap<Integer, List<Pair<Sweets, Integer>>>();
         this.bakerOrderSweetMap = new HashMap<Integer, List<Sweets>>();
@@ -500,11 +500,29 @@ public class DBMS {
         return DBMS.getDBMS().orders;
     }
 
+    public AbstractMap.SimpleEntry getOrderByID(int orderId){
+        for(Order order: DBMS.getDBMS().orders){
+            if(order.getOrderId() == orderId){
+                return new AbstractMap.SimpleEntry(true, order);
+            }
+        }
+        return new AbstractMap.SimpleEntry(false, null);
+    }
+    
     public boolean addOrder(Order order) {
         DBMS.getDBMS().orders.add(order);
         return true;
     }
 
+    public boolean setOrderFinish(int orderId){
+       AbstractMap.SimpleEntry res = DBMS.getDBMS().getOrderByID(orderId);
+       if ((boolean)res.getKey()){
+           Order order = (Order)res.getValue();
+           return order.finishOrder();
+       }else
+           return false;
+    }
+    
     //~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~    
 
     public List<Payment> getListOfPayments() {
@@ -587,13 +605,13 @@ public class DBMS {
     }
 
 
-    public Map<Pair<Order, Integer>, Pair<List<Employee>, Vehicle>> getOrderEmployeeMap() {
+    public Map<Pair<Integer, Integer>, Pair<List<Employee>, Vehicle>> getOrderEmployeeMap() {
         return DBMS.getDBMS().orderEmployeeMap;
     }
 
-    // key -> <Order, Integer>
+    // key -> <Integer(orderID), Integer>
     // value -> <List<Employee>, Vehicle>
-    public boolean addItemToOrderEmployeeMap(Pair<Order, Integer> key, Pair<List<Employee>, Vehicle> value) {
+    public boolean addItemToOrderEmployeeMap(Pair<Integer, Integer> key, Pair<List<Employee>, Vehicle> value) {
         // set isBusy of both employees & vehicle of this order-delivery true
         // set employees isBusy true
         int size = value.getKey().size();
@@ -607,7 +625,7 @@ public class DBMS {
         value.getValue().setIsBusy(true);
         Vehicle v = value.getValue();
         DBMS.getDBMS().setVehicleIsBusyTrue(v);
-        
+
         // add this order-delivery to database
         DBMS.getDBMS().orderEmployeeMap.put(key, value);
         return true;
@@ -620,31 +638,29 @@ public class DBMS {
     // 3. Vehicle isBusy -> false
     public boolean deliverOrder(Order order) {
         //System.out.println(DBMS.getDBMS().getListOfOrders().get(0).getOrderStatus());
-        for (Map.Entry<Pair<Order, Integer>, Pair<List<Employee>, Vehicle>> entry : orderEmployeeMap.entrySet()) {
-            if (entry.getKey().getKey().getOrderId() == order.getOrderId()) {
+        for (Map.Entry<Pair<Integer, Integer>, Pair<List<Employee>, Vehicle>> entry : orderEmployeeMap.entrySet()) {
+            if (entry.getKey().getKey() == order.getOrderId()) {
                 // set order status delivered
-                entry.getKey().getKey().finishOrder();
-                Order o = entry.getKey().getKey();
-                //DBMS.getDBMS().setOrderStatusDelivered(o);
-                int index = DBMS.getDBMS().orders.indexOf(o);
-                DBMS.getDBMS().orders.get(index).finishOrder();
+                boolean result = DBMS.getDBMS().setOrderFinish(entry.getKey().getKey());
+                if(result){
+                    // set employees isBusy false
+                    int size = entry.getValue().getKey().size();
+                    for (int i = 0; i < size; i++) {
+                        entry.getValue().getKey().get(i).setIsBusy(false);
+                        Employee e = entry.getValue().getKey().get(i);
+                        DBMS.getDBMS().setEmployeeIsBusyFalse(e);
+                    }
 
-                // set employees isBusy false
-                int size = entry.getValue().getKey().size();
-                for (int i = 0; i < size; i++) {
-                    entry.getValue().getKey().get(i).setIsBusy(false);
-                    Employee e = entry.getValue().getKey().get(i);
-                    DBMS.getDBMS().setEmployeeIsBusyFalse(e);
-                }
+                    // set vehicle isBusy -> false
+                    entry.getValue().getValue().setIsBusy(false);
+                    Vehicle v = entry.getValue().getValue();
+                    DBMS.getDBMS().setVehicleIsBusyFalse(v);
 
-                // set vehicle isBusy -> false
-                entry.getValue().getValue().setIsBusy(false);
-                Vehicle v = entry.getValue().getValue();
-                DBMS.getDBMS().setVehicleIsBusyFalse(v);
+                    //System.out.println(DBMS.getDBMS().getListOfOrders().get(0).getOrderStatus());
 
-                //System.out.println(DBMS.getDBMS().getListOfOrders().get(0).getOrderStatus());
-
-                return true;
+                    return true;
+                }else 
+                    return false;
             }
         }
         return false;

@@ -4,6 +4,7 @@
  */
 package online.bakery;
 
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,7 +20,7 @@ public class DeliverySystem {
     
     // map -> order, order priority, list of employees, vehicle
     // default -> order priorority of all orders is set to 0.
-    private Map<Pair<Order, Integer>, Pair<List<Employee>, Vehicle>> orderEmployeeMap;       // map order <-> list of employees
+    private Map<Pair<Integer, Integer>, Pair<List<Employee>, Vehicle>> orderEmployeeMap;       // map order <-> list of employees
     private List<Order> orderQueue;                                                          // list of orders to be assigned employees
     private List<Vehicle> vehicles;
     
@@ -61,14 +62,14 @@ public class DeliverySystem {
             Vehicle v = Admin.getInstance().getFirstFreeVehicle();
             // set isbusy of employees & vehicle true
             // add new order-delivery item to database
-            Admin.getInstance().addItemToOrderEmployeeMap(new Pair(ord, new Integer(0)), new Pair(lst, v));
+            Admin.getInstance().addItemToOrderEmployeeMap(new Pair(ord.getOrderId(), new Integer(0)), new Pair(lst, v));
             // update DeliverySystem map
             DeliverySystem.getDeliverySystem().orderEmployeeMap = Admin.getInstance().getOrderEmployeeMap();
         }
         
         return true;
     }
-    
+
     // all orders are sent to a queue and then are assigned an employee & vehicle to be delivered.
     public boolean addOrderToOrderQueue(Order order) {
         this.orderQueue.add(order);
@@ -78,14 +79,14 @@ public class DeliverySystem {
     /**
      * @return the orderEmployeeMap
      */
-    public Map<Pair<Order, Integer>, Pair<List<Employee>, Vehicle>> getOrderEmployeeMap() {
+    public Map<Pair<Integer, Integer>, Pair<List<Employee>, Vehicle>> getOrderEmployeeMap() {
         return orderEmployeeMap;
     }
 
     /**
      * @param OrderEmployeeMap the orderEmployeeMap to set
      */
-    public boolean setOrderEmployeeMap(Map<Pair<Order, Integer>, Pair<List<Employee>, Vehicle>> OrderEmployeeMap) {
+    public boolean setOrderEmployeeMap(Map<Pair<Integer, Integer>, Pair<List<Employee>, Vehicle>> OrderEmployeeMap) {
         orderEmployeeMap = OrderEmployeeMap;
         return true;
     }
@@ -122,9 +123,15 @@ public class DeliverySystem {
     
     public String toStringGetOrderEmployeeMap() {
         String res = "______ Delivery System Informations ______";
-        for (Map.Entry<Pair<Order, Integer>, Pair<List<Employee>, Vehicle>> entry : orderEmployeeMap.entrySet()) {
+        for (Map.Entry<Pair<Integer, Integer>, Pair<List<Employee>, Vehicle>> entry : orderEmployeeMap.entrySet()) {
             res += "\n         ____________________________ \n";
-            res += entry.getKey().getKey().getOrderInformation();
+            AbstractMap.SimpleEntry result = Admin.getInstance().getOrderByID(entry.getKey().getKey());
+            if ((boolean)result.getKey()){
+                Order order = (Order)result.getValue();
+                res += order.getOrderInformation();
+            }else
+                res += "No such Order with this OrderID exits";
+
             //res += entry.getKey().getKey().toString() + "\n";
             res += "\norder priority: " + entry.getKey().getValue().toString() + "\n";
             
