@@ -302,6 +302,38 @@ public class DBMS {
         return false;
     }
 
+    public List<Payment> getPayment(Account account){
+        if(null != account.role)switch (account.role) {
+            case CUSTOMER:
+                for(Customer customer: DBMS.getDBMS().customers){
+                    if(customer.getID() == account.getID()){
+                        return customer.getPayments();
+                    }
+                }   break;
+            case BAKER:
+                for(Person person: DBMS.getDBMS().bakers){
+                    if(person.getID() == account.getID()){
+                        return person.getPayments();
+                    }
+                }   break;
+            case BAKERY:
+                for(Bakery bakery: DBMS.getDBMS().bakeries){
+                    if(bakery.getID() == account.getID()){
+                        return bakery.getPayments();
+                    }
+                }   break;
+            case ADMIN:
+                for(Admin admin: DBMS.getDBMS().admins){
+                    if(admin.getID() == account.getID()){
+                        return admin.getPayments();
+                    }
+                }   break;
+            default:
+                break;
+        }
+        return null;
+    }
+    
     //~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~ 
 
     // search for delivery information of a specific order
@@ -736,8 +768,6 @@ public class DBMS {
     }
 
     public boolean addDiscount(Discount discount) {
-        System.out.println("dbmsssssssssssssssssssssssssssssss");
-        System.out.println(discount.getID());
         DBMS.getDBMS().discounts.add(discount);
         return true;
     }
@@ -972,7 +1002,7 @@ public class DBMS {
         return true;
     }
 
-    public ArrayList<GiftCard> GetAllGiftCards(Customer customer) {
+    public List<GiftCard> GetAllGiftCards(Customer customer) {
         for (int i = 0; i < DBMS.getDBMS().customers.size(); i++) {
             if (DBMS.getDBMS().customers.get(i) == customer) {
                 return DBMS.getDBMS().customers.get(i).getGiftCards();

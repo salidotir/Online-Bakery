@@ -5,6 +5,7 @@
  */
 package online.bakery;
 
+import java.math.BigDecimal;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Date;
@@ -20,7 +21,6 @@ import online.bakery.sweets.Sweets;
  */
 public class Admin extends Account{
     private String username, password;
-    private final Wallet wallet;
     
     //Lazy Initialization with Double Lock
     private static Admin INSTANCE = null;
@@ -29,7 +29,6 @@ public class Admin extends Account{
         super.role = Role.ADMIN;
         this.username = "admin";
         this.password = "admin123";
-        this.wallet = new Wallet();
         DBMS.addNewAdmin(this, username, password);        
         Login.SignUp(username, password, Role.ADMIN); // for seting lastLoginDate and isLogedIn
     }
@@ -51,6 +50,13 @@ public class Admin extends Account{
             return Admin.getInstance().addDiscount(d);
         }else
             return false;
+    }
+    
+    public boolean payDiscount(BigDecimal cost){
+        PaymentType paymentType = Payment.howToPay();
+        Payment payment = new Payment(new Date(), cost, "Admin pays cost for discount", paymentType);
+        this.addPayment(payment);
+        return payment.pay(payment, this);
     }
     
     void setQuestions(List<String> questions){
@@ -119,6 +125,10 @@ public class Admin extends Account{
             return true;
         }else
             return false;
+    }
+    
+    public List<Payment> getPayment(Account account){
+        return DBMS.getDBMS(this).getPayment(account);
     }
     
     List<Customer> viewCustomers(){
@@ -316,7 +326,7 @@ public class Admin extends Account{
 
 
     }
-    public ArrayList<GiftCard>GetAllGiftCards(Customer customer){
+    public List<GiftCard>GetAllGiftCards(Customer customer){
         return DBMS.getDBMS(this).GetAllGiftCards(customer);
 
     }

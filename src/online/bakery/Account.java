@@ -6,6 +6,7 @@
 package online.bakery;
 
 import java.util.AbstractMap;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
@@ -28,14 +29,19 @@ abstract public class Account {
     private String Lastname; 
     private String username;
     private String password;
+    
     private String activeness;
     private boolean isLogedIn;
     private Date lastLoginTime;
+    private final Wallet wallet;
+    private List<Payment> payments;
     Role role;
     
     public Account() {
         this.ID = atomicInteger.incrementAndGet();
         this.dateCreated = new Date();
+        this.wallet = new Wallet();
+        this.payments = new ArrayList<>();
     }
 
     public int getID() {
@@ -84,6 +90,19 @@ abstract public class Account {
 
     public void setLastname(String Lastname) {
         this.Lastname = Lastname;
+    }
+       
+    public Wallet getWallet() {
+        return wallet;
+    }
+    
+    public boolean addPayment(Payment payment){
+        this.payments.add(payment);
+        return true;
+    }
+
+    public List<Payment> getPayments() {
+        return payments;
     }
     
     public String getProfile() {

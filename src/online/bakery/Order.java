@@ -140,11 +140,9 @@ public class Order {
     public boolean payOrder(String description){      
         if(orderStatus == OrderStatus.SET_DELIVERY){
             BigDecimal cost = this.getCost();
-//            System.out.println(cost);
-//            System.out.println(this.actuallCost);
-//            System.out.println(this.costWithDisocunt);
             PaymentType paymentType = Payment.howToPay();
             this.payment = new Payment(new Date(), cost, description, paymentType);
+            customer.addPayment(payment);
             boolean result = payment.pay(payment, this.customer);
             if(result){
                 orderStatus = OrderStatus.PAYED;
@@ -307,6 +305,14 @@ public class Order {
                 }
             }
         }
+        
+        System.out.println("___________________________Admin terminal______________________________");
+        BigDecimal payAdmin = cost;
+        payAdmin = payAdmin.subtract(newcost);
+        System.out.println("Diffrence Cost: ");
+        System.out.println(payAdmin);
+        Admin.getInstance().payDiscount(payAdmin);
+        System.out.println("___________________________Finish terminal_____________________________");
 //            System.out.println("Choose one of Admin discounts from above: ");
 //            Scanner sc = new Scanner(System.in);
 //            int choose = sc.nextInt();
@@ -347,7 +353,8 @@ public class Order {
             cost = cost.add(delivery.getTransferPrice());
         }
         this.actuallCost = cost;
-        return applyDiscount(cost);
+        this.costWithDisocunt = applyDiscount(cost);
+        return this.costWithDisocunt;
     }
     
     public String getOrderInformation(){
@@ -357,7 +364,7 @@ public class Order {
                 "order status: "+ this.orderStatus + "\n";
         if(orderStatus == OrderStatus.PAYED || orderStatus == OrderStatus.IN_PROGRESS || 
                 orderStatus == OrderStatus.DONE || orderStatus == OrderStatus.DELIVERED)
-            s += "cost: "+ this.getCost() + "\n";
+            s += "cost: "+ this.costWithDisocunt + "\n";
         else
             s += "cost: not ready yet\n";
         s += "expected delivery time: "+ this.expectedDeliveryTime + "\n";

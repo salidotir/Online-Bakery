@@ -16,21 +16,17 @@ import online.bakery.sweets.Sweets;
  * @author melika
  */
 public class Customer extends Account {
-    private final Wallet wallet;
     private List<Order> Orders = new ArrayList<Order>();
     private List<Sweets> designs = new ArrayList<Sweets>();
-    private ArrayList<GiftCard> GiftCards=new ArrayList<>();
-
+    private List<GiftCard> GiftCards = new ArrayList<>();
 
     public Customer(String username, String password) {
         super();
-        Wallet w = new Wallet();
-        this.wallet = w;
         super.SignUp(username, password, Role.CUSTOMER);
         Admin.getInstance().createCustomer(this);
     }
 
-    public ArrayList<GiftCard> GetAllGiftCards(){
+    public List<GiftCard> GetAllGiftCards(){
         return Admin.getInstance().GetAllGiftCards(this);
     }
 
@@ -38,7 +34,7 @@ public class Customer extends Account {
         GiftCards.add( giftCards);
     }
 
-    public ArrayList<GiftCard> getGiftCards() {
+    public List<GiftCard> getGiftCards() {
         return GiftCards;
     }
 
@@ -156,10 +152,6 @@ public class Customer extends Account {
         }
 
         return Admin.getInstance().SaveGiftCartForCustomer(customer, giftCard);
-    }
-
-    public Wallet getWallet() {
-        return wallet;
     }
 
     public void setOrder(Order Order) {

@@ -125,7 +125,7 @@ public class Payment {
         return s;
     }
     
-    public static Payment chargeWallet(Customer customer, String discreption) {
+    public static Payment chargeWallet(Account account, String discreption) {
         Scanner scan = new Scanner(System.in);
         System.out.println("How much do you want to charge your wallet: ");
         BigDecimal num = scan.nextBigDecimal();
@@ -133,7 +133,7 @@ public class Payment {
         
         Payment pay = new Payment(num, new Date(), discreption);
         if(Payment.payOnline(pay) == true) {
-            customer.getWallet().addAmount(num);
+            account.getWallet().addAmount(num);
             return pay;
         }
         return null;
@@ -153,9 +153,9 @@ public class Payment {
         return PaymentType.values()[num-1];
     }
     
-    public boolean pay(Payment pay, Customer customer) {
+    public boolean pay(Payment pay, Account account) {
         if(pay.getPaymentType() == PaymentType.FROM_WALLET) {
-            return this.payFromWallet(pay, customer);
+            return this.payFromWallet(pay, account);
         }
         else if(pay.getPaymentType() == PaymentType.PAY_ONLINE) {
             return this.payOnline(pay);
@@ -164,13 +164,13 @@ public class Payment {
         return false;
     }
     
-    private static boolean payFromWallet(Payment pay, Customer customer) {
-        int res = customer.getWallet().getAmount().compareTo(pay.paymentAmount);
+    private static boolean payFromWallet(Payment pay, Account account) {
+        int res = account.getWallet().getAmount().compareTo(pay.paymentAmount);
         // res == 0 -> both are equal
         // res == 1 -> wallet > pay amount
         // res == -1 -> pay amount > wallet
         if(res == 0 || res == 1) {
-            customer.getWallet().subtractAmount(pay.paymentAmount);
+            account.getWallet().subtractAmount(pay.paymentAmount);
             pay.setPaymentStatus(PaymentStatus.SUCCESSFUL);
             return true;
         }
