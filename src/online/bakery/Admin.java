@@ -179,6 +179,10 @@ public class Admin extends Account{
         return DBMS.getDBMS(this).addOrder(order);
     }
     
+    boolean updateOrder(Order order){
+        return DBMS.getDBMS(this).updateOrder(order);
+    }
+    
     boolean addVehicle(Vehicle vehicle) {
         return DBMS.getDBMS(this).addVehicle(vehicle);
     }

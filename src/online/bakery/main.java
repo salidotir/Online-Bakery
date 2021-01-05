@@ -14,17 +14,34 @@ import java.util.*;
 public class main {
     public static void main(String[] args) {
         // test4();
-        //test_multi_tiered();
-        test_GiftCard();
+//        test_multi_tiered();
+//        test_GiftCard();
 //        test1();
-//        test3();
+        test3();
 //        test2();
     }
     public static void test_GiftCard() {
+        Admin.getInstance().setQuestions(new ArrayList<String>());
         Customer c1 = new Customer("Sara","4444");
+        c1.setFirstname("sara");
+        c1.setLastname("limoe");
+        System.out.println(c1.getLastLogin());
         Customer c2 = new Customer("neg","4444");
-        c1.BuyGiftCardTo(c2);
+        
+        //checking toggle Activeness
+//        System.out.println(c1.getActiveness());
+//        Admin.getInstance().toggleActiveness(c1);
+//        System.out.println(c1.getActiveness());
 
+
+        c1.BuyGiftCardTo(c2);
+        System.out.println(c1.forgotPassword().getValue());
+//        c1.changePassword();
+        
+        c1.LogOut();
+        System.out.println(c1.forgotPassword());
+        c1.Login("Sara", "4444", Role.CUSTOMER);
+        System.out.println(c1.getLastLogin());
 
     }
     public static void test_multi_tiered() {
@@ -45,36 +62,16 @@ public class main {
     }
 
     // test vehicles and delivery system
-    /*private static void test4() {
+    private static void test4() {
         // create a list of employees
         Employee e1 = new Employee("salidotir", "4444", "Sara", "Limooee");
         Employee e2 = new Employee("hello", "1234", "firstname1", "lastname1");
         Employee e3 = new Employee("world", "5678", "firstname2", "lastname2");
-        Admin.getInstance().createEmploee(e1);
-        Admin.getInstance().createEmploee(e2);
-        Admin.getInstance().createEmploee(e3);
         
         // craete a list of vehicles
         Vehicle v1 = new Vehicle(VehicleType.MOTOR, "12M345");
         Vehicle v2 = new Vehicle(VehicleType.CAR, "89D3673");
         Vehicle v3 = new Vehicle(VehicleType.TRUCK, "34A300");
-        Admin.getInstance().addVehicle(v1);
-        Admin.getInstance().addVehicle(v2);
-        Admin.getInstance().addVehicle(v3);
-        
-        // create list of orders
-        Customer c = new Customer("Sara","4444");
-        
-        List<Sweets> sList1 = new ArrayList<Sweets>();
-        List<BirthdayItems> listitem1 = new ArrayList<BirthdayItems>();
-        Order o1 = c.createNewSweet(sList1, listitem1);
-
-//        List<Sweets> sList2 = new ArrayList<Sweets>();
-//        List<BirthdayItems> listitem2 = new ArrayList<BirthdayItems>();
-//        Order o2 = c.createNewSweet(sList2, listitem2);
-
-        Admin.getInstance().addOrder(o1);
-//        Admin.getInstance().addOrder(o2);
         
         // test delivery system
         DeliverySystem deliverySystem = DeliverySystem.getDeliverySystem();
@@ -82,7 +79,7 @@ public class main {
         System.out.println(deliverySystem.toStringGetOrderEmployeeMap());
         
         // sara is set to an order delivery employee
-        e1.deliverOrder(o1);
+//        e1.deliverOrder(o1);
         System.out.println(deliverySystem.toStringGetOrderEmployeeMap());
     }
     
@@ -101,13 +98,20 @@ public class main {
         ss.add(s2);
         
         ArrayList conf = new ArrayList<Confectioner>();
-        Bakery b1 = new Bakery("شب شیرینی","usermane","pass","علی","شریعتی","لحظات زندگی خود را با کمک ما شیرین کنید" , "07131111111" , "تاچارا");
-        System.out.printf(b1.getProfile());
+        Bakery b1 = new Bakery("شب شیرینی","usermane","pass","لحظات زندگی خود را با کمک ما شیرین کنید" , "07131111111" , "تاچارا");
+//        System.out.printf(b1.getProfile());
 
         Discount d1 = new Discount("تخفیف یلدایی" , 20 , new Date(1399,9,20),new Date(1399,10,1),b1.getID());
         b1.addDiscount(d1);
-
-        b1.addMenu(s1);
+        
+        Employee e1 = new Employee("salidotir", "4444", "Sara", "Limooee");
+        Employee e2 = new Employee("hello", "1234", "firstname1", "lastname1");
+        Employee e3 = new Employee("world", "5678", "firstname2", "lastname2");
+        
+        // craete a list of vehicles
+        Vehicle v1 = new Vehicle(VehicleType.MOTOR, "12M345");
+        Vehicle v2 = new Vehicle(VehicleType.CAR, "89D3673");
+        Vehicle v3 = new Vehicle(VehicleType.TRUCK, "34A300");
         
         Customer c = new Customer("melika","1234");
         
@@ -118,9 +122,7 @@ public class main {
 
         sList.add(s1);
         stList.add(SweetType.READY);
-        
-        Employee emp = new Employee("mzm","pass1234","mohammad", "zare");
-        
+                
         List<BirthdayItems> listitem = new ArrayList<BirthdayItems>();
         Candle candle = new Candle("happy",  new BigDecimal(1000), "123", "red");
         Order o1 = c.createNewSweet(sList, listitem);
@@ -130,15 +132,17 @@ public class main {
             result = o1.finalizedOrder();
             if(!result)
                 break;
-            result = o1.chooseBaker(b1);
+            AbstractMap.SimpleEntry res = o1.chooseBaker(b1, stList);
+            result = (boolean)res.getKey();
             if(!result)
                 break;
-            List<ConfectionerStatus> cs1 = b1.sweetToOrder(sList,stList,candle,c);
+            
+            List<ConfectionerStatus> cs1 =(List<ConfectionerStatus>) res.getValue();
             ConfectionerStatus s = o1.getConfirmBaker(cs1);
             if (s == ConfectionerStatus.ACCEPT){
                 c.setAddress("ملاصدرا دانشکده کامپیوتر");
                 
-                AbstractMap.SimpleEntry res = o1.setDelivery();
+                res = o1.setDelivery();
                 result = (boolean)res.getKey();
                 System.out.println(res.getValue());
                 if(!result)                    
@@ -146,26 +150,37 @@ public class main {
                 result = o1.payOrder("paying order o1");
                 if(!result)                    
                     break;
-                result = o1.setBakerStatus();
+                result = o1.setBakerStatus(stList);
                 if(!result)                    
                     break;
-//                b1.addOrder(o1, stList);
                 result = o1.callDelivery();
                 if(!result)                    
                     break;
-                result = o1.finishOrder();
-                if(!result)                    
-                    break;
-                for(Sweets sweet: o1.getSweets()){
-                    o1.addScore(sweet, Rate.FIVE);
-                }
+                DeliverySystem deliverySystem = DeliverySystem.getDeliverySystem();
+                deliverySystem.assignEmployeesToOrder();
+                e1.deliverOrder(o1);
+//                System.out.println(deliverySystem.toStringGetOrderEmployeeMap());
+//                
+//                for(Order order: Admin.getInstance().getOrders()){
+//                    System.out.println(order.getOrderInformation());
+//                    System.out.println(order.getDelivery().getDeliveryInformation());
+//                }
+                System.out.println("--------");
                 System.out.println(o1.getOrderInformation());
+                System.out.println(o1.getDelivery().getDeliveryInformation());
+                
+                if(o1.getOrderStatus() == OrderStatus.DELIVERED){
+                    for(Sweets sweet: o1.getSweets()){
+                        o1.addScore(sweet, Rate.FOUR);
+                    }
+                    System.out.println(o1.getOrderInformation());
+                }
             }
         }
         
     }
     
-   */
+   
     // test2 -> test note & payment & delivery
     /*private static void test2() {
         ArrayList<Sweets> ss = new ArrayList<Sweets>();

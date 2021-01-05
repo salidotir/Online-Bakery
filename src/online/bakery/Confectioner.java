@@ -37,7 +37,7 @@ public interface Confectioner {
     List<Sweets> getOrderSweets();
     boolean deleteOrderSweet(Sweets sweet);
 
-
+    boolean addOrder(Order order, List<SweetType> s);
 
 
 

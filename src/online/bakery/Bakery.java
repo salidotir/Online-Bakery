@@ -192,7 +192,6 @@ public class Bakery extends Account implements Confectioner {
 
     public boolean addOrder(Order order, List<SweetType> s) {
         //this.orderList.add(order);
-        boolean b = Admin.getInstance().addOrder(order);
         //List<Sweets> sweet = new ArrayList<Sweets>(order.getSweets());
         List<BirthdayItems> item = order.getItems();
         for (int i = 0; i < s.size(); i++) {
@@ -206,7 +205,7 @@ public class Bakery extends Account implements Confectioner {
         for (int i = 0; i < item.size(); i++) {
             Admin.getInstance().decreaseBirthdayItemNumber(this, order.getItems().get(i), 1);
         }
-        return b;
+        return true;
     }
 
 
@@ -285,7 +284,8 @@ public class Bakery extends Account implements Confectioner {
 
     @Override
     public String getProfile() {
-        String bakeryP = name + "\n" + description + "\n" + super.getProfile() + "Score : " + Admin.getInstance().getScoreBaker(this) + "/5 + \n";
+        String bakeryP = name + "\n" + description + "\n" + super.getProfile()+
+                "Score : " + Admin.getInstance().getScoreBaker(this) + "/5";
         return bakeryP;
     }
 

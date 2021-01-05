@@ -94,7 +94,7 @@ public class DeliveryInformation {
         s = "**Delivery information**\n" + 
                 "delivery id: " + this.getDeliveryId() + "\n" +
                 "delivery address: " + this.deliveryAddress + "\n" +
-                "delivery time: " + formatter.format(this.deliveryTime) + "\n";
+                "expected delivery time: " + formatter.format(this.deliveryTime) + "\n";
         if(this.actualDeliveryTime == null) {
             s += "actual delivery time: 'not delivered yet'" + "\n";
         }

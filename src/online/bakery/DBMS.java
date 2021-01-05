@@ -402,9 +402,9 @@ public class DBMS {
             return false;
         }else{
             DBMS.getDBMS().bakers.add(baker);
-            DBMS.getDBMS().bakerOrderSweetMap.put(bakery.getID(), new ArrayList<Sweets>());
-            DBMS.getDBMS().bakerReadySweetMap.put(bakery.getID(), new ArrayList<Pair<Sweets, Integer>>());
-            DBMS.getDBMS().bakerBirthdayItemsMap.put(bakery.getID(), new ArrayList<Pair<BirthdayItems, Integer>>());
+            DBMS.getDBMS().bakerOrderSweetMap.put(baker.getID(), new ArrayList<Sweets>());
+            DBMS.getDBMS().bakerReadySweetMap.put(baker.getID(), new ArrayList<Pair<Sweets, Integer>>());
+            DBMS.getDBMS().bakerBirthdayItemsMap.put(baker.getID(), new ArrayList<Pair<BirthdayItems, Integer>>());
             int index = DBMS.getDBMS().bakers.indexOf(baker);
             DBMS.getDBMS().bakers.get(index).setActiveness("Active");
             return true;
@@ -532,6 +532,15 @@ public class DBMS {
     public boolean addOrder(Order order) {
         DBMS.getDBMS().orders.add(order);
         return true;
+    }
+    
+    public boolean updateOrder(Order order){
+        if(DBMS.getDBMS().orders.contains(order)){
+            int index = DBMS.getDBMS().orders.indexOf(order);
+            DBMS.getDBMS().orders.set(index, order);
+            return true;
+        }else
+            return false;
     }
     
     public boolean setOrderFinish(int orderId, Date actuallDelivery){

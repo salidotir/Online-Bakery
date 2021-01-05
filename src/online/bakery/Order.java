@@ -36,6 +36,7 @@ public class Order {
         this.items = items;
         this.expectedDeliveryTime = expectedDeliveryTime;
         this.orderStatus = OrderStatus.ORDERING_BY_CUSTOMER;
+        Admin.getInstance().addOrder(this);
     }
     
     public boolean SweetaddtoOrder(Sweets Sweet){
@@ -81,14 +82,14 @@ public class Order {
             return false;
     }
     
-    public boolean chooseBaker(Confectioner staff){
+    public AbstractMap.SimpleEntry chooseBaker(Confectioner staff, List<SweetType> s){
         if(orderStatus == OrderStatus.FINALIZED_BY_CUSTOMER){
             this.Staff = staff;
-            //notify baker
+            List<ConfectionerStatus> cs = staff.acceptOrder(this, s);
             orderStatus = OrderStatus.PENDING_CHOSEN_BAKER;
-            return true;
+            return new AbstractMap.SimpleEntry(true, cs);
         }else
-            return false;
+            return new AbstractMap.SimpleEntry(false, null);
     }
     
     public ConfectionerStatus getConfirmBaker(List<ConfectionerStatus> acceptness){
@@ -145,9 +146,10 @@ public class Order {
             return false;
     }
     
-    public boolean setBakerStatus(){
+    public boolean setBakerStatus(List<SweetType> s){
         if(orderStatus == OrderStatus.PAYED){
             orderStatus = OrderStatus.IN_PROGRESS;
+            this.Staff.addOrder(this, s);
             return true;
         }else
             return false;
@@ -274,14 +276,16 @@ public class Order {
     
     public String getOrderInformation(){
         String s;
-        s = "Order information:\n" +
+        s = "____________Order information:______________\n" +
                 "order id: " + this.orderId + "\n" +
                 "order status: "+ this.orderStatus + "\n" +
                 "expected delivery time: "+ this.expectedDeliveryTime + "\n"+
                 "actuall delivery time: "+ this.delivery.getActualDeliveryTime() + "\n"+
+                "****************\n"+
                 "coefectioner profile: " + this.Staff.getProfile() + "\n" +
                 "****************\n"+
-                "customer id: " + this.customer.getID() + "\n" +
+                "customer profile: \n" + this.customer.getProfile() +
+                "****************\n"+
                 "payment status: " + this.payment.getPaymentStatus() + "\n" +
                 "____________________________\n";
         return s;
