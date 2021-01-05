@@ -371,12 +371,22 @@ public class DBMS {
     }
 
     public boolean addBakery(Bakery bakery) {
-        DBMS.getDBMS().bakeries.add(bakery);
-        return true;
+        if (DBMS.getDBMS().bakeries.contains(bakery)) {          
+            return false;
+        }else{
+            DBMS.getDBMS().bakeries.add(bakery);
+            DBMS.getDBMS().bakerOrderSweetMap.put(bakery.getID(), new ArrayList<Sweets>());
+            DBMS.getDBMS().bakerReadySweetMap.put(bakery.getID(), new ArrayList<Pair<Sweets, Integer>>());
+            DBMS.getDBMS().bakerBirthdayItemsMap.put(bakery.getID(), new ArrayList<Pair<BirthdayItems, Integer>>());
+            int index = DBMS.getDBMS().bakeries.indexOf(bakery);
+            DBMS.getDBMS().bakeries.get(index).setActiveness("Active");
+            return true;
+        }
     }
 
     public boolean removeBakery(Bakery bakery) {
-        DBMS.getDBMS().bakeries.remove(bakery);
+        int index = DBMS.getDBMS().bakeries.indexOf(bakery);
+        DBMS.getDBMS().bakeries.get(index).setActiveness("Inactive");
         return true;
     }
 
@@ -388,12 +398,22 @@ public class DBMS {
     }
 
     public boolean addBaker(Person baker) {
-        DBMS.getDBMS().bakers.add(baker);
-        return true;
+        if (DBMS.getDBMS().bakers.contains(baker)) {          
+            return false;
+        }else{
+            DBMS.getDBMS().bakers.add(baker);
+            DBMS.getDBMS().bakerOrderSweetMap.put(bakery.getID(), new List<Sweets>());
+            DBMS.getDBMS().bakerReadySweetMap.put(bakery.getID(), new List<Pair<Sweets, Integer>>());
+            DBMS.getDBMS().bakerBirthdayItemsMap.put(bakery.getID(), new List<Pair<BirthdayItems, Integer>>());
+            int index = DBMS.getDBMS().bakers.indexOf(baker);
+            DBMS.getDBMS().bakers.get(index).setActiveness("Active");
+            return true;
+        }
     }
 
     public boolean removeBaker(Person baker) {
-        DBMS.getDBMS().bakers.remove(baker);
+        int index = DBMS.getDBMS().bakers.indexOf(baker);
+        DBMS.getDBMS().bakers.get(index).setActiveness("Inactive");
         return true;
     }
 
@@ -478,12 +498,19 @@ public class DBMS {
     }
 
     public boolean addEmployee(Employee employee) {
-        DBMS.getDBMS().employees.add(employee);
-        return true;
+        if (DBMS.getDBMS().employees.contains(employee)) {          
+            return false;
+        }else{
+            DBMS.getDBMS().employees.add(employee);
+            int index = DBMS.getDBMS().employees.indexOf(employee);
+            DBMS.getDBMS().employees.get(index).setActiveness("Active");
+            return true;
+        }
     }
 
     public boolean removeEmployee(Employee employee) {
-        DBMS.getDBMS().employees.remove(employee);
+        int index = DBMS.getDBMS().employees.indexOf(employee);
+        DBMS.getDBMS().employees.get(index).setActiveness("Inactive");
         return true;
     }
 
@@ -835,13 +862,16 @@ public class DBMS {
         List<Sweets> listO = DBMS.getDBMS().bakerOrderSweetMap.get(bakerId);
         for (int i = 0; i < listO.size(); i++) {
             if (listO.get(i).getSweetId() != 0) {
-                sumScore += listR.get(i).getKey().getScore();
+                sumScore += listO.get(i).getScore();
                 numSweet += 1;
             }
         }
-        double score = sumScore / numSweet;
+        double score;
+        if(numSweet != 0){
+            score = sumScore / numSweet;
+        }else
+            score = 0;
         return score;
-
     }
 
 
