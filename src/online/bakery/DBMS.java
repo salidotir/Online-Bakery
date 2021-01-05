@@ -593,7 +593,22 @@ public class DBMS {
 
     // key -> <Order, Integer>
     // value -> <List<Employee>, Vehicle>
-    public boolean addItemToOrderEmployeeMap(Pair key, Pair value) {
+    public boolean addItemToOrderEmployeeMap(Pair<Order, Integer> key, Pair<List<Employee>, Vehicle> value) {
+        // set isBusy of both employees & vehicle of this order-delivery true
+        // set employees isBusy true
+        int size = value.getKey().size();
+        for (int i = 0; i < size; i++) {
+            value.getKey().get(i).setIsBusy(true);
+            Employee e = value.getKey().get(i);
+            DBMS.getDBMS().setEmployeeIsBusyTrue(e);
+        }
+
+        // set vehicle isBusy -> true
+        value.getValue().setIsBusy(true);
+        Vehicle v = value.getValue();
+        DBMS.getDBMS().setVehicleIsBusyTrue(v);
+        
+        // add this order-delivery to database
         DBMS.getDBMS().orderEmployeeMap.put(key, value);
         return true;
     }
@@ -610,7 +625,9 @@ public class DBMS {
                 // set order status delivered
                 entry.getKey().getKey().finishOrder();
                 Order o = entry.getKey().getKey();
-                DBMS.getDBMS().setOrderStatusDelivered(o);
+                //DBMS.getDBMS().setOrderStatusDelivered(o);
+                int index = DBMS.getDBMS().orders.indexOf(o);
+                DBMS.getDBMS().orders.get(index).finishOrder();
 
                 // set employees isBusy false
                 int size = entry.getValue().getKey().size();
