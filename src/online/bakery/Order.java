@@ -29,6 +29,7 @@ public class Order {
     private DeliveryInformation delivery = null;
     private BigDecimal actuallCost;
     private BigDecimal costWithDisocunt;
+    private BigDecimal costWithGiftCard;
     private Discount discount = null;
     private Discount discountFirstOrder = null;
     
@@ -271,9 +272,8 @@ public class Order {
         String s;
         if( orderStatus == OrderStatus.PAYED){
             s = "Cost before discount: "+ this.actuallCost + "\n"+
-                this.discount.getDiscountInformation()+"\n"+
-                "******************\n" +
-                "Cost with discount: " + this.costWithDisocunt;
+                "Cost with discount: " + this.costWithDisocunt + "\n" +
+                "Cost with Gift Card"+ this.costWithGiftCard + "\n";
             return s;
         }else
             return "You should first pay your order.";
@@ -355,6 +355,40 @@ public class Order {
         return newcost;
     }
 
+    private BigDecimal applyGiftCard(BigDecimal cost){
+        BigDecimal newcost = cost;
+        List<GiftCard> giftCards = customer.getGiftCards();
+        if(giftCards.size() > 0){
+            System.out.println("____Gift Cards___\nActuall Cost: ");
+            System.out.println(this.actuallCost);
+            if (this.costWithDisocunt.compareTo(this.actuallCost) != 0){
+                System.out.println("Cost after discount: ");
+                System.out.println(this.costWithDisocunt);
+                System.out.println("\n");
+            }
+        }
+        int i = 1;
+        for(GiftCard gift: customer.getGiftCards()){
+            System.out.print("number ");
+            System.out.print(i);
+            System.out.println(": ");
+            System.out.println(gift.GiftCardInformation());
+            System.out.println("**************\n");
+        }
+        
+        if(giftCards.size() > 0){
+            System.out.println("Choose one of gift cards from above: ");
+            Scanner sc = new Scanner(System.in);
+            int choose = sc.nextInt();
+            GiftCard chosen = giftCards.get(choose - 1);
+            newcost = newcost.subtract(chosen.getPrice());
+            System.out.println("Cost after subtracting: ");
+            System.out.println(newcost);
+            System.out.println("\n");
+        }
+        return newcost;
+    }
+    
     public BigDecimal getCost(){
         BigDecimal cost = new BigDecimal(0);
         for (Sweets i : sweet_score.keySet()) {
@@ -368,7 +402,8 @@ public class Order {
         }
         this.actuallCost = cost;
         this.costWithDisocunt = applyDiscount(cost);
-        return this.costWithDisocunt;
+        this.costWithGiftCard = applyGiftCard(this.costWithDisocunt);
+        return this.costWithGiftCard;
     }
     
     public String getOrderInformation(){
@@ -378,7 +413,7 @@ public class Order {
                 "order status: "+ this.orderStatus + "\n";
         if(orderStatus == OrderStatus.PAYED || orderStatus == OrderStatus.IN_PROGRESS || 
                 orderStatus == OrderStatus.DONE || orderStatus == OrderStatus.DELIVERED)
-            s += "cost: "+ this.costWithDisocunt + "\n";
+            s += "cost: "+ this.costWithGiftCard + "\n";
         else
             s += "cost: not ready yet\n";
         s += "expected delivery time: "+ this.expectedDeliveryTime + "\n";

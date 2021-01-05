@@ -122,6 +122,9 @@ public class main {
         Vehicle v3 = new Vehicle(VehicleType.TRUCK, "34A300");
         
         Customer c = new Customer("melika","1234");
+        Customer c2 = new Customer("neg","4444");
+        
+        c2.BuyGiftCardTo(c);
         
         List<Sweets> sList = new ArrayList<Sweets>();
         List<SweetType> stList = new ArrayList<SweetType>();

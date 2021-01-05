@@ -26,6 +26,17 @@ public class GiftCard {
                 ", Note='" + Note + '\'' +
                 '}';
     }
+    
+    public String GiftCardInformation(){
+        String s = "_________GiftCard information___________\n" +
+                "From: " + from.getUsername()+ "\n" +
+                "Owner: " + Owner.getUsername() + "\n" +
+                "Price: " + Price + "\n";
+        if(!Note.isEmpty())
+            s += "Note: " + Note + "\n" ;
+        
+        return s;
+    }
 
     public BigDecimal getPrice() {
         return Price;

@@ -39,9 +39,7 @@ public class Customer extends Account {
     }
 
     public void ShowReceivedGiftCard(GiftCard giftCard) {
-        System.out.println(giftCard.toString());
-
-
+        System.out.println(giftCard.GiftCardInformation());
     }
 
     public List<Pair<Sweets, Integer>> getSweetsFromConfectioner(Confectioner confectioner) {
@@ -154,7 +152,7 @@ public class Customer extends Account {
         return Admin.getInstance().SaveGiftCartForCustomer(customer, giftCard);
     }
 
-    public void setOrder(Order Order) {
+    public void addOrder(Order Order) {
         this.Orders.add(Order);
     }
 
@@ -179,7 +177,7 @@ public class Customer extends Account {
 
     public boolean SweetaddtoOrder(Sweets sweet, Order order) {
         if (this.Orders.contains(order)) {
-            return this.Orders.get(this.Orders.lastIndexOf(order)).SweetaddtoOrder(sweet);
+            return this.Orders.get(this.Orders.indexOf(order)).SweetaddtoOrder(sweet);
         } else
             return false;
     }
@@ -187,4 +185,9 @@ public class Customer extends Account {
     public void addtoDesigns(Sweets sweet) {
         designs.add(sweet);
     }
+
+    public List<Sweets> getDesigns() {
+        return designs;
+    }
+    
 }
