@@ -44,8 +44,14 @@ public class Employee extends Account{
         return this.numOfPeopleWhoScored;
     }
     
+    public boolean recievOrder(Order order) {
+        // this employee is assinged to a delivery
+        this.setIsBusy(true);
+        return true;
+    }
+    
     public boolean deliverOrder(Order order) {
-        // call setEmployeeIsBusyFalse() of DBMS from Admin
+        this.setIsBusy(false);
         order.finishOrder();
         return true;
     }
