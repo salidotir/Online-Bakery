@@ -281,10 +281,13 @@ public class Order {
     
     private BigDecimal applyDiscount(BigDecimal cost){
         BigDecimal newcost = cost;
+        Discount victoryDiscount = null;
         List<Discount> listAdmin = Admin.getInstance().getActiveDiscount(Admin.getInstance().getID());
         if(listAdmin.size() > 0){
             System.out.println("____Our App discount___\nActuall Cost: ");
             System.out.println(this.actuallCost);
+
+            victoryDiscount = listAdmin.get(0);
         }
         for(Discount discount: listAdmin){           
             if(discount.useDiscount()){
@@ -292,18 +295,20 @@ public class Order {
                 System.out.println("***************\n");
                 if(discount.getName().equals("تخفیف اولین سفارش در اپ ما") &&
                         Admin.getInstance().firstOrder(customer)){
-                    newcost = newcost.multiply(new BigDecimal(100 - discount.getPercent()));
-                    newcost = newcost.divide(new BigDecimal(100));
-                    System.out.println("Cost after dicount: ");
-                    System.out.println(newcost);
+                    victoryDiscount = discount;
+                    break;
                 }else{
-                    newcost = newcost.multiply(new BigDecimal(100 - discount.getPercent()));
-                    newcost = newcost.divide(new BigDecimal(100));
-                    System.out.println("Cost after discount: ");
-                    System.out.println(newcost);
-                    System.out.println("\n");
-                }
-            }
+                    if(discount.getPercent() > victoryDiscount.getPercent()){
+                        victoryDiscount = discount;
+                    }
+                }    
+            }           
+        }
+        if(victoryDiscount != null){
+            newcost = newcost.multiply(new BigDecimal(100 - victoryDiscount.getPercent()));
+            newcost = newcost.divide(new BigDecimal(100));
+            System.out.println("Cost after discount: ");
+            System.out.println(newcost);
         }
         
         System.out.println("___________________________Admin terminal______________________________");
@@ -318,20 +323,29 @@ public class Order {
 //            int choose = sc.nextInt();
 //            Discount discount = listAdmin.get(choose - 1);
         
+        victoryDiscount = null;
         List<Discount> list = Admin.getInstance().getActiveDiscount(Staff.getID());
-        if(list.size() > 0)
-            System.out.println("Bakery discount");
-        for(Discount discount: list){
-            
+        if(list.size() > 0){
+            System.out.println("____Bakery discount___\nActuall Cost: ");
+            System.out.println(this.actuallCost);
+
+            victoryDiscount = listAdmin.get(0);
+        }
+        for(Discount discount: list){            
             if(discount.useDiscount()){
                 System.out.println(discount.getDiscountInformation());
                 System.out.println("***************\n");
-                newcost = newcost.multiply(new BigDecimal(100 - discount.getPercent()));
-                newcost = newcost.divide(new BigDecimal(100));
-                System.out.println("Cost after discount: ");
-                System.out.println(newcost);
-                System.out.println("\n");
+                if(discount.getPercent() > victoryDiscount.getPercent()){
+                    victoryDiscount = discount;
+                }
             }
+        }
+        if(victoryDiscount != null){
+            newcost = newcost.multiply(new BigDecimal(100 - victoryDiscount.getPercent()));
+            newcost = newcost.divide(new BigDecimal(100));
+            System.out.println("Cost after discount: ");
+            System.out.println(newcost);
+            System.out.println("\n");
         }
 //        System.out.println("Choose one of discounts from above: ");
 //        Scanner sc = new Scanner(System.in);
