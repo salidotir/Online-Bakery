@@ -54,21 +54,34 @@ public class DeliverySystem {
     // if sum of totalGram of orders/order > 10KG                   -> vehicle : TRUCK
     
     // ** for now, just assign each order, the first free employee **
+    // if customers has to wait to reciev order, it returns false
     public boolean assignEmployeesToOrder() {
+        boolean test = true;
         for (Order ord : DeliverySystem.getDeliverySystem().orderQueue) {
             List<Employee> lst = new ArrayList<>();
             Employee e = Admin.getInstance().getFirstFreeEmployee();
-            lst.add(e);
-            Vehicle v = Admin.getInstance().getFirstFreeVehicle();
-            // set isbusy of employees & vehicle true
-            // add new order-delivery item to database
-            Admin.getInstance().addItemToOrderEmployeeMap(new Pair(ord.getOrderId(), new Integer(0)), new Pair(lst, v));
-            // update DeliverySystem map
-            DeliverySystem.getDeliverySystem().orderEmployeeMap = Admin.getInstance().getOrderEmployeeMap();
+            if (e != null) {
+                lst.add(e);
+                Vehicle v = Admin.getInstance().getFirstFreeVehicle();
+                if (v != null){
+                    // set isbusy of employees & vehicle true
+                    // add new order-delivery item to database
+                    Admin.getInstance().addItemToOrderEmployeeMap(new Pair(ord.getOrderId(), new Integer(0)), new Pair(lst, v));
+                    // update DeliverySystem map
+                    DeliverySystem.getDeliverySystem().orderEmployeeMap = Admin.getInstance().getOrderEmployeeMap();
+                }
+                else{
+                    test = false;
+                }
+            }
+            else{
+                test = false;
+            }
         }
         
-        return true;
+        return test;
     }
+    
 
     // all orders are sent to a queue and then are assigned an employee & vehicle to be delivered.
     public boolean addOrderToOrderQueue(Order order) {
