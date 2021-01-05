@@ -181,6 +181,7 @@ public class Customer extends Account {
     public Order createNewSweet(List<Sweets> sweetlist, List<BirthdayItems> items) {
         Order order = new Order(this, sweetlist, items, new Date());
         this.Orders.add(order);
+        Admin.getInstance().addOrder(order);
         return order;
     }
 

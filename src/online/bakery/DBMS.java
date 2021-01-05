@@ -290,14 +290,6 @@ public class DBMS {
     }
 
     //~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~ 
-    // functions to change some fields later in lists
-
-    // set order status delivered in list
-    public boolean setOrderStatusDelivered(Order order) {
-        int index = DBMS.getDBMS().orders.indexOf(order);
-        DBMS.getDBMS().orders.get(index).finishOrder();
-        return true;
-    }
 
     // set actual delivery time for a specific order in delivery information list
     public boolean setActualDeliveryTime(Order order, Date actualDeliveryTime) {

@@ -46,7 +46,7 @@ public class Employee extends Account{
     
     public boolean deliverOrder(Order order) {
         // call setEmployeeIsBusyFalse() of DBMS from Admin
-        Admin.getInstance().deliverOrder(order);
+        order.finishOrder();
         return true;
     }
     
