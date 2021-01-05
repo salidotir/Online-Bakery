@@ -19,17 +19,17 @@ public class Order {
     
     private final Customer customer;
     private final int orderId;
-    static AtomicInteger atomicInteger = new AtomicInteger(2);
+    static AtomicInteger atomicInteger = new AtomicInteger(0);
     private Map<Sweets,Rate > sweet_score = new HashMap<Sweets,Rate>(); ;  
     private List<BirthdayItems> items;
     private Confectioner Staff;
     private Payment payment;
     private Date expectedDeliveryTime;
+    private Date actualDeliveryTime;
     private DeliveryInformation delivery = null;
     
     public Order(Customer customer, List<Sweets> Sweets, List<BirthdayItems> items, Date expectedDeliveryTime) {
         this.customer = customer;
-        atomicInteger.incrementAndGet();
         this.orderId = atomicInteger.incrementAndGet();
         for(Sweets s: Sweets){
             sweet_score.put(s, null);
@@ -157,13 +157,14 @@ public class Order {
     public boolean callDelivery(){
         if(orderStatus == OrderStatus.IN_PROGRESS){
             orderStatus = OrderStatus.DONE;
-            // notify delivery
+            DeliverySystem.getDeliverySystem().addOrderToOrderQueue(this);
             return true;
         }else
             return false;
     }
     
     public boolean finishOrder(){
+        System.out.println("finish");
         if(orderStatus == OrderStatus.DONE){
             orderStatus = OrderStatus.DELIVERED;
             return true;
@@ -228,7 +229,7 @@ public class Order {
         String s;
         String sweet = null , item = null , delivery = null;
         if (this.delivery != null){
-            delivery = this.delivery.transferPrice.toString();
+            delivery = this.delivery.getTransferPrice().toString();
         }
         for (Sweets i : sweet_score.keySet()) {
             sweet += i.getDescription();
@@ -258,14 +259,14 @@ public class Order {
             cost = cost.add(b.getCost());
         }
         if(delivery != null){
-            cost = cost.add(delivery.transferPrice);
+            cost = cost.add(delivery.getTransferPrice());
         }
         return cost;
     }
     
     public String getOrderInformation(){
         String s;
-        s = "Order nformation:\n" +
+        s = "Order information:\n" +
                 "order id: " + this.orderId + "\n" +
                 "order status: "+ this.orderStatus + "\n" +
                 "coefectioner profile: " + this.Staff.getProfile() + "\n" +

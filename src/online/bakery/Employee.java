@@ -49,10 +49,11 @@ public class Employee extends Account{
         this.setIsBusy(true);
         return true;
     }
-    
+
     public boolean deliverOrder(Order order) {
         this.setIsBusy(false);
         order.finishOrder();
+        Admin.getInstance().deliverOrder(order);
         return true;
     }
     
