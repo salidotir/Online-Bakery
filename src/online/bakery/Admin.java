@@ -121,7 +121,11 @@ public class Admin extends Account{
     }
     
     boolean createBakery (Bakery baker){
-        return DBMS.getDBMS(this).addBakery(baker);
+        if (DBMS.getDBMS(this).addBakery(baker)){
+            baker.setActiveness("Active");
+            return true;
+        }else
+            return false;
     }
     
     List<Bakery> viewBakery(){
@@ -129,11 +133,16 @@ public class Admin extends Account{
     }
     
     boolean deleteBakery (Bakery baker){
+        baker.setActiveness("Inactive");
         return DBMS.getDBMS(this).removeBakery(baker);
     }
     
     boolean createPerson (Person person){
-        return DBMS.getDBMS(this).addBaker(person);
+        if (DBMS.getDBMS(this).addBaker(person)){
+            person.setActiveness("Active");
+            return true;
+        }else
+            return false;
     }
     
     List<Person> viewPerson(){
@@ -141,6 +150,7 @@ public class Admin extends Account{
     }
     
     boolean deletePerson(Person person){
+        person.setActiveness("Inactive");
         return DBMS.getDBMS(this).removeBaker(person);
     }
     
