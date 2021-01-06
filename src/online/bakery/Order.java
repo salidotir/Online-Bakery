@@ -493,4 +493,21 @@ public class Order {
             return baker.getID();
         return -1;
     }
+    
+    //~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.
+    
+    // this function is called on the order by deliverySystem to notify the order that is going to be delivered now.
+    // or the order must wait.
+    public boolean isAvailableToShip(boolean isAvailable) {
+        // order can be shipped now
+        if (isAvailable == true) {
+            System.out.println("Order with id " + this.orderId + " is going to be shipped right now.");
+        }
+        // order must wait for shipping
+        else if(isAvailable == false) {
+            System.out.println("Order with id " + this.orderId + " must wait for shipping.");            
+        }
+        return isAvailable;
+    }
+    
 }
