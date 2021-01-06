@@ -59,6 +59,17 @@ public class Employee extends Account{
         return true;
     }
     
+    public boolean ruineOrder(Order order) {
+        this.setIsBusy(false);
+        order.ruinByEmployee();
+        Admin.getInstance().ruinOrder(order);
+        
+        // employee must pay the loss
+        // To be completed //
+        
+        return true;
+    }
+    
     public boolean addNote(Note note, String extraText) {
         if (this.getID() == note.getNoteEmployeeId()) {
             note.setNoteEmployeeText(extraText);
