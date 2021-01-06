@@ -20,14 +20,15 @@ public class DeliverySystem {
     
     // map -> order, order priority, list of employees, vehicle
     // default -> order priorority of all orders is set to 0.
-    private Map<Pair<Integer, Integer>, Pair<List<Employee>, Vehicle>> orderEmployeeMap;       // map order <-> list of employees
+    // map order <-> list of employees -> stores in database
+    //private Map<Pair<Integer, Integer>, Pair<List<Employee>, Vehicle>> orderEmployeeMap;
     private List<Order> orderQueue;                                                          // list of orders to be assigned employees
     private List<Vehicle> vehicles;
     
     private DeliverySystem() {
-        this.orderQueue = Admin.getInstance().getOrders();
+        this.orderQueue = new ArrayList<>();
         this.vehicles = Admin.getInstance().getVehicles();
-        this.orderEmployeeMap = Admin.getInstance().getOrderEmployeeMap();
+//        this.orderEmployeeMap = Admin.getInstance().getOrderEmployeeMap();
     }
     
     public static DeliverySystem getDeliverySystem() {
@@ -57,6 +58,8 @@ public class DeliverySystem {
     // if customers has to wait to reciev order, it returns false
     public boolean assignEmployeesToOrder() {
         boolean test = true;
+        List<Order> shippedOrders = new ArrayList<>();
+        
         for (Order ord : DeliverySystem.getDeliverySystem().orderQueue) {
             List<Employee> lst = new ArrayList<>();
             Employee e = Admin.getInstance().getFirstFreeEmployee();
@@ -64,11 +67,11 @@ public class DeliverySystem {
                 lst.add(e);
                 Vehicle v = Admin.getInstance().getFirstFreeVehicle();
                 if (v != null){
+                    // notify employee to ship the order
+                    e.recievOrder(ord);
                     // set isbusy of employees & vehicle true
                     // add new order-delivery item to database
                     Admin.getInstance().addItemToOrderEmployeeMap(new Pair(ord.getOrderId(), new Integer(0)), new Pair(lst, v));
-                    // update DeliverySystem map
-                    DeliverySystem.getDeliverySystem().orderEmployeeMap = Admin.getInstance().getOrderEmployeeMap();
                 }
                 else{
                     test = false;
@@ -77,6 +80,18 @@ public class DeliverySystem {
             else{
                 test = false;
             }
+            
+            // if order is goint to be delivered now, remove it from list of orders to be delivered.
+            if (test == true) {
+                shippedOrders.add(ord);
+            }
+            // notify order if it can be delivered now or not.
+            ord.isAvailableToShip(test);
+        }
+        
+        // remove shippedOrders from Order Queue list
+        for (Order o:shippedOrders) {
+            deliverySystem.orderQueue.remove(o);
         }
         
         return test;
@@ -90,19 +105,19 @@ public class DeliverySystem {
     }
 
     /**
-     * @return the orderEmployeeMap
+     * @return the orderEmployeeMap got from dbms
      */
     public Map<Pair<Integer, Integer>, Pair<List<Employee>, Vehicle>> getOrderEmployeeMap() {
-        return orderEmployeeMap;
+        return Admin.getInstance().getOrderEmployeeMap();
     }
 
     /**
      * @param OrderEmployeeMap the orderEmployeeMap to set
      */
-    public boolean setOrderEmployeeMap(Map<Pair<Integer, Integer>, Pair<List<Employee>, Vehicle>> OrderEmployeeMap) {
-        orderEmployeeMap = OrderEmployeeMap;
-        return true;
-    }
+//    public boolean setOrderEmployeeMap(Map<Pair<Integer, Integer>, Pair<List<Employee>, Vehicle>> OrderEmployeeMap) {
+//        orderEmployeeMap = OrderEmployeeMap;
+//        return true;
+//    }
 
     /**
      * @return the orderQueue
@@ -135,6 +150,8 @@ public class DeliverySystem {
     }
     
     public String toStringGetOrderEmployeeMap() {
+        
+        Map<Pair<Integer, Integer>, Pair<List<Employee>, Vehicle>> orderEmployeeMap = getOrderEmployeeMap();
         String res = "______ Delivery System Informations ______";
         for (Map.Entry<Pair<Integer, Integer>, Pair<List<Employee>, Vehicle>> entry : orderEmployeeMap.entrySet()) {
             res += "\n         ____________________________ \n";
