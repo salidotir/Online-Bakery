@@ -47,6 +47,7 @@ public class Employee extends Account{
     public boolean recievOrder(Order order) {
         // this employee is assinged to a delivery
         this.setIsBusy(true);
+        System.out.println("Customer with id " + this.getID() +" has received an order to ship.");
         return true;
     }
 
