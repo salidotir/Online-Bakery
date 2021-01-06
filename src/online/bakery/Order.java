@@ -24,8 +24,8 @@ public class Order {
     private Map<Sweets,Rate > sweet_score = new HashMap<Sweets,Rate>(); ;  
     private List<BirthdayItems> items;
     private Bakery bakery;
-    private Person baker;
-    private int chooseTypeBaker;    // 1 for Bakery; 0 for Person
+    private Baker baker;
+    private int chooseTypeBaker;    // 1 for Bakery; 0 for Baker
     private Payment payment;
     private Date expectedDeliveryTime;
     private DeliveryInformation delivery = null;
@@ -90,7 +90,7 @@ public class Order {
             return false;
     }
     
-    public AbstractMap.SimpleEntry chooseBaker(Person staff, List<SweetType> s){
+    public AbstractMap.SimpleEntry chooseBaker(Baker staff, List<SweetType> s){
         if(orderStatus == OrderStatus.FINALIZED_BY_CUSTOMER){
             this.baker = staff;
             this.bakery = null;

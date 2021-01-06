@@ -36,7 +36,7 @@ public class DBMS {
     private Map<String, Integer> userSaltMap;
 
     private List<Bakery> bakeries;
-    private List<Person> bakers;
+    private List<Baker> bakers;
     private List<Customer> customers;
 
     private List<Admin> admins;
@@ -59,7 +59,7 @@ public class DBMS {
         this.customers = new ArrayList<Customer>();
         this.employees = new ArrayList<Employee>();
         this.bakeries = new ArrayList<Bakery>();
-        this.bakers = new ArrayList<Person>();
+        this.bakers = new ArrayList<Baker>();
         this.orders = new ArrayList<Order>();
         this.usernamePasswordTable = new HashMap<String, String>();
         this.userSaltMap = new HashMap<String, Integer>();
@@ -311,9 +311,9 @@ public class DBMS {
                     }
                 }   break;
             case BAKER:
-                for(Person person: DBMS.getDBMS().bakers){
-                    if(person.getID() == account.getID()){
-                        return person.getPayments();
+                for(Baker baker : DBMS.getDBMS().bakers){
+                    if(baker.getID() == account.getID()){
+                        return baker.getPayments();
                     }
                 }   break;
             case BAKERY:
@@ -360,9 +360,9 @@ public class DBMS {
     }
 
     // search a baker in its firstname & lastname
-    public List<Person> searchBakerByName(String subString) {
-        List<Person> result = new ArrayList<Person>();
-        for (Person baker : DBMS.getDBMS().bakers) {
+    public List<Baker> searchBakerByName(String subString) {
+        List<Baker> result = new ArrayList<Baker>();
+        for (Baker baker : DBMS.getDBMS().bakers) {
             if (baker.getFirstname().toLowerCase().contains(subString.toLowerCase()) || baker.getLastname().toLowerCase().contains(subString.toLowerCase())) {
                 result.add(baker);
             }
@@ -425,11 +425,11 @@ public class DBMS {
 
     //~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~    
 
-    public List<Person> getListOfBakers() {
+    public List<Baker> getListOfBakers() {
         return DBMS.getDBMS().bakers;
     }
 
-    public boolean addBaker(Person baker) {
+    public boolean addBaker(Baker baker) {
         if (DBMS.getDBMS().bakers.contains(baker)) {          
             return false;
         }else{
@@ -443,7 +443,7 @@ public class DBMS {
         }
     }
 
-    public boolean removeBaker(Person baker) {
+    public boolean removeBaker(Baker baker) {
         int index = DBMS.getDBMS().bakers.indexOf(baker);
         DBMS.getDBMS().bakers.get(index).setActiveness("Inactive");
         return true;

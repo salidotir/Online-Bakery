@@ -59,7 +59,7 @@ public class Admin extends Account{
         return payment.pay(payment, this, bakery);
     }
     
-    public boolean payDiscount(BigDecimal cost, Person baker){
+    public boolean payDiscount(BigDecimal cost, Baker baker){
         PaymentType paymentType = Payment.howToPay();
         Payment payment = new Payment(new Date(), cost, "Admin pays cost for discount", paymentType);
         this.addPayment(payment);
@@ -164,21 +164,21 @@ public class Admin extends Account{
         return DBMS.getDBMS(this).removeBakery(baker);
     }
     
-    boolean createPerson (Person person){
-        if (DBMS.getDBMS(this).addBaker(person)){
-            person.setActiveness("Active");
+    boolean createBaker (Baker baker){
+        if (DBMS.getDBMS(this).addBaker(baker)){
+            baker.setActiveness("Active");
             return true;
         }else
             return false;
     }
     
-    List<Person> viewPerson(){
+    List<Baker> viewBaker(){
         return DBMS.getDBMS(this).getListOfBakers();
     }
     
-    boolean deletePerson(Person person){
-        person.setActiveness("Inactive");
-        return DBMS.getDBMS(this).removeBaker(person);
+    boolean deleteBaker(Baker baker){
+        baker.setActiveness("Inactive");
+        return DBMS.getDBMS(this).removeBaker(baker);
     }
     
     boolean createEmploee (Employee employee){
@@ -241,8 +241,8 @@ public class Admin extends Account{
         return DBMS.getDBMS(this).ruinOrder(order);
     }
     
-    public boolean editBaker(Person person){
-        return DBMS.getDBMS(this).editBaker(person.getID(),person.getName(),person.getDescription(),person.getFirstname(),person.getLastname(),person.getAddress(),person.getContactNo());
+    public boolean editBaker(Baker baker){
+        return DBMS.getDBMS(this).editBaker(baker.getID(), baker.getName(), baker.getDescription(), baker.getFirstname(), baker.getLastname(), baker.getAddress(), baker.getContactNo());
     }
     public boolean editBakery(Bakery bakery){
         return DBMS.getDBMS(this).editBakery(bakery.getID(),bakery.getName(),bakery.getDescription(),bakery.getFirstname(),bakery.getLastname(),bakery.getAddress(),bakery.getContactNo());

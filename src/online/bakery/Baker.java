@@ -10,20 +10,20 @@ import online.bakery.sweets.Sweets;
 import java.math.BigDecimal;
 import java.util.*;
 
-public class Person extends Account implements Confectioner{
+public class Baker extends Account implements Confectioner{
     private String name;
     private String description;
 
 
 
-    public Person(String name, String username, String password, String description,String number, String address) {
+    public Baker(String name, String username, String password, String description, String number, String address) {
         super();
         super.SignUp(username, password, Role.BAKER);
         super.setAddress(address);
         this.name = name;
         this.description = description;
         super.setContactNo(number);
-        Admin.getInstance().createPerson(this); 
+        Admin.getInstance().createBaker(this);
     }
 
     public String getName() {
