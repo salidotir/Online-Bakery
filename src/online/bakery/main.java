@@ -86,6 +86,7 @@ public class main {
     
    
     private static void test3(){
+        
         Date today=new Date();
 
         LocalDate todayy = LocalDate.now();
@@ -174,7 +175,9 @@ public class main {
                 DeliverySystem deliverySystem = DeliverySystem.getDeliverySystem();
                 deliverySystem.assignEmployeesToOrder();
                 System.out.println(deliverySystem.toStringGetOrderEmployeeMap());
+                
                 e1.deliverOrder(o1);
+//                e1.ruineOrder(o1);
                 
                 System.out.println(e1.getProfile());
                 
