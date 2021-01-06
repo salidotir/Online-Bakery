@@ -85,7 +85,8 @@ public class main {
     }
     
    
-    private static void test3(){Date today=new Date();
+    private static void test3(){
+        Date today=new Date();
 
         LocalDate todayy = LocalDate.now();
         LocalDate tomorrow = todayy.plusDays( 3650 ) ;
@@ -162,14 +163,21 @@ public class main {
                 if(!result)                    
                     break;
                 result = o1.setBakerStatus(stList);
-                if(!result)                    
+                if(!result)
                     break;
                 result = o1.callDelivery();
-                if(!result)                    
+                if(!result)
                     break;
+                
+//                System.out.println(Admin.getInstance().getOrders().size());
+                
                 DeliverySystem deliverySystem = DeliverySystem.getDeliverySystem();
                 deliverySystem.assignEmployeesToOrder();
+                System.out.println(deliverySystem.toStringGetOrderEmployeeMap());
                 e1.deliverOrder(o1);
+                
+                System.out.println(e1.getProfile());
+                
 //                System.out.println(deliverySystem.toStringGetOrderEmployeeMap());
 //                
 //                for(Order order: Admin.getInstance().getOrders()){
@@ -188,6 +196,7 @@ public class main {
                 }
 //                System.out.println(o1.getOrderInformation());
             }
+                
         }
         
     }
