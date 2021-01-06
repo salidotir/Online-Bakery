@@ -1,5 +1,6 @@
 package online.bakery;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import online.bakery.sweets.Rate;
 import online.bakery.sweets.Sweets;
@@ -39,6 +40,9 @@ public interface Confectioner {
     boolean deleteOrderSweet(Sweets sweet);
 
     boolean addOrder(Order order, List<SweetType> s);
+
+
+    BigDecimal getProfit(Date start , Date end);
 
 
 

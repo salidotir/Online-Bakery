@@ -1056,6 +1056,17 @@ public class DBMS {
         return null;
     }
 
+    public List<Order> getOrderDate(int bakerId, Date start, Date end, OrderStatus orderStatus) {
+        List<Order> out = new ArrayList<Order>();
+
+        for(Order o : orders){
+            if(o.getBakerId() == bakerId && o.getOrderStatus() == orderStatus){
+                out.add(o);
+            }
+        }
+        return out;
+    }
+
 
     //~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~
 

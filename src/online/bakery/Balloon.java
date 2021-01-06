@@ -11,11 +11,13 @@ public class Balloon implements BirthdayItems{
     String material;
     String color;
     BigDecimal cost ;
+    BigDecimal purchasePrice;
 
-    public Balloon(String name,BigDecimal cost,String material,String color){
+    public Balloon(String name,BigDecimal cost,BigDecimal purchasePrice,String material,String color){
         this.itemId=atomicInteger.incrementAndGet();
         this.name = name;
         this.cost = cost;
+        this.purchasePrice = purchasePrice;
         this.material = material;
         this.color = color;
     }
@@ -34,6 +36,9 @@ public class Balloon implements BirthdayItems{
         return cost;
     }
     public void setCost(BigDecimal cost) { this.cost = cost; }
+
+    public BigDecimal getPurchasePrice() {return  purchasePrice; }
+    public void setPurchasePrice(BigDecimal price) { this.purchasePrice = price; }
 
     public String getColor() {
         return color;

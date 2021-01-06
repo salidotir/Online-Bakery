@@ -530,4 +530,22 @@ public class Order {
             return false;
         }
     }
+
+    public Discount getDiscount() {
+        return  discount;
+    }
+
+    public int getBakerId() {
+        if(baker == null){
+            if(bakery == null){
+                return -1;
+            }
+            else{
+                return bakery.getID();
+            }
+        }
+        else {
+            return baker.getID();
+        }
+    }
 }

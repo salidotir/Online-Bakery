@@ -11,11 +11,13 @@ public class SnowSpray implements BirthdayItems {
     static AtomicInteger atomicInteger = new AtomicInteger(0);
     String name;
     BigDecimal cost ;
+    BigDecimal purchasePrice;
 
-    public SnowSpray(String name,BigDecimal cost){
+    public SnowSpray(String name,BigDecimal cost,BigDecimal purchasePrice){
         this.itemId=atomicInteger.incrementAndGet();
         this.name = name;
         this.cost = cost;
+        this.purchasePrice = purchasePrice;
     }
 
     public String getDescription(){
@@ -30,6 +32,9 @@ public class SnowSpray implements BirthdayItems {
 
     public BigDecimal getCost() { return cost; }
     public void setCost(BigDecimal cost) { this.cost = cost; }
+
+    public BigDecimal getPurchasePrice() {return  purchasePrice; }
+    public void setPurchasePrice(BigDecimal price) { this.purchasePrice = price; }
 
 
 }

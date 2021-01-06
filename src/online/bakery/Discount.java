@@ -5,13 +5,13 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Discount {
-    private int id ;
+    final private int id ;
     static AtomicInteger atomicInteger = new AtomicInteger(0);
     private String name;
     private int percent;
     private Date start;
     private Date end;
-    private int creatorID;
+    final private int creatorID;
     private int maxUsed;
     private int numberUsed;      // how many customers used this discount
 

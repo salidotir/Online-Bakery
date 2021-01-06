@@ -159,4 +159,33 @@ public class Person extends Account implements Confectioner{
         return true;
     }
 
+    public  BigDecimal getProfit(Date start , Date end){
+        List <Order> orders = Admin.getInstance().getOrderDate(this,start,end,OrderStatus.DELIVERED);
+        BigDecimal profit = new BigDecimal("0");
+        for (Order o : orders){
+            System.out.println(o.getOrderId());
+
+            Discount d = o.getDiscount();
+            int percent = 0;
+            if(d != null){
+                System.out.println("Discount made by you : " + d.getPercent()+ " % ");
+                percent = d.getPercent();
+            }
+
+            BigDecimal ps = new BigDecimal("0");
+            for(Sweets s : o.getSweets()){
+                System.out.println(s.getName());
+                System.out.println(s.getDescription());
+                System.out.println(s.getTOTAL_COST());
+                System.out.println(s.get_OderCost());
+                ps.add(s.getFee().multiply(new BigDecimal((100 - percent)/100)));
+            }
+            System.out.println("Profit for Sweet(s) : " + ps);
+            //profit.add(pb);
+            profit.add(ps);
+        }
+        return  profit;
+
+    }
+
 }

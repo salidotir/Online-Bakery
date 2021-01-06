@@ -11,11 +11,13 @@ public class Candle implements BirthdayItems {
     String number;
     String color;
     BigDecimal cost ;
+    BigDecimal purchasePrice;
 
-    public Candle(String name,BigDecimal cost,String number,String color){
+    public Candle(String name,BigDecimal cost,BigDecimal purchasePrice,String number,String color){
         this.itemId=atomicInteger.incrementAndGet();
         this.name = name;
         this.cost = cost;
+        this.purchasePrice = purchasePrice;
         this.number = number;
         this.color = color;
     }
@@ -34,6 +36,11 @@ public class Candle implements BirthdayItems {
         return cost;
     }
     public void setCost(BigDecimal cost) { this.cost = cost; }
+
+
+    public BigDecimal getPurchasePrice() {return  purchasePrice; }
+
+    public void setPurchasePrice(BigDecimal price) { this.purchasePrice = price; }
 
     public String getColor() {
         return color;

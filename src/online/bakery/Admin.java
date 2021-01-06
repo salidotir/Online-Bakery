@@ -341,5 +341,9 @@ public class Admin extends Account{
         return DBMS.getDBMS(this).GetAllGiftCards(customer);
 
     }
+
+    public List<Order> getOrderDate(Confectioner confectioner, Date start, Date end,OrderStatus orderStatus) {
+        return DBMS.getDBMS(this).getOrderDate(confectioner.getID(),start,end,orderStatus);
+    }
 }
 

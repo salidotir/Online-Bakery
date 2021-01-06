@@ -169,7 +169,8 @@ public class Bakery extends Account implements Confectioner {
 
     public boolean addBirthdayItem() {
         BigDecimal cost = new BigDecimal("20000");
-        BirthdayItems item = new Candle("اکلیلی", cost, " عدد ۲", "قرمز");
+        BigDecimal price = new BigDecimal("10000");
+        BirthdayItems item = new Candle("اکلیلی", cost,price ," عدد ۲", "قرمز");
         System.out.println(item.getDescription());
         Scanner scan = new Scanner(System.in);
         System.out.printf("Please Enter Number for this BirthdayItem : ");
@@ -298,6 +299,45 @@ public class Bakery extends Account implements Confectioner {
             note.setNoteSellerText(extraText);
         }
         return true;
+    }
+
+    public  BigDecimal getProfit(Date start , Date end){
+        List <Order> orders = Admin.getInstance().getOrderDate(this,start,end,OrderStatus.DELIVERED);
+        BigDecimal profit = new BigDecimal("0");
+        for (Order o : orders){
+            System.out.println(o.getOrderId());
+
+            Discount d = o.getDiscount();
+            int percent = 0;
+            if(d != null){
+                System.out.println("Discount made by you : " + d.getPercent()+ " % ");
+                percent = d.getPercent();
+            }
+
+            BigDecimal ps = new BigDecimal("0");
+            BigDecimal pb = new BigDecimal("0");
+            for(Sweets s : o.getSweets()){
+                System.out.println(s.getName());
+                System.out.println(s.getDescription());
+                System.out.println(s.getTOTAL_COST());
+                System.out.println(s.get_OderCost());
+                ps.add(s.getFee().multiply(new BigDecimal((100 - percent)/100)));
+            }
+            System.out.println("Profit for Sweet(s) : " + ps);
+
+            for(BirthdayItems b: o.getItems()){
+                System.out.println(b.getDescription());
+                System.out.println(b.getPurchasePrice());
+
+                pb.add(b.getCost().subtract(b.getPurchasePrice()).multiply(new BigDecimal((100 - percent)/100)));
+            }
+            System.out.println("Profit for BirthdayItem(s) : " + pb);
+
+            profit.add(pb);
+            profit.add(ps);
+        }
+        return  profit;
+
     }
 
 }
