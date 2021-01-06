@@ -237,6 +237,10 @@ public class Admin extends Account{
         return DBMS.getDBMS(this).deliverOrder(order, actuallDelivery);
     }
 
+    public boolean ruinOrder(Order order) {
+        return DBMS.getDBMS(this).ruinOrder(order);
+    }
+    
     public boolean editBaker(Person person){
         return DBMS.getDBMS(this).editBaker(person.getID(),person.getName(),person.getDescription(),person.getFirstname(),person.getLastname(),person.getAddress(),person.getContactNo());
     }
