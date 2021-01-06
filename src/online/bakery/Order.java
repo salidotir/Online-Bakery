@@ -501,13 +501,23 @@ public class Order {
     public boolean isAvailableToShip(boolean isAvailable) {
         // order can be shipped now
         if (isAvailable == true) {
+            orderStatus = OrderStatus.ON_THE_WAY;
             System.out.println("Order with id " + this.orderId + " is going to be shipped right now.");
         }
         // order must wait for shipping
         else if(isAvailable == false) {
+            orderStatus = OrderStatus.WAITING;
             System.out.println("Order with id " + this.orderId + " must wait for shipping.");            
         }
         return isAvailable;
     }
     
+    // if there is no shipping available for the order
+    public boolean cancelByDelivery(){
+        if( orderStatus == OrderStatus.DONE){
+            orderStatus = OrderStatus.CANCELED_BY_DELIVERY;
+            return true;
+        }else
+            return false;
+    }    
 }
