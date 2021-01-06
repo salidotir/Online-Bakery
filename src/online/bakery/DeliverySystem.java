@@ -6,9 +6,12 @@ package online.bakery;
 
 import java.util.AbstractMap;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Calendar;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import javafx.util.Pair;
 
 /**
@@ -22,7 +25,7 @@ public class DeliverySystem {
     // default -> order priorority of all orders is set to 0.
     // map order <-> list of employees -> stores in database
     //private Map<Pair<Integer, Integer>, Pair<List<Employee>, Vehicle>> orderEmployeeMap;
-    private List<Order> orderQueue;                                                          // list of orders to be assigned employees
+    private List<Pair<Order, Integer>> orderQueue;                                                          // list of orders to be assigned employees
     private List<Vehicle> vehicles;
     
     private DeliverySystem() {
@@ -42,7 +45,33 @@ public class DeliverySystem {
         return deliverySystem;
     }
     
+    // check if requested delivery time is after now
+    boolean hasNotPassedDeliveryTime(Date requested) {
+        Calendar calendar1= Calendar.getInstance();
+        Calendar calendar2= Calendar.getInstance();
+        
+        Date date1 = new Date();
+        calendar1.set(date1.getYear(), date1.getMonth(), date1.getDay());
+
+        calendar2.set(requested.getYear(), requested.getMonth(), requested.getDay());
+        
+        return calendar1.before(calendar2) || calendar1.equals(calendar2);
+    }
+    
+    // sort OrderQueue based on order priority
+    List<Pair<Order, Integer>> sortOrderQueueBasedOnPriority() {
+        orderQueue.sort(new Comparator<Pair<Order, Integer>>() {
+            @Override public int compare(Pair<Order, Integer> p1, Pair<Order, Integer> p2) 
+                { 
+                    return p1.getValue() - p2.getValue(); 
+                } 
+        });
+        return orderQueue;
+    }
+    
     // ** steps to do for assigning employees a job **
+    // if there is less than a day for the order to be delivered, increase its priority
+    
     // get a list of free employees
 
     // assign employees to order
@@ -58,20 +87,34 @@ public class DeliverySystem {
     // if customers has to wait to reciev order, it returns false
     public boolean assignEmployeesToOrder() {
         boolean test = true;
-        List<Order> shippedOrders = new ArrayList<>();
+        List<Pair<Order, Integer>> shippedOrders = new ArrayList<>();
         
-        for (Order ord : DeliverySystem.getDeliverySystem().orderQueue) {
+        // first sort orderQueue
+        orderQueue = sortOrderQueueBasedOnPriority();
+        
+        for (Pair<Order, Integer> p : DeliverySystem.getDeliverySystem().orderQueue) {
             List<Employee> lst = new ArrayList<>();
             Employee e = Admin.getInstance().getFirstFreeEmployee();
             if (e != null) {
                 lst.add(e);
                 Vehicle v = Admin.getInstance().getFirstFreeVehicle();
                 if (v != null){
-                    // notify employee to ship the order
-                    e.recievOrder(ord);
-                    // set isbusy of employees & vehicle true
-                    // add new order-delivery item to database
-                    Admin.getInstance().addItemToOrderEmployeeMap(new Pair(ord.getOrderId(), new Integer(0)), new Pair(lst, v));
+                    // check if it has not passed from the delivery time
+                    if(hasNotPassedDeliveryTime(p.getKey().getExpectedDeliveryTime()) == true) {
+                        // notify employee to ship the order
+                        e.recievOrder(p.getKey());
+                        // set isbusy of employees & vehicle true
+                        // add new order-delivery item to database
+                        Admin.getInstance().addItemToOrderEmployeeMap(new Pair(p.getKey().getOrderId(), p.getValue()), new Pair(lst, v));
+                    }
+                    else {
+                        // it has passed the time of delivery
+                        p.getKey().cancelByDelivery();
+                        // just to remove it from order queue later
+                        shippedOrders.add(p);
+                        System.out.println("sfjkzASdl");
+                        test = false;
+                    }
                 }
                 else{
                     test = false;
@@ -83,24 +126,28 @@ public class DeliverySystem {
             
             // if order is goint to be delivered now, remove it from list of orders to be delivered.
             if (test == true) {
-                shippedOrders.add(ord);
+                shippedOrders.add(p);
+            }
+            // if order has to wait , we increase its priority to be sure it will be assigned an employee
+            else if(test == false) {
+                int index = orderQueue.indexOf(p);
+                orderQueue.set(index, new Pair(p.getKey(), p.getValue()+1));
             }
             // notify order if it can be delivered now or not.
-            ord.isAvailableToShip(test);
+            p.getKey().isAvailableToShip(test);
         }
         
         // remove shippedOrders from Order Queue list
-        for (Order o:shippedOrders) {
-            deliverySystem.orderQueue.remove(o);
+        for (Pair p:shippedOrders) {
+            deliverySystem.orderQueue.remove(p);
         }
-        
         return test;
     }
     
 
     // all orders are sent to a queue and then are assigned an employee & vehicle to be delivered.
     public boolean addOrderToOrderQueue(Order order) {
-        this.orderQueue.add(order);
+        this.orderQueue.add(new Pair(order, new Integer(0)));
         return true;
     }
 
@@ -122,14 +169,14 @@ public class DeliverySystem {
     /**
      * @return the orderQueue
      */
-    public List<Order> getOrderQueue() {
+    public List<Pair<Order, Integer>> getOrderQueue() {
         return orderQueue;
     }
 
     /**
      * @param aOrderQueue the orderQueue to set
      */
-    public boolean setOrderQueue(List<Order> aOrderQueue) {
+    public boolean setOrderQueue(List<Pair<Order, Integer>> aOrderQueue) {
         orderQueue = aOrderQueue;
         return true;
     }
