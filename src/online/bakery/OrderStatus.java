@@ -18,5 +18,9 @@ public enum OrderStatus {
     PAYED,                  // pay cost of order
     IN_PROGRESS,            // it is becoming ready
     DONE,                   // it is ready but not delivered
+    RUINED_BY_EMPLOYEE,     // the order was ruind by employee
+    WAITING,                // it must wait for the delivery
+    ON_THE_WAY,             // Order is now on the way to customer
+    CANCELED_BY_DELIVERY,   // there is shipping available to deliver the order
     DELIVERED               // it is delivered to customer  
 }
