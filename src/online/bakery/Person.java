@@ -143,7 +143,7 @@ public class Person extends Account implements Confectioner{
     }
     
     public List<Discount> getDiscountList() {
-        return Admin.getInstance().getDiscount(this);
+        return Admin.getInstance().getDiscount(this.getID());
     }
 
     @Override
