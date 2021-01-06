@@ -584,6 +584,15 @@ public class DBMS {
            return false;
     }
     
+    public boolean setOrderRuined(int orderId){
+       AbstractMap.SimpleEntry res = DBMS.getDBMS().getOrderByID(orderId);
+       if ((boolean)res.getKey()){
+           Order order = (Order)res.getValue();
+           return order.ruinByEmployee();
+       }else
+           return false;
+    }
+        
     public boolean firstOrder(Customer customer){
         for (Order order: DBMS.getDBMS().orders){
             if(order.getCustomerId() == customer.getID() && 
@@ -730,6 +739,41 @@ public class DBMS {
                     DBMS.getDBMS().setVehicleIsBusyFalse(v);
 
                     //System.out.println(DBMS.getDBMS().getListOfOrders().get(0).getOrderStatus());
+
+                    return true;
+                }else 
+                    return false;
+            }
+        }
+        return false;
+    }
+    
+    // order is ruined by employee:
+    // 1. Order status -> RUINED_BY_EMPLOYEE
+    // 2. Employee isBusy -> false
+    // 3. Vehicle isBusy -> false
+    // 4. decrease from employee score
+    public boolean ruinOrder(Order order) {
+        for (Map.Entry<Pair<Integer, Integer>, Pair<List<Employee>, Vehicle>> entry : orderEmployeeMap.entrySet()) {
+            if (entry.getKey().getKey() == order.getOrderId()) {
+                // set order status delivered
+                boolean result = DBMS.getDBMS().setOrderRuined(entry.getKey().getKey());
+                if(result){
+                    // set employees isBusy false
+                    int size = entry.getValue().getKey().size();
+                    for (int i = 0; i < size; i++) {
+                        entry.getValue().getKey().get(i).setIsBusy(false);
+                        Employee e = entry.getValue().getKey().get(i);
+                        DBMS.getDBMS().setEmployeeIsBusyFalse(e);
+                        // decrease from their score
+                        // To be completed //
+                        
+                    }
+
+                    // set vehicle isBusy -> false
+                    entry.getValue().getValue().setIsBusy(false);
+                    Vehicle v = entry.getValue().getValue();
+                    DBMS.getDBMS().setVehicleIsBusyFalse(v);
 
                     return true;
                 }else 
