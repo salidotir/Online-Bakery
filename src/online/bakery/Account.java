@@ -47,6 +47,10 @@ abstract public class Account {
     public int getID() {
         return ID;
     }
+
+    public String getUsername() {
+        return username;
+    }
     
     public String getActiveness() {
         return activeness;
