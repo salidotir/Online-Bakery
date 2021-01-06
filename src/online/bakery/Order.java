@@ -520,4 +520,14 @@ public class Order {
         }else
             return false;
     }    
+    
+    boolean ruinByEmployee() {
+        if( orderStatus == OrderStatus.ON_THE_WAY){
+            orderStatus = OrderStatus.RUINED_BY_EMPLOYEE;
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
 }
