@@ -36,7 +36,7 @@ public class GiftCard {
                 "Owner: " + Owner.getUsername() + "\n" +
                 "Original Price: " + Price + "\n"+
                 "Remain Price: "+ remainCost + "\n";
-        if(!Note.isEmpty())
+        if(Note!=null)
             s += "Note: " + Note + "\n" ;
         
         return s;

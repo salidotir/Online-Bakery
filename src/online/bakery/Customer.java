@@ -12,6 +12,8 @@ import online.bakery.sweets.Color;
 import online.bakery.sweets.MultiTieredCake;
 import online.bakery.sweets.Sweets;
 
+import static online.bakery.Test.*;
+
 /**
  * @author melika
  */
@@ -26,12 +28,12 @@ public class Customer extends Account {
         Admin.getInstance().createCustomer(this);
     }
 
-    public List<GiftCard> GetAllGiftCards(){
+    public List<GiftCard> GetAllGiftCards() {
         return Admin.getInstance().GetAllGiftCards(this);
     }
 
     public void addGiftCard(GiftCard giftCards) {
-        GiftCards.add( giftCards);
+        GiftCards.add(giftCards);
     }
 
     public List<GiftCard> getGiftCards() {
@@ -39,7 +41,8 @@ public class Customer extends Account {
     }
 
     public void ShowReceivedGiftCard(GiftCard giftCard) {
-        System.out.println(giftCard.GiftCardInformation());
+        System.out.println(BACKGROUNDS[12] + FOREGROUNDS[15]  +giftCard.GiftCardInformation());
+        System.out.println(ANSI_RESET);
     }
 
     public List<Pair<Sweets, Integer>> getSweetsFromConfectioner(Confectioner confectioner) {
@@ -124,40 +127,71 @@ public class Customer extends Account {
     }
 
     public Boolean BuyGiftCardTo(@NotNull Customer customer) {
+
+        System.out.println(BACKGROUNDS[12] + FOREGROUNDS[15] + "Gift Card Info.");
+
         System.out.println("How much?");
         Scanner sc = new Scanner(System.in);
         BigDecimal price = sc.nextBigDecimal();
         System.out.println("Note(if you don't want to add note please enter space key)");
         //String yes_no=sc.nextLine();
         //System.out.println(yes_no);
-        ArrayList<String> note = new ArrayList<String>();
+        StringBuilder note = new StringBuilder();
         String line;
         while (true) {
             line = sc.nextLine();
-            if (line.equals("")) {
+            if (line.equals(" ")) {
                 break;
             } else {
+                if (line.equals("")) continue;
                 System.out.println(line);
-                note.add(line);
+                note.append(line);
+                note.append('\n');
+
             }
         }
-        System.out.println(note);
-        
+        System.out.println(BACKGROUNDS[3] + FOREGROUNDS[8] + "Note message:");
+        System.out.println(note.toString());
+        System.out.println(ANSI_RESET);
+
         PaymentType paymentType = Payment.howToPay();
         Payment payment = new Payment(new Date(), price, "Buy Gift Card", paymentType);
         this.addPayment(payment);
         boolean result = payment.pay(payment, this, Admin.getInstance());
-        if(result){
-                GiftCard giftCard;
-                if (line.equals("")) {
-                    giftCard = new GiftCard(customer, price, note.toString(),this);
-                } else {
-                    giftCard = new GiftCard(customer, price, null,this);
-                }
+        if (result) {
+            GiftCard giftCard;
+            if (line.equals("")) {
+                giftCard = new GiftCard(customer, price, note.toString(), this);
+            } else {
+                giftCard = new GiftCard(customer, price, null, this);
+            }
 
-                return Admin.getInstance().SaveGiftCartForCustomer(customer, giftCard);
-            }else
-                return false;       
+            return Admin.getInstance().SaveGiftCartForCustomer(customer, giftCard);
+        } else {
+            System.out.println(BACKGROUNDS[1] + FOREGROUNDS[15] + "Do you want to charge your wallet?(y/n)");
+            char y = sc.next().charAt(0);
+            if (y == 'y') {
+                System.out.println("How much?");
+                BigDecimal price_add = sc.nextBigDecimal();
+                this.getWallet().addAmount(price_add);
+                Payment payment_new = new Payment(new Date(), price, "Buy Gift Card", paymentType);
+                this.addPayment(payment_new);
+                boolean result_new = payment_new.pay(payment_new, this, Admin.getInstance());
+                if (result_new) {
+                    GiftCard giftCard;
+                    if (note.equals("")) {
+                        giftCard = new GiftCard(customer, price, note.toString(), this);
+                    } else {
+                        giftCard = new GiftCard(customer, price, null, this);
+                    }
+
+                    return Admin.getInstance().SaveGiftCartForCustomer(customer, giftCard);
+                } else {
+                    return false;
+                }
+            }
+            return false;
+        }
     }
 
     public void addOrder(Order Order) {
@@ -196,5 +230,5 @@ public class Customer extends Account {
     public List<Sweets> getDesigns() {
         return designs;
     }
-    
+
 }

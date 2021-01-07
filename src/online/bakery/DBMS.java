@@ -21,6 +21,9 @@ import online.bakery.sweets.Rate;
 import online.bakery.sweets.TypeOfSweets;
 import online.bakery.sweets.Sweets;
 
+import static online.bakery.Test.BACKGROUNDS;
+import static online.bakery.Test.FOREGROUNDS;
+
 /**
  * @author salidtoir
  */
@@ -1144,6 +1147,19 @@ public class DBMS {
 
     public List<Baker> ShowAllBakers() {
         return bakers;
+
+    }
+
+    public Customer searchCustomerByContactNo(String num) {
+        for (Customer c:this.customers
+             ) {
+            if (c.getContactNo().equals(num))
+                return c;
+
+        }
+        System.out.println(BACKGROUNDS[1] + FOREGROUNDS[15] + "Not Found");
+
+        return null;
 
     }
 

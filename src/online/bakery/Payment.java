@@ -8,6 +8,9 @@ import java.util.Date;
 import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static online.bakery.Test.BACKGROUNDS;
+import static online.bakery.Test.FOREGROUNDS;
+
 /**
  *
  * @author salidotir
@@ -143,13 +146,12 @@ public class Payment {
         int index = 1;
         for (PaymentType PT: PaymentType.values())
         {
-            System.out.println(index + " : "+ PT);
+            System.out.println(BACKGROUNDS[12] + FOREGROUNDS[15] +index + " : "+ PT);
             index += 1;
         }
         Scanner scan = new Scanner(System.in);
-        System.out.printf("Please Enter how you want to pay for the order: ");
+        System.out.println(BACKGROUNDS[12] + FOREGROUNDS[15] + "Please Enter how you want to pay for the order: ");
         int num = scan.nextInt();
-        //scan.close();
         return PaymentType.values()[num-1];
     }
     
@@ -177,7 +179,7 @@ public class Payment {
         }
         else {
             pay.setPaymentStatus(PaymentStatus.UNSUCCESSFUL);
-            System.out.println("There is not enough money in the wallet.\n");
+            System.out.println( BACKGROUNDS[1] + FOREGROUNDS[15] + "There is not enough money in the wallet.");
             return false;
         }
     }

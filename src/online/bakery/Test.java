@@ -55,23 +55,30 @@ public class Test {
             ANSI_BRIGHT_BG_BLACK, ANSI_BRIGHT_BG_RED, ANSI_BRIGHT_BG_GREEN, ANSI_BRIGHT_BG_YELLOW,
             ANSI_BRIGHT_BG_BLUE, ANSI_BRIGHT_BG_PURPLE, ANSI_BRIGHT_BG_CYAN, ANSI_BRIGHT_BG_WHITE};
 
+    ArrayList<Confectioner> conf = new ArrayList<>();
+
     public Test() {
-        System.out.println(BACKGROUNDS[15] + FOREGROUNDS[2] + "Add 4 Confectioner");
+        System.out.println(BACKGROUNDS[15] + FOREGROUNDS[2] + "Add 4 Confectioners");
         this.AddConfectioner();
         System.out.println(BACKGROUNDS[15] + FOREGROUNDS[2] + "Show All Bakeries");
         this.ShowAllBakeries();
         System.out.println(BACKGROUNDS[15] + FOREGROUNDS[2] + "Show All Bakers");
         this.ShowAllBakers();
         System.out.println(BACKGROUNDS[15] + FOREGROUNDS[2] + "Search By Name for Bakeries:(substring='baker2')");
-        this.SearchByNameBakeries("baker2");
-
+        this.SearchByNameBakeries();
         System.out.println(BACKGROUNDS[15] + FOREGROUNDS[2] + "Search By Name for Bakers:(substring='reza')");
-        this.SearchByNameBakers("reza");
+        this.SearchByNameBakers();
+        System.out.println(BACKGROUNDS[15] + FOREGROUNDS[2] + "Add 4 Customers");
+        this.AddCustomers();
+        //System.out.println(BACKGROUNDS[15] + FOREGROUNDS[2] + "Add 3 Emploee");
+        //this.AddCustomers();
+        System.out.println(BACKGROUNDS[15] + FOREGROUNDS[2] + "Buy a Gift Card (negin to sara)");
+        this.BuyGiftCard();
+
     }
 
 
     void AddConfectioner() {
-        ArrayList<Confectioner> conf = new ArrayList<>();
         Bakery bakery1 = new Bakery("Bakery1", "usermane1", "pass1", "Have a Good Time", "07131111110", "Eram");
         bakery1.setFirstname("Mitra");
         bakery1.setLastname("Hejazi");
@@ -87,6 +94,10 @@ public class Test {
         Baker baker2 = new Baker("Baker2", "usermane4", "pass4", "Have a Good Time", "07131111114", "Tachara");
         baker2.setFirstname("reza");
         baker2.setLastname("Salmani");
+        conf.add(baker1);
+        conf.add(baker2);
+        conf.add(bakery1);
+        conf.add(bakery2);
 
         System.out.println(ANSI_RESET);
     }
@@ -111,8 +122,8 @@ public class Test {
         }
     }
 
-    private void SearchByNameBakeries(String subString) {
-        List<Bakery> bakeries = Admin.getInstance().searchBakeryByName(subString);
+    private void SearchByNameBakeries() {
+        List<Bakery> bakeries = Admin.getInstance().searchBakeryByName("baker2");
         if (bakeries.size() == 0) {
 
             System.out.println(BACKGROUNDS[1] + FOREGROUNDS[15] + "Not Found");
@@ -126,8 +137,9 @@ public class Test {
             }
         }
     }
-    private void SearchByNameBakers(String subString) {
-        List<Baker> bakers = Admin.getInstance().searchBakerByName(subString);
+
+    private void SearchByNameBakers() {
+        List<Baker> bakers = Admin.getInstance().searchBakerByName("reza");
         if (bakers.size() == 0) {
 
             System.out.println(BACKGROUNDS[1] + FOREGROUNDS[15] + "Not Found");
@@ -140,5 +152,46 @@ public class Test {
 
             }
         }
+    }
+
+    void AddCustomers() {
+        Customer c = new Customer("fm", "1234");
+        c.setFirstname("Fateme");
+        c.setLastname("Masoudi");
+        c.setContactNo("0917863533");
+        c.setAddress("Bahonar");
+        System.out.println(BACKGROUNDS[12] + FOREGROUNDS[15] + c.getProfile());
+        System.out.println(ANSI_RESET);
+        Customer c2 = new Customer("melika", "1234");
+        c2.setFirstname("Melika");
+        c2.setLastname("zare");
+        c2.setContactNo("0917863532");
+        c2.setAddress("Mellat");
+
+        System.out.println(BACKGROUNDS[12] + FOREGROUNDS[15] + c2.getProfile());
+        System.out.println(ANSI_RESET);
+        Customer c3 = new Customer("neg", "4444");
+        c3.setFirstname("Negin");
+        c3.setLastname("Khalifat");
+        c3.setContactNo("0914863532");
+        c3.setAddress("Bagh shah");
+
+        System.out.println(BACKGROUNDS[12] + FOREGROUNDS[15] + c3.getProfile());
+        System.out.println(ANSI_RESET);
+        Customer c4 = new Customer("sara", "4434");
+        c4.setFirstname("Sara");
+        c4.setLastname("LimooE");
+        c4.setContactNo("0914843533");
+        c4.setAddress("MaliAbad");
+
+        System.out.println(BACKGROUNDS[12] + FOREGROUNDS[15] + c4.getProfile());
+        System.out.println(ANSI_RESET);
+
+    }
+
+    private void BuyGiftCard() {
+        Customer sara = Admin.getInstance().searchCustomerByContactNo("0914843533");
+        Customer negin = Admin.getInstance().searchCustomerByContactNo("0914863532");
+        negin.BuyGiftCardTo(sara);
     }
 }
