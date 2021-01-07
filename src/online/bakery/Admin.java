@@ -375,9 +375,5 @@ public class Admin extends Account{
     public List<Comment> getComments(int id) {
         return DBMS.getDBMS(this).getComments(id);
     }
-    public List<Bakery> ShowAllBakery(){return DBMS.getDBMS(this).ShowAllBakery();}
-    public List<Baker> ShowAllBakers(){return DBMS.getDBMS(this).ShowAllBakers();}
-    public List<Baker> searchBakerByName(String subString) {return DBMS.getDBMS(this).searchBakerByName(subString);}
-    public List<Bakery> searchBakeryByName(String subString) {return DBMS.getDBMS(this).searchBakeryByName(subString);}
 }
 
