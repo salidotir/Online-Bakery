@@ -268,10 +268,6 @@ public class Bakery extends Account implements Confectioner {
     }
 
 
-//    public List<Sweets> getPost() {
-//        return post;
-//    }
-
     public List<Pair<Sweets, Integer>> getReadySweets() {
         return Admin.getInstance().getReadySweets(this);
     }
@@ -390,21 +386,25 @@ public class Bakery extends Account implements Confectioner {
 
     }
 
-    public Post createPost(){
+    public boolean createPost(){
         List<String> images = new ArrayList<String>();
         Scanner scan = new Scanner(System.in);
         System.out.println("Enter caption post");
         String caption = scan.nextLine();
-        while (true){
+        System.out.println("Enter number of image : ");
+        int num = scan.nextInt();
+        scan.nextLine();
+        for(int i = 0; i < num; i++){
             System.out.println("Enter image");
             String s = scan.nextLine();
             images.add(s);
-            System.out.println("break? y/n");
-            char y = scan.next().charAt(0);
-            if (y == 'y') break;
-            else scan.nextLine();
+
         }
         return Post.createPost(this,caption,images);
+    }
+
+    public List<Post> getPosts(){
+        return Admin.getInstance().getPosts(this.ID);
     }
 
 }

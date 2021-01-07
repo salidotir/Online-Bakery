@@ -3,6 +3,8 @@ package online.bakery;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.Date;
+
+import online.bakery.Post.Post;
 import online.bakery.sweets.Rate;
 import online.bakery.sweets.Sweets;
 
@@ -27,8 +29,7 @@ public interface Confectioner {
     List<Order> getOrderList();
     //boolean addOrder(Order order,List<SweetType> s);
 
-    //List<Sweets> getPost();
-    //boolean addPost(Sweets sweet);
+
 
     List<ConfectionerStatus> acceptOrder(Order order,List<SweetType> st);
 
@@ -48,6 +49,8 @@ public interface Confectioner {
     BigDecimal getProfit(Date start , Date end);
 
 
+    boolean createPost();
+    List<Post> getPosts();
 
 
 

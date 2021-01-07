@@ -18,8 +18,68 @@ public class main {
 //        test_multi_tiered();
 //        test_GiftCard();
 //        test1();
+        testPost();
         test3();
 //        test2();
+    }
+
+    private static void testPost() {
+        ArrayList conf = new ArrayList<Confectioner>();
+        Bakery b1 = new Bakery("شب شیرینی","username","pass","لحظات زندگی خود را با کمک ما شیرین کنید" , "07131111111" , "تاچارا");
+        System.out.println(b1.getProfile());
+        //Discount d1 = new Discoun("تخفیف یلدایی" , 20 , new Date(1399,9,20),new Date(1399,10,1),b1.getID());
+
+        /*
+        // test Discount
+        b1.addDiscount();
+
+        List<Discount> ddd = b1.getDiscountList();
+        for(Discount d : ddd){
+            System.out.println(d.getName());
+        }*/
+
+        // test post
+
+        if(b1.createPost()){
+            System.out.println("Post create" + "\n ________________________________");
+        }
+        if(b1.createPost()){
+            System.out.println("Post create" + "\n ________________________________");
+        }
+
+
+
+        Customer c = new Customer("fm","1234");
+        c.setFirstname("فاطمه");
+        c.setLastname("مسعودی");
+        c.setContactNo("۰۹۱۷۲۲۳۲۸۳۵");
+        c.setAddress("شیراز شهرک شهید باهنر");
+
+
+
+        Post p = null;
+        if(b1.getPosts().size() > 0 ){
+            p = b1.getPosts().get(0);
+            p.addLike(c);
+            p.addComment(c);
+        }
+
+        for (Post p1 : b1.getPosts()){
+            System.out.println("\n Post create by: " + p1.getAuthorId() + " __________");
+            System.out.println("Image(s):");
+            for(String s: p1.getImages()){
+                System.out.println(s);
+            }
+            System.out.println("Like : " + p1.getLikeId().size());
+            for(Comment comment:p1.getComments()){
+                System.out.println(comment.getAuthorId() + " : " + comment.getText());
+            }
+
+        }
+
+
+
+
     }
     public static void test_GiftCard() {
         Admin.getInstance().setQuestions(new ArrayList<String>());

@@ -1078,11 +1078,11 @@ public class DBMS {
 
     //~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~
 
-    public List<Post> getPosts() {
+    public List<Post> getAllPosts() {
         return posts;
     }
 
-    public List<Comment> getComments() {
+    public List<Comment> getAllComments() {
         return comments;
     }
 
@@ -1112,6 +1112,25 @@ public class DBMS {
         DBMS.getDBMS().posts.get(index).setLikeId(likeId);
 
         return true;
+    }
+
+    public List<Post> getPosts(int id) {
+        List<Post> out = new ArrayList<Post>();
+        for(Post p:DBMS.getDBMS().posts){
+            if(p.getAuthorId() == id){
+                out.add(p);
+            }
+        }
+        return out;
+    }
+    public List<Comment> getComments(int postId) {
+        List<Comment> out = new ArrayList<Comment>();
+        for(Comment c:DBMS.getDBMS().comments){
+            if(c.getPostId() == postId){
+                out.add(c);
+            }
+        }
+        return out;
     }
 
 

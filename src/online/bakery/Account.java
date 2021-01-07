@@ -208,11 +208,4 @@ abstract public class Account {
             return new AbstractMap.SimpleEntry(false, "You are not Loged in.");
     }
 
-    public Comment addComment(Post post){
-        Scanner scan = new Scanner(System.in);
-        System.out.println("Enter text comment");
-        String text = scan.nextLine();
-
-        return new Comment(text,ID,post.getId());
-    }
 }

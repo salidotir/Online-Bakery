@@ -7,6 +7,7 @@ import online.bakery.Role;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Post {
@@ -22,15 +23,17 @@ public class Post {
         this.caption = caption;
         this.images = images;
         this.authorId = authorId;
+        this.likeId = new ArrayList<Integer>();
         Admin.getInstance().addPost(this);
     }
 
-     public static Post createPost(Account account, String caption, List<String> images){
+     public static boolean createPost(Account account, String caption, List<String> images){
         if(account.role == Role.BAKERY || account.role == Role.BAKER || account.role == Role.ADMIN){
-            return new Post( caption,images,account.getID());
+           new Post( caption,images,account.getID());
+           return true;
         }
         else{
-            return null;
+            return false;
         }
 
     }
@@ -51,12 +54,12 @@ public class Post {
     public List<Integer> getLikeId() {
         return likeId;
     }
-    public boolean addLike(int id) {
-        this.likeId.add(id);
+    public boolean addLike(Account account) {
+        this.likeId.add(account.getID());
         return Admin.getInstance().editPost(this);
     }
-    public boolean deleteLike(int id) {
-        this.likeId.remove(new Integer(id));
+    public boolean deleteLike(Account account) {
+        this.likeId.remove(new Integer(account.getID()));
         return Admin.getInstance().editPost(this);
     }
     public void setLikeId(List<Integer> likeId) {
@@ -74,5 +77,17 @@ public class Post {
 
     public int getId() {
         return id;
+    }
+    public boolean addComment(Account account){
+        Scanner scan = new Scanner(System.in);
+        System.out.println("Enter text comment");
+        String text = scan.nextLine();
+
+        new Comment(text,account.getID(),this.id);
+        return true;
+    }
+
+    public List<Comment> getComments(){
+        return Admin.getInstance().getComments(this.id);
     }
 }
