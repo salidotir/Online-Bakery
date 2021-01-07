@@ -8,8 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import online.bakery.birthdayItems.BirthdayItems;
 import online.bakery.sweets.Rate;
 import online.bakery.sweets.Sweets;
 
@@ -34,15 +32,15 @@ public class Order {
     private BigDecimal actuallCost;
     private BigDecimal costWithDisocunt;
     private BigDecimal costWithGiftCard;
-    private Discount discount = null;
-    private Discount discountFirstOrder = null;
+    private BigDecimal AcutallDeliveryCost;
+    private List<Discount> listDiscounts = new ArrayList<>();
     
     public Order(Customer customer, List<Sweets> Sweets, List<BirthdayItems> items, Date expectedDeliveryTime) {
         this.customer = customer;
         this.orderId = atomicInteger.incrementAndGet();
-        for(Sweets s: Sweets){
+        Sweets.forEach((s) -> {
             sweet_score.put(s, null);
-        }
+        });
         this.items = items;
         this.expectedDeliveryTime = expectedDeliveryTime;
         this.orderStatus = OrderStatus.ORDERING_BY_CUSTOMER;
@@ -163,11 +161,11 @@ public class Order {
             this.payment = new Payment(new Date(), cost, description, paymentType);
             customer.addPayment(payment);
             boolean result = false;
-            if(chooseTypeBaker == 1)
-                result = payment.pay(payment, this.customer, this.bakery);
-            else if(chooseTypeBaker == 0)
-                result = payment.pay(payment, this.customer, this.baker);
-            
+//            if(chooseTypeBaker == 1)
+//                result = payment.pay(payment, this.customer, this.bakery);
+//            else if(chooseTypeBaker == 0)
+//                result = payment.pay(payment, this.customer, this.baker);
+            result = true;
             if(result){
                 orderStatus = OrderStatus.PAYED;
                 return true;
@@ -300,8 +298,9 @@ public class Order {
     public String getDetailDiscountCosts(){
         String s;
         if( orderStatus == OrderStatus.PAYED){
-            s = "Cost before discount: "+ this.actuallCost + "\n"+
-                "Cost with discount: " + this.costWithDisocunt + "\n" +
+            s = "Cost sweets and birthday items before discount: "+ this.actuallCost + "\n"+
+                "Cost sweets and birthday items with discount: " + this.costWithDisocunt + "\n" +
+                "Cost delivery: "+ this.AcutallDeliveryCost + "\n" +
                 "Cost with Gift Card"+ this.costWithGiftCard + "\n";
             return s;
         }else
@@ -311,17 +310,18 @@ public class Order {
     private BigDecimal applyDiscount(BigDecimal cost){
         BigDecimal newcost = cost;
         Discount victoryDiscount = null;
+        boolean usedAppDiscount = false;
+        
         List<Discount> listAdmin = Admin.getInstance().getActiveDiscount(Admin.getInstance().getID());
         if(listAdmin.size() > 0){
-            System.out.println("____Our App discount___\nActuall Cost: ");
-            System.out.println(this.actuallCost);
-
+            System.out.println("___________________________Our App discount______________________________");
+            System.out.print("Actuall Cost of sweets and birthday items: ");
+            System.out.println(cost);
+            
             victoryDiscount = listAdmin.get(0);
         }
         for(Discount discount: listAdmin){           
-            if(discount.useDiscount()){
-                System.out.println(discount.getDiscountInformation());
-                System.out.println("***************\n");
+            if(discount.canUseDiscount()){
                 if(discount.getName().equals("تخفیف اولین سفارش در اپ ما") &&
                         Admin.getInstance().firstOrder(customer)){
                     victoryDiscount = discount;
@@ -333,21 +333,26 @@ public class Order {
                 }    
             }           
         }
-        if(victoryDiscount != null){
+        if(victoryDiscount != null && victoryDiscount.useDiscount()){
+            usedAppDiscount = true;
+            this.listDiscounts.add(victoryDiscount);
+            System.out.println(victoryDiscount.getDiscountInformation());
+            System.out.println("***************\n");
             newcost = newcost.multiply(new BigDecimal(100 - victoryDiscount.getPercent()));
             newcost = newcost.divide(new BigDecimal(100));
-            System.out.println("Cost after discount: ");
+            System.out.print("Cost after discount: ");
             System.out.println(newcost);
             
             System.out.println("___________________________Admin terminal______________________________");
+            System.out.println("Please Pay discount diffrence cost");
             BigDecimal payAdmin = cost;
             payAdmin = payAdmin.subtract(newcost);
-            System.out.println("Diffrence Cost: ");
+            System.out.print("Diffrence Cost: ");
             System.out.println(payAdmin);
             if(chooseTypeBaker == 1)
-                Admin.getInstance().payDiscount(payAdmin, this.bakery);
+                Admin.getInstance().paytoAccount(payAdmin, this.bakery, "pay  admin discount to bakery");
             else if(chooseTypeBaker == 0)
-                Admin.getInstance().payDiscount(payAdmin, this.baker);
+                Admin.getInstance().paytoAccount(payAdmin, this.baker, "pay  admin discount to baker");
             System.out.println("___________________________Finish terminal_____________________________");
         }
 //            System.out.println("Choose one of Admin discounts from above: ");
@@ -361,28 +366,33 @@ public class Order {
             tempID = this.bakery.getID();
         else if(chooseTypeBaker == 0)
             tempID = this.baker.getID();
+        
         List<Discount> list = Admin.getInstance().getActiveDiscount(tempID);
         if(list.size() > 0){
-            System.out.println("____Bakery discount___\nActuall Cost: ");
-            System.out.println(this.actuallCost);
-
-            victoryDiscount = listAdmin.get(0);
+            System.out.println("___________________________Bakery discount______________________________");
+            System.out.print("Actuall Cost of sweets and birthday items: ");
+            System.out.println(cost);
+            if(usedAppDiscount){
+                System.out.print("Cost after App discount: ");
+                System.out.println(newcost);
+            }    
+            victoryDiscount = list.get(0);
         }
         for(Discount discount: list){            
-            if(discount.useDiscount()){
-                System.out.println(discount.getDiscountInformation());
-                System.out.println("***************\n");
+            if(discount.canUseDiscount()){
                 if(discount.getPercent() > victoryDiscount.getPercent()){
                     victoryDiscount = discount;
                 }
             }
         }
-        if(victoryDiscount != null){
+        if(victoryDiscount != null && victoryDiscount.useDiscount()){       
+            this.listDiscounts.add(victoryDiscount);
+            System.out.println(victoryDiscount.getDiscountInformation());
+            System.out.println("***************\n");
             newcost = newcost.multiply(new BigDecimal(100 - victoryDiscount.getPercent()));
             newcost = newcost.divide(new BigDecimal(100));
-            System.out.println("Cost after discount: ");
+            System.out.print("Cost after discount: ");
             System.out.println(newcost);
-            System.out.println("\n");
         }
 //        System.out.println("Choose one of discounts from above: ");
 //        Scanner sc = new Scanner(System.in);
@@ -396,62 +406,125 @@ public class Order {
         BigDecimal newcost = cost;
         List<GiftCard> giftCards = customer.getGiftCards();
         if(giftCards.size() > 0){
-            System.out.println("____Gift Cards___\nActuall Cost: ");
-            System.out.println(this.actuallCost);
-            if (this.costWithDisocunt.compareTo(this.actuallCost) != 0){
-                System.out.println("Cost after discount: ");
+            System.out.println("___________________________Gift Cards______________________________");
+            System.out.print("Actuall Cost of sweets and birthday items: ");
+            System.out.println(this.actuallCost.subtract(this.AcutallDeliveryCost));           
+            if (this.costWithDisocunt.compareTo(this.actuallCost.subtract(this.AcutallDeliveryCost)) != 0){
+                System.out.print("Cost of sweets and birthday items after discount: ");
                 System.out.println(this.costWithDisocunt);
-                System.out.println("\n");
             }
+            System.out.print("Delivery Cost: ");
+            System.out.println(this.AcutallDeliveryCost);
         }
+        System.out.println("____________list GiftCards_____________");
         int i = 1;
         for(GiftCard gift: customer.getGiftCards()){
-            System.out.print("number ");
+            System.out.print("GiftCard number ");
             System.out.print(i);
             System.out.println(": ");
             System.out.println(gift.GiftCardInformation());
             System.out.println("**************\n");
+            i += 1;
         }
         
         if(giftCards.size() > 0){
-            System.out.println("Choose one of gift cards from above: ");
-            Scanner sc = new Scanner(System.in);
-            int choose = sc.nextInt();
-            GiftCard chosen = giftCards.get(choose - 1);
-            newcost = newcost.subtract(chosen.getPrice());
-            System.out.println("Cost after subtracting: ");
-            System.out.println(newcost);
-            System.out.println("\n");
-            
-            System.out.println("___________________________Admin terminal______________________________");
-            BigDecimal payAdmin = cost;
-            payAdmin = payAdmin.subtract(newcost);
-            System.out.println("Diffrence Cost: ");
-            System.out.println(payAdmin);
-            if(chooseTypeBaker == 1)
-                Admin.getInstance().payDiscount(payAdmin, this.bakery);
-            else if(chooseTypeBaker == 0)
-                Admin.getInstance().payDiscount(payAdmin, this.baker);
-            System.out.println("___________________________Finish terminal_____________________________");
+            int choose = -1;
+            boolean getCorrectInput = false;
+            while(!getCorrectInput){
+                System.out.print("Choose one of gift cards from above(if you don't want to please enter 0): ");            
+                Scanner sc = new Scanner(System.in);
+                choose = sc.nextInt();
+                if(choose >= 0 && choose < i){
+                    getCorrectInput = true;
+                }else
+                    System.out.println("Wrong number!");
+            }
+            if (choose != -1 && choose != 0 && getCorrectInput == true){
+                GiftCard chosen = giftCards.get(choose - 1);
+                BigDecimal payAdmin = BigDecimal.ZERO;
+                
+                // remain price giftCard <= cost of order without delivery
+                if(chosen.getRemainPrice().compareTo(newcost) != 1 ){ 
+                    System.out.println("-1 or 0");
+                    BigDecimal subtractAmount = chosen.getRemainPrice();
+                    newcost = newcost.subtract(subtractAmount);
+                    chosen.reduceFromRemain(subtractAmount);
+                    payAdmin = payAdmin.add(subtractAmount);
+                    System.out.print("Cost Sweets and birthday items after subtracting GiftCard: ");
+                    System.out.println(newcost);
+                    System.out.print("Final Cost with delivery: ");
+                    newcost = newcost.add(this.AcutallDeliveryCost);
+                    System.out.println(newcost);
+                }
+                // remain price giftCard > cost of order without delivery
+                else if(chosen.getRemainPrice().compareTo(newcost) == 1){ 
+                    System.out.println("1");
+                    chosen.reduceFromRemain(newcost);
+                    payAdmin = payAdmin.add(newcost);
+                    newcost = BigDecimal.ZERO;                   
+                    System.out.print("Cost Sweets and birthday items after subtracting GiftCard: ");
+                    System.out.println(newcost);
+
+                    // remain price giftCard <= delivery cost
+                    if(chosen.getRemainPrice().compareTo(this.AcutallDeliveryCost) != 1){ 
+                        System.out.print("Acutall Cost delivery: ");
+                        System.out.println(this.AcutallDeliveryCost);
+                        BigDecimal subtractAmount = chosen.getRemainPrice();
+                        BigDecimal remainDeliveryCost = this.AcutallDeliveryCost;
+                        remainDeliveryCost = remainDeliveryCost.subtract(subtractAmount);
+                        chosen.reduceFromRemain(subtractAmount);
+                        payAdmin = payAdmin.add(subtractAmount);
+                        System.out.print("Delivery Cost after subtracting GiftCard: ");
+                        System.out.println(remainDeliveryCost);
+                        newcost = newcost.add(remainDeliveryCost);
+                    }
+                    // remain price giftCard > delivery cost
+                    else if(chosen.getRemainPrice().compareTo(this.AcutallDeliveryCost) == 1){
+                        System.out.print("Acutall Cost delivery: ");
+                        System.out.println(this.AcutallDeliveryCost);
+                        BigDecimal remainDeliveryCost = BigDecimal.ZERO;  
+                        chosen.reduceFromRemain(this.AcutallDeliveryCost);
+                        payAdmin = payAdmin.add(this.AcutallDeliveryCost);
+                        System.out.print("Delivery Cost after subtracting GiftCard: ");
+                        System.out.println(remainDeliveryCost);
+                        newcost = newcost.add(remainDeliveryCost);
+                    }
+                }   
+                
+                System.out.println("___________________________Admin terminal______________________________");
+                System.out.println("Please Pay the chosen GiftCard");
+                System.out.println("Amount of GiftCard used: ");
+                System.out.println(payAdmin);
+                if(chooseTypeBaker == 1)
+                    Admin.getInstance().paytoAccount(payAdmin, this.bakery, "pay giftCard to bakery");
+                else if(chooseTypeBaker == 0)
+                    Admin.getInstance().paytoAccount(payAdmin, this.baker, "pay giftCard to baker");
+//                Admin.getInstance().payDiscount(payAdmin, emploee, "pay giftCard to emploee");
+                System.out.println("___________________________Finish terminal_____________________________");
+
+            }
         }
-        
-        
+        System.out.print("Amount of Cost you must pay: ");
+        System.out.println(newcost);
         return newcost;
     }
     
-    public BigDecimal getCost(){
-        BigDecimal cost = new BigDecimal(0);
+    private BigDecimal getCost(){
+        BigDecimal sweet_cost = new BigDecimal(0);
         for (Sweets i : sweet_score.keySet()) {
-            cost = cost.add(i.getTOTAL_COST());
+            sweet_cost = sweet_cost.add(i.getTOTAL_COST());
         }
+        BigDecimal item_cost = new BigDecimal(0);
         for (BirthdayItems b: items){
-            cost = cost.add(b.getCost());
+            item_cost = item_cost.add(b.getCost());
         }
+        BigDecimal delivery_cost = new BigDecimal(0);
         if(delivery != null){
-            cost = cost.add(delivery.getTransferPrice());
+            delivery_cost = delivery_cost.add(delivery.getTransferPrice());
+            this.AcutallDeliveryCost = delivery_cost;
         }
-        this.actuallCost = cost;
-        this.costWithDisocunt = applyDiscount(cost);
+        this.actuallCost = sweet_cost.add(item_cost).add(delivery_cost);
+        this.costWithDisocunt = applyDiscount(sweet_cost.add(item_cost));
         this.costWithGiftCard = applyGiftCard(this.costWithDisocunt);
         return this.costWithGiftCard;
     }
@@ -533,8 +606,8 @@ public class Order {
         }
     }
 
-    public Discount getDiscount() {
-        return  discount;
+    public List<Discount> getDiscount() {
+        return  this.listDiscounts;
     }
 
     public int getBakerId() {

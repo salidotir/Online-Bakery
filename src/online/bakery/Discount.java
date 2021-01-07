@@ -44,10 +44,14 @@ public class Discount {
         this.name = name;
     }
 
+    public boolean canUseDiscount(){
+        return numberUsed + 1 <= maxUsed;       
+    }
+    
     public boolean useDiscount(){
-        if (numberUsed + 1 == maxUsed){
+        if(numberUsed + 1 == maxUsed)
             return false;
-        }else{
+        else{
             numberUsed += 1;
             return true;
         }

@@ -10,9 +10,12 @@ public class GiftCard {
     Customer Owner;
     BigDecimal Price;
     String Note;
+    BigDecimal remainCost;
+    
     public GiftCard(@NotNull Customer owner, @NotNull BigDecimal price,@Nullable String note,@NotNull Customer from){
         this.Owner=owner;
         this.Price=price;
+        this.remainCost = price;
         this.Note=note;
         this.from=from;
     }
@@ -28,16 +31,26 @@ public class GiftCard {
     }
     
     public String GiftCardInformation(){
-        String s = "_________GiftCard information___________\n" +
+        String s = 
                 "From: " + from.getUsername()+ "\n" +
                 "Owner: " + Owner.getUsername() + "\n" +
-                "Price: " + Price + "\n";
+                "Original Price: " + Price + "\n"+
+                "Remain Price: "+ remainCost + "\n";
         if(!Note.isEmpty())
             s += "Note: " + Note + "\n" ;
         
         return s;
     }
+    
+    public BigDecimal reduceFromRemain(BigDecimal cost){
+        remainCost = remainCost.subtract(cost);
+        return remainCost;
+    }
 
+    public BigDecimal getRemainPrice(){
+        return remainCost;
+    }
+    
     public BigDecimal getPrice() {
         return Price;
     }
