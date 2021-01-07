@@ -1,9 +1,11 @@
-package online.bakery;
+package online.bakery.birthdayItems;
+
+import online.bakery.birthdayItems.BirthdayItems;
 
 import java.math.BigDecimal;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class Balloon implements BirthdayItems{
+public class Balloon implements BirthdayItems {
 
     private final int itemId ;
     static AtomicInteger atomicInteger = new AtomicInteger(0);

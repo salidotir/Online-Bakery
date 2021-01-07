@@ -1,18 +1,16 @@
 package online.bakery;
 
 import javafx.util.Pair;
+import online.bakery.birthdayItems.BirthdayItems;
+import online.bakery.birthdayItems.Candle;
 import online.bakery.decorators.Decorator;
 import online.bakery.decorators.DecoratorToBuild;
-import online.bakery.decorators.Design;
-import online.bakery.decorators.DesignDecoration;
 import online.bakery.sweets.*;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-
-import static online.bakery.sweets.TypeOfSweets.*;
 
 public class Bakery extends Account implements Confectioner {
     private String name;
