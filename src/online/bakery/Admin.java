@@ -12,6 +12,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import javafx.util.Pair;
+import online.bakery.Post.Comment;
+import online.bakery.Post.Post;
 import online.bakery.birthdayItems.BirthdayItems;
 import online.bakery.sweets.Rate;
 import online.bakery.sweets.Sweets;
@@ -338,6 +340,18 @@ public class Admin extends Account{
 
     public List<Order> getOrderDate(Confectioner confectioner, Date start, Date end,OrderStatus orderStatus) {
         return DBMS.getDBMS(this).getOrderDate(confectioner.getID(),start,end,orderStatus);
+    }
+
+    public boolean addPost(Post post) {
+        return DBMS.getDBMS(this).addPost(post);
+    }
+
+    public boolean addComment(Comment Comment) {
+        return DBMS.getDBMS(this).addComment(Comment);
+    }
+
+    public boolean editPost(Post post) {
+        return DBMS.getDBMS(this).editPost(post.getId(),post.getCaption(),post.getLikeId());
     }
 }
 

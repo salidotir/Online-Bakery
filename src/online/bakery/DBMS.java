@@ -14,6 +14,8 @@ import java.util.Map;
 import java.util.Scanner;
 
 import javafx.util.Pair;
+import online.bakery.Post.Comment;
+import online.bakery.Post.Post;
 import online.bakery.birthdayItems.BirthdayItems;
 import online.bakery.sweets.Rate;
 import online.bakery.sweets.TypeOfSweets;
@@ -55,6 +57,8 @@ public class DBMS {
     private Map<Integer, List<Sweets>> bakerOrderSweetMap;
     private Map<Integer, List<Pair<BirthdayItems, Integer>>> bakerBirthdayItemsMap;
     private List<Discount> discounts;
+    private List<Post> posts;
+    private List<Comment> comments;
 
     private DBMS() {
         this.customers = new ArrayList<Customer>();
@@ -1070,6 +1074,42 @@ public class DBMS {
 
 
     //~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~
+
+    public List<Post> getPosts() {
+        return posts;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public boolean addPost(Post post) {
+        this.posts.add(post);
+        return true;
+    }
+
+    public boolean addComment(Comment comment) {
+        this.comments.add(comment);
+        return true;
+    }
+
+    public boolean editPost(int id, String caption, List<Integer> likeId) {
+        int index = -1;
+        for (int i = 0; i < DBMS.getDBMS().posts.size(); i++) {
+            if (DBMS.getDBMS().posts.get(i).getId() == id) {
+                index = i;
+                break;
+            }
+        }
+        if (index == -1) {
+            return false;
+        }
+
+        DBMS.getDBMS().posts.get(index).setCaption(caption);
+        DBMS.getDBMS().posts.get(index).setLikeId(likeId);
+
+        return true;
+    }
 
 
     //~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~

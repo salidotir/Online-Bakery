@@ -35,7 +35,7 @@ abstract public class Account {
     private Date lastLoginTime;
     private final Wallet wallet;
     private List<Payment> payments;
-    Role role;
+    public Role role;
     
     public Account() {
         this.ID = atomicInteger.incrementAndGet();
