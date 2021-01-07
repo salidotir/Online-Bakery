@@ -333,13 +333,6 @@ public class Bakery extends Account implements Confectioner {
         return bakeryP;
     }
 
-    public boolean addNote(Note note, String extraText) {
-        if (this.getID() == note.getNoteSellerId()) {
-            note.setNoteSellerText(extraText);
-        }
-        return true;
-    }
-
     public  BigDecimal getProfit(Date start , Date end){
         List <Order> orders = Admin.getInstance().getOrderDate(this,start,end,OrderStatus.DELIVERED);
         BigDecimal profit = new BigDecimal("0");

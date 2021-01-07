@@ -35,8 +35,6 @@ public interface Confectioner {
 
     boolean addDiscount();
 
-    boolean addNote(Note note, String extraText);
-
     Sweets CreateSweets();
     boolean addOrderSweet();
 

@@ -5,11 +5,13 @@ import online.bakery.decorators.DecoratorToBuild;
 import online.bakery.decorators.Design;
 import online.bakery.decorators.DesignDecoration;
 import online.bakery.sweets.*;
+import online.bakery.Post.*;
 
 import java.lang.reflect.Array;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.*;
+import online.bakery.birthdayItems.*;
 
 
 public class main {
@@ -18,7 +20,7 @@ public class main {
 //        test_multi_tiered();
 //        test_GiftCard();
 //        test1();
-        testPost();
+//        testPost();
         test3();
 //        test2();
     }
@@ -203,11 +205,23 @@ public class main {
         Candle candle = new Candle("happy",  new BigDecimal(1000), new BigDecimal(700), "3", "red");
         Order o1 = c.createNewSweet(sList, listitem);
         o1.ItemaddtoOrder(candle);
+        
+        // create a note for the order
+//        Note order1_note = new Note(c.getOrdersID().get(0), b1.getID(), c.getID());
+//        // employee add a text to note
+//        e1.addNote(order1_note, "تحویل داده خواهد شد توسط اینجانب");        
+//        System.out.println(order1_note.getNoteInformation());
+        
         boolean result = true;
         while(result){
             result = o1.finalizedOrder();
             if(!result)
                 break;
+            o1.addNote(c, "do not use suger");
+            
+            for (Order o :Admin.getInstance().getOrders())
+                System.out.println(o.getOrderInformation());
+            
             AbstractMap.SimpleEntry res = o1.chooseBakery(b1, stList);
             result = (boolean)res.getKey();
             if(!result)
@@ -217,6 +231,11 @@ public class main {
             ConfectionerStatus s = o1.getConfirmBaker(cs1);
             if (s == ConfectionerStatus.ACCEPT){
                 c.setAddress("ملاصدرا دانشکده کامپیوتر");
+                o1.addNote(b1, "i accept under condition.");
+                System.out.println(o1.getOrderInformation());
+//                for (Order o :Admin.getInstance().getOrders())
+//                    System.out.println(o.getOrderInformation());
+//                
                 
                 res = o1.setDelivery();
                 result = (boolean)res.getKey();
