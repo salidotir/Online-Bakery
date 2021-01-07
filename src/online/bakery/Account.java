@@ -5,6 +5,9 @@
  */
 package online.bakery;
 
+import online.bakery.Post.Comment;
+import online.bakery.Post.Post;
+
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Date;
@@ -203,5 +206,21 @@ abstract public class Account {
                 return new AbstractMap.SimpleEntry(false, "No password is set");
         }else
             return new AbstractMap.SimpleEntry(false, "You are not Loged in.");
+    }
+
+    public Comment addComment(Post post){
+        List<String> images = new ArrayList<String>();
+        Scanner scan = new Scanner(System.in);
+        System.out.println("Enter text comment");
+        String text = scan.nextLine();
+        while (true){
+            System.out.println("Enter image");
+            String s = scan.nextLine();
+            images.add(s);
+            System.out.println("break? y/n");
+            char y = scan.next().charAt(0);
+            if (y == 'y') break;
+        }
+        return new Comment(text,images,ID,post.getId());
     }
 }
