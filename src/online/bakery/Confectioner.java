@@ -32,7 +32,7 @@ public interface Confectioner {
 
     List<ConfectionerStatus> acceptOrder(Order order,List<SweetType> st);
 
-    boolean addDiscount() throws ParseException;
+    boolean addDiscount();
 
     boolean addNote(Note note, String extraText);
 

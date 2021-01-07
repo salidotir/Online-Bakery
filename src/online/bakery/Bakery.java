@@ -215,6 +215,7 @@ public class Bakery extends Account implements Confectioner {
                 Admin.getInstance().addOrderSweet(this, order.getSweets().get(i));
             }
         }
+
         for (int i = 0; i < item.size(); i++) {
             Admin.getInstance().decreaseBirthdayItemNumber(this, order.getItems().get(i), 1);
         }
@@ -287,7 +288,7 @@ public class Bakery extends Account implements Confectioner {
         return Admin.getInstance().getBirthdayItem(this);
     }
 
-    public boolean addDiscount() throws ParseException {
+    public boolean addDiscount(){
 
 
         int max = 1000;
@@ -314,6 +315,7 @@ public class Bakery extends Account implements Confectioner {
         if(percent<= 100 && percent > 0){
             Discount d = new Discount(name, percent, start, end, this.getID(), max);
             return Admin.getInstance().addDiscount(d);
+
         }else
             return false;
     }

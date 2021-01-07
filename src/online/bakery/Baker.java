@@ -236,7 +236,7 @@ public class Baker extends Account implements Confectioner{
 
 
 
-    public boolean addDiscount() throws ParseException {
+    public boolean addDiscount(){
 
 
         int max = 1000;
