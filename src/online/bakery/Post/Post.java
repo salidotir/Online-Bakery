@@ -25,9 +25,9 @@ public class Post {
         Admin.getInstance().addPost(this);
     }
 
-     static Post createPost(Account account, String caption, List<String> images, int authorId){
+     public static Post createPost(Account account, String caption, List<String> images){
         if(account.role == Role.BAKERY || account.role == Role.BAKER || account.role == Role.ADMIN){
-            return new Post( caption,images,authorId);
+            return new Post( caption,images,account.getID());
         }
         else{
             return null;

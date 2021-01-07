@@ -6,11 +6,8 @@
 package online.bakery;
 
 import java.math.BigDecimal;
-import java.util.AbstractMap;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
 import javafx.util.Pair;
 import online.bakery.Post.Comment;
 import online.bakery.Post.Post;
@@ -352,6 +349,22 @@ public class Admin extends Account{
 
     public boolean editPost(Post post) {
         return DBMS.getDBMS(this).editPost(post.getId(),post.getCaption(),post.getLikeId());
+    }
+
+    public Post createPost(){
+        List<String> images = new ArrayList<String>();
+        Scanner scan = new Scanner(System.in);
+        System.out.println("Enter caption post");
+        String caption = scan.nextLine();
+        while (true){
+            System.out.println("Enter image");
+            String s = scan.nextLine();
+            images.add(s);
+            System.out.println("break? y/n");
+            char y = scan.next().charAt(0);
+            if (y == 'y') break;
+        }
+        return Post.createPost(this,caption,images);
     }
 }
 

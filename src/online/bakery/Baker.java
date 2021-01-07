@@ -1,6 +1,7 @@
 package online.bakery;
 
 import javafx.util.Pair;
+import online.bakery.Post.Post;
 import online.bakery.decorators.Decorator;
 import online.bakery.decorators.DecoratorToBuild;
 import online.bakery.sweets.*;
@@ -219,6 +220,7 @@ public class Baker extends Account implements Confectioner{
 
 
 
+
 //    public List<Sweets> getPost() {
 //        return post;
 //    }
@@ -324,6 +326,22 @@ public class Baker extends Account implements Confectioner{
         }
         return  profit;
 
+    }
+
+    public Post createPost(){
+        List<String> images = new ArrayList<String>();
+        Scanner scan = new Scanner(System.in);
+        System.out.println("Enter caption post");
+        String caption = scan.nextLine();
+        while (true){
+            System.out.println("Enter image");
+            String s = scan.nextLine();
+            images.add(s);
+            System.out.println("break? y/n");
+            char y = scan.next().charAt(0);
+            if (y == 'y') break;
+        }
+        return Post.createPost(this,caption,images);
     }
 
 }
