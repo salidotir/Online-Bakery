@@ -309,38 +309,42 @@ public class DBMS {
         return false;
     }
 
-    public List<Payment> getPayment(Account account){
-        if(null != account.role)switch (account.role) {
+    public List<Payment> getPayment(Account account) {
+        if (null != account.role) switch (account.role) {
             case CUSTOMER:
-                for(Customer customer: DBMS.getDBMS().customers){
-                    if(customer.getID() == account.getID()){
+                for (Customer customer : DBMS.getDBMS().customers) {
+                    if (customer.getID() == account.getID()) {
                         return customer.getPayments();
                     }
-                }   break;
+                }
+                break;
             case BAKER:
-                for(Baker baker : DBMS.getDBMS().bakers){
-                    if(baker.getID() == account.getID()){
+                for (Baker baker : DBMS.getDBMS().bakers) {
+                    if (baker.getID() == account.getID()) {
                         return baker.getPayments();
                     }
-                }   break;
+                }
+                break;
             case BAKERY:
-                for(Bakery bakery: DBMS.getDBMS().bakeries){
-                    if(bakery.getID() == account.getID()){
+                for (Bakery bakery : DBMS.getDBMS().bakeries) {
+                    if (bakery.getID() == account.getID()) {
                         return bakery.getPayments();
                     }
-                }   break;
+                }
+                break;
             case ADMIN:
-                for(Admin admin: DBMS.getDBMS().admins){
-                    if(admin.getID() == account.getID()){
+                for (Admin admin : DBMS.getDBMS().admins) {
+                    if (admin.getID() == account.getID()) {
                         return admin.getPayments();
                     }
-                }   break;
+                }
+                break;
             default:
                 break;
         }
         return null;
     }
-    
+
     //~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~ 
 
     // search for delivery information of a specific order
@@ -410,9 +414,9 @@ public class DBMS {
     }
 
     public boolean addBakery(Bakery bakery) {
-        if (DBMS.getDBMS().bakeries.contains(bakery)) {          
+        if (DBMS.getDBMS().bakeries.contains(bakery)) {
             return false;
-        }else{
+        } else {
             DBMS.getDBMS().bakeries.add(bakery);
             DBMS.getDBMS().bakerOrderSweetMap.put(bakery.getID(), new ArrayList<Sweets>());
             DBMS.getDBMS().bakerReadySweetMap.put(bakery.getID(), new ArrayList<Pair<Sweets, Integer>>());
@@ -437,9 +441,9 @@ public class DBMS {
     }
 
     public boolean addBaker(Baker baker) {
-        if (DBMS.getDBMS().bakers.contains(baker)) {          
+        if (DBMS.getDBMS().bakers.contains(baker)) {
             return false;
-        }else{
+        } else {
             DBMS.getDBMS().bakers.add(baker);
             DBMS.getDBMS().bakerOrderSweetMap.put(baker.getID(), new ArrayList<Sweets>());
             DBMS.getDBMS().bakerReadySweetMap.put(baker.getID(), new ArrayList<Pair<Sweets, Integer>>());
@@ -463,16 +467,16 @@ public class DBMS {
     }
 
     public boolean addCustomer(Customer customer) {
-        if (DBMS.getDBMS().customers.contains(customer)) {          
+        if (DBMS.getDBMS().customers.contains(customer)) {
             return false;
-        }else{
+        } else {
             DBMS.getDBMS().customers.add(customer);
             int index = DBMS.getDBMS().customers.indexOf(customer);
             DBMS.getDBMS().customers.get(index).setActiveness("Active");
             return true;
         }
     }
-    
+
     public boolean removeCustomer(Customer customer) {
         int index = DBMS.getDBMS().customers.indexOf(customer);
         DBMS.getDBMS().customers.get(index).setActiveness("Inactive");
@@ -480,49 +484,49 @@ public class DBMS {
     }
 
     //~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~    
-    
-    public AbstractMap.SimpleEntry toggleActiveness(Account account){
-        switch(account.role){ 
-            case CUSTOMER:{
-                if (DBMS.getDBMS().customers.contains(account)){
+
+    public AbstractMap.SimpleEntry toggleActiveness(Account account) {
+        switch (account.role) {
+            case CUSTOMER: {
+                if (DBMS.getDBMS().customers.contains(account)) {
                     int index = DBMS.getDBMS().customers.indexOf(account);
                     String active = DBMS.getDBMS().customers.get(index).getActiveness();
-                    if (active.equals("Active")){
+                    if (active.equals("Active")) {
                         DBMS.getDBMS().customers.get(index).setActiveness("Inactive");
-                        return new AbstractMap.SimpleEntry(true, "Inactive"); 
-                    }else{
+                        return new AbstractMap.SimpleEntry(true, "Inactive");
+                    } else {
                         DBMS.getDBMS().customers.get(index).setActiveness("Active");
                         return new AbstractMap.SimpleEntry(true, "Active");
                     }
-                }else
+                } else
                     return new AbstractMap.SimpleEntry(false, "There is no such Customer");
-            }   
-            case BAKERY:{
-                if (DBMS.getDBMS().bakeries.contains(account)){
+            }
+            case BAKERY: {
+                if (DBMS.getDBMS().bakeries.contains(account)) {
                     int index = DBMS.getDBMS().bakeries.indexOf(account);
                     String active = DBMS.getDBMS().bakeries.get(index).getActiveness();
-                    if (active.equals("Active")){
+                    if (active.equals("Active")) {
                         DBMS.getDBMS().bakeries.get(index).setActiveness("Inactive");
-                        return new AbstractMap.SimpleEntry(true, "Inactive"); 
-                    }else{
+                        return new AbstractMap.SimpleEntry(true, "Inactive");
+                    } else {
                         DBMS.getDBMS().bakeries.get(index).setActiveness("Active");
                         return new AbstractMap.SimpleEntry(true, "Active");
                     }
-                }else
+                } else
                     return new AbstractMap.SimpleEntry(false, "There is no such Customer");
             }
-            case BAKER:{
-                if (DBMS.getDBMS().bakers.contains(account)){
+            case BAKER: {
+                if (DBMS.getDBMS().bakers.contains(account)) {
                     int index = DBMS.getDBMS().bakers.indexOf(account);
                     String active = DBMS.getDBMS().bakers.get(index).getActiveness();
-                    if (active.equals("Active")){
+                    if (active.equals("Active")) {
                         DBMS.getDBMS().bakers.get(index).setActiveness("Inactive");
-                        return new AbstractMap.SimpleEntry(true, "Inactive"); 
-                    }else{
+                        return new AbstractMap.SimpleEntry(true, "Inactive");
+                    } else {
                         DBMS.getDBMS().bakers.get(index).setActiveness("Active");
                         return new AbstractMap.SimpleEntry(true, "Active");
                     }
-                }else
+                } else
                     return new AbstractMap.SimpleEntry(false, "There is no such Customer");
             }
             default:
@@ -531,15 +535,15 @@ public class DBMS {
     }
 
     //~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~  
-    
+
     public List<Employee> getListOfEmployees() {
         return DBMS.getDBMS().employees;
     }
 
     public boolean addEmployee(Employee employee) {
-        if (DBMS.getDBMS().employees.contains(employee)) {          
+        if (DBMS.getDBMS().employees.contains(employee)) {
             return false;
-        }else{
+        } else {
             DBMS.getDBMS().employees.add(employee);
             int index = DBMS.getDBMS().employees.indexOf(employee);
             DBMS.getDBMS().employees.get(index).setActiveness("Active");
@@ -559,60 +563,60 @@ public class DBMS {
         return DBMS.getDBMS().orders;
     }
 
-    public AbstractMap.SimpleEntry getOrderByID(int orderId){
-        for(Order order: DBMS.getDBMS().orders){
-            if(order.getOrderId() == orderId){
+    public AbstractMap.SimpleEntry getOrderByID(int orderId) {
+        for (Order order : DBMS.getDBMS().orders) {
+            if (order.getOrderId() == orderId) {
                 return new AbstractMap.SimpleEntry(true, order);
             }
         }
         return new AbstractMap.SimpleEntry(false, null);
     }
-    
+
     public boolean addOrder(Order order) {
         DBMS.getDBMS().orders.add(order);
         return true;
     }
-    
-    public boolean updateOrder(Order order){
-        if(DBMS.getDBMS().orders.contains(order)){
+
+    public boolean updateOrder(Order order) {
+        if (DBMS.getDBMS().orders.contains(order)) {
             int index = DBMS.getDBMS().orders.indexOf(order);
             DBMS.getDBMS().orders.set(index, order);
             return true;
-        }else
+        } else
             return false;
     }
-    
-    public boolean setOrderFinish(int orderId, Date actuallDelivery){
-       AbstractMap.SimpleEntry res = DBMS.getDBMS().getOrderByID(orderId);
-       if ((boolean)res.getKey()){
-           Order order = (Order)res.getValue();
-           return true;
+
+    public boolean setOrderFinish(int orderId, Date actuallDelivery) {
+        AbstractMap.SimpleEntry res = DBMS.getDBMS().getOrderByID(orderId);
+        if ((boolean) res.getKey()) {
+            Order order = (Order) res.getValue();
+            return true;
 //           return order.finishOrder(actuallDelivery);
-       }else
-           return false;
+        } else
+            return false;
     }
-    
-    public boolean setOrderRuined(int orderId){
-       AbstractMap.SimpleEntry res = DBMS.getDBMS().getOrderByID(orderId);
-       if ((boolean)res.getKey()){
-           Order order = (Order)res.getValue();
-           return order.ruinByEmployee();
-       }else
-           return false;
+
+    public boolean setOrderRuined(int orderId) {
+        AbstractMap.SimpleEntry res = DBMS.getDBMS().getOrderByID(orderId);
+        if ((boolean) res.getKey()) {
+            Order order = (Order) res.getValue();
+            return order.ruinByEmployee();
+        } else
+            return false;
     }
-        
-    public boolean firstOrder(int customerID){
-        for (Order order: DBMS.getDBMS().orders){
-            if(order.getCustomerId() == customerID && 
+
+    public boolean firstOrder(int customerID) {
+        for (Order order : DBMS.getDBMS().orders) {
+            if (order.getCustomerId() == customerID &&
                     order.getOrderStatus() != OrderStatus.ORDERING_BY_CUSTOMER &&
                     order.getOrderStatus() != OrderStatus.CANCELED_BY_CUSTOMER &&
-                    order.getOrderStatus() != OrderStatus.CANCELED_BY_BAKER){
+                    order.getOrderStatus() != OrderStatus.CANCELED_BY_BAKER) {
                 return false;
             }
         }
         return true;
     }
-    
+
     //~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~    
 
     public List<Payment> getListOfPayments() {
@@ -732,7 +736,7 @@ public class DBMS {
             if (entry.getKey().getKey() == order.getOrderId()) {
                 // set order status delivered
                 boolean result = DBMS.getDBMS().setOrderFinish(entry.getKey().getKey(), actullDelivery);
-                if(result){
+                if (result) {
                     // set employees isBusy false
                     int size = entry.getValue().getKey().size();
                     for (int i = 0; i < size; i++) {
@@ -749,13 +753,13 @@ public class DBMS {
                     //System.out.println(DBMS.getDBMS().getListOfOrders().get(0).getOrderStatus());
 
                     return true;
-                }else 
+                } else
                     return false;
             }
         }
         return false;
     }
-    
+
     // order is ruined by employee:
     // 1. Order status -> RUINED_BY_EMPLOYEE
     // 2. Employee isBusy -> false
@@ -766,7 +770,7 @@ public class DBMS {
             if (entry.getKey().getKey() == order.getOrderId()) {
                 // set order status delivered
                 boolean result = DBMS.getDBMS().setOrderRuined(entry.getKey().getKey());
-                if(result){
+                if (result) {
                     // set employees isBusy false
                     int size = entry.getValue().getKey().size();
                     for (int i = 0; i < size; i++) {
@@ -775,7 +779,7 @@ public class DBMS {
                         DBMS.getDBMS().setEmployeeIsBusyFalse(e);
                         // decrease from their score
                         // To be completed //
-                        
+
                     }
 
                     // set vehicle isBusy -> false
@@ -784,7 +788,7 @@ public class DBMS {
                     DBMS.getDBMS().setVehicleIsBusyFalse(v);
 
                     return true;
-                }else 
+                } else
                     return false;
             }
         }
@@ -806,8 +810,8 @@ public class DBMS {
         }
         return list;
     }
-    
-    public List<Discount> getActiveDiscount(int id){
+
+    public List<Discount> getActiveDiscount(int id) {
         List<Discount> list = new ArrayList<Discount>();
         Date today = new Date();
         for (Discount discount : DBMS.getDBMS().discounts) {
@@ -984,9 +988,9 @@ public class DBMS {
             }
         }
         double score;
-        if(numSweet != 0){
+        if (numSweet != 0) {
             score = sumScore / numSweet;
-        }else
+        } else
             score = 0;
         return score;
     }
@@ -995,7 +999,7 @@ public class DBMS {
     public List<Order> getListOfOrdersBaker(int bakerId) {
         List<Order> orders = new ArrayList<Order>();
         for (Order order : DBMS.getDBMS().orders) {
-            if (order.getBakerId()== bakerId) {
+            if (order.getBakerId() == bakerId) {
                 orders.add(order);
             }
         }
@@ -1067,8 +1071,8 @@ public class DBMS {
     public List<Order> getOrderDate(int bakerId, Date start, Date end, OrderStatus orderStatus) {
         List<Order> out = new ArrayList<Order>();
 
-        for(Order o : orders){
-            if(o.getBakerId() == bakerId && o.getOrderStatus() == orderStatus){
+        for (Order o : orders) {
+            if (o.getBakerId() == bakerId && o.getOrderStatus() == orderStatus) {
                 out.add(o);
             }
         }
@@ -1116,21 +1120,31 @@ public class DBMS {
 
     public List<Post> getPosts(int id) {
         List<Post> out = new ArrayList<Post>();
-        for(Post p:DBMS.getDBMS().posts){
-            if(p.getAuthorId() == id){
+        for (Post p : DBMS.getDBMS().posts) {
+            if (p.getAuthorId() == id) {
                 out.add(p);
             }
         }
         return out;
     }
+
     public List<Comment> getComments(int postId) {
         List<Comment> out = new ArrayList<Comment>();
-        for(Comment c:DBMS.getDBMS().comments){
-            if(c.getPostId() == postId){
+        for (Comment c : DBMS.getDBMS().comments) {
+            if (c.getPostId() == postId) {
                 out.add(c);
             }
         }
         return out;
+    }
+
+    public List<Bakery> ShowAllBakery() {
+        return bakeries;
+    }
+
+    public List<Baker> ShowAllBakers() {
+        return bakers;
+
     }
 
 

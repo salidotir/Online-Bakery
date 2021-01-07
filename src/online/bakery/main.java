@@ -1,5 +1,9 @@
 package online.bakery;
 
+import online.bakery.Post.Comment;
+import online.bakery.Post.Post;
+import online.bakery.birthdayItems.BirthdayItems;
+import online.bakery.birthdayItems.Candle;
 import online.bakery.decorators.Decorator;
 import online.bakery.decorators.DecoratorToBuild;
 import online.bakery.decorators.Design;
@@ -18,8 +22,9 @@ public class main {
 //        test_multi_tiered();
 //        test_GiftCard();
 //        test1();
-        testPost();
-        test3();
+        Test test =new Test();
+        //testPost();
+        //test3();
 //        test2();
     }
 
