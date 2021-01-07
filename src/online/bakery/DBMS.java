@@ -584,7 +584,8 @@ public class DBMS {
        AbstractMap.SimpleEntry res = DBMS.getDBMS().getOrderByID(orderId);
        if ((boolean)res.getKey()){
            Order order = (Order)res.getValue();
-           return order.finishOrder(actuallDelivery);
+           return true;
+//           return order.finishOrder(actuallDelivery);
        }else
            return false;
     }
@@ -992,7 +993,7 @@ public class DBMS {
     public List<Order> getListOfOrdersBaker(int bakerId) {
         List<Order> orders = new ArrayList<Order>();
         for (Order order : DBMS.getDBMS().orders) {
-            if (order.getStaffId() == bakerId) {
+            if (order.getBakerId()== bakerId) {
                 orders.add(order);
             }
         }
