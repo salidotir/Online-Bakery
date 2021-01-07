@@ -12,7 +12,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import javafx.util.Pair;
-import online.bakery.birthdayItems.BirthdayItems;
 import online.bakery.sweets.Rate;
 import online.bakery.sweets.Sweets;
 
@@ -53,18 +52,11 @@ public class Admin extends Account{
             return false;
     }
     
-    public boolean payDiscount(BigDecimal cost, Bakery bakery){
+    public boolean paytoAccount(BigDecimal cost, Account account, String description){
         PaymentType paymentType = Payment.howToPay();
-        Payment payment = new Payment(new Date(), cost, "Admin pays cost for discount", paymentType);
+        Payment payment = new Payment(new Date(), cost, description, paymentType);
         this.addPayment(payment);
-        return payment.pay(payment, this, bakery);
-    }
-    
-    public boolean payDiscount(BigDecimal cost, Baker baker){
-        PaymentType paymentType = Payment.howToPay();
-        Payment payment = new Payment(new Date(), cost, "Admin pays cost for discount", paymentType);
-        this.addPayment(payment);
-        return payment.pay(payment, this, baker);
+        return payment.pay(payment, this, account);
     }
     
     void setQuestions(List<String> questions){
