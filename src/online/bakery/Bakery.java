@@ -8,6 +8,8 @@ import online.bakery.decorators.DesignDecoration;
 import online.bakery.sweets.*;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static online.bakery.sweets.TypeOfSweets.*;
@@ -63,6 +65,7 @@ public class Bakery extends Account implements Confectioner {
         Scanner scan = new Scanner(System.in);
         System.out.printf("Please Enter Number for this Sweet : ");
         int number = scan.nextInt();
+        scan.nextLine();
 
         return Admin.getInstance().addReadySweet(this, sweet, number);
     }
@@ -99,11 +102,15 @@ public class Bakery extends Account implements Confectioner {
             System.out.println("break? y/n");
             mydecorators.add(new DecoratorToBuild(decorators[Which_decorator - 1], new BigDecimal(grams), new BigDecimal(cost)));
 
-            String y = sc.nextLine();
-            if (y.equals("n")) break;
-        }
+            //String y = sc.nextLine();
+            //if (y.equals("n")) break;
+            char y = sc.next().charAt(0);
+            if (y == 'y') break;
 
-        switch (sweetTypes[j - 1]) {
+        }
+        sc.nextLine();
+
+        switch (sweetTypes[WhichSweet-1]) {
 
             case CAKE:
 
@@ -113,6 +120,7 @@ public class Bakery extends Account implements Confectioner {
                 sweets.setName(y);
                 System.out.println("Fee: ");
                 int fee = sc.nextInt();
+                sc.nextLine();
                 sweets.setFee(new BigDecimal(fee));
                 System.out.println("Image : ");
                 String image = sc.nextLine();
@@ -126,6 +134,7 @@ public class Bakery extends Account implements Confectioner {
                 sweets.setName(name);
                 System.out.println("Fee: ");
                 fee = sc.nextInt();
+                sc.nextLine();
                 sweets.setFee(new BigDecimal(fee));
                 System.out.println("Image : ");
                 image = sc.nextLine();
@@ -138,6 +147,7 @@ public class Bakery extends Account implements Confectioner {
                 sweets.setName(y);
                 System.out.println("Fee: ");
                 fee = sc.nextInt();
+                sc.nextLine();
                 sweets.setFee(new BigDecimal(fee));
                 System.out.println("Image : ");
                 image = sc.nextLine();
@@ -151,6 +161,7 @@ public class Bakery extends Account implements Confectioner {
                 sweets.setName(y);
                 System.out.println("Fee: ");
                 fee = sc.nextInt();
+                sc.nextLine();
                 sweets.setFee(new BigDecimal(fee));
                 System.out.println("Image : ");
                 image = sc.nextLine();
@@ -275,7 +286,27 @@ public class Bakery extends Account implements Confectioner {
         return Admin.getInstance().getBirthdayItem(this);
     }
 
-    public boolean addDiscount(String name , int percent,Date start , Date end, int max) {
+    public boolean addDiscount() throws ParseException {
+
+
+        int max = 1000;
+        Scanner scan = new Scanner(System.in);
+        System.out.println("Baker  --> add Discount ___________________________________________________________________");
+        System.out.println("choose name :");
+        String name = scan.nextLine();
+
+        System.out.println("choose percent :");
+        int percent = scan.nextInt();
+        scan.nextLine();
+        System.out.println("choose start date (1399/10/1) :");
+        String starts  = scan.nextLine();
+        Date start = new SimpleDateFormat("yyyy/MM/dd").parse(starts);
+
+        System.out.println("choose end date (1399/10/10) :");
+        String ends  = scan.nextLine();
+        Date end = new SimpleDateFormat("yyyy/MM/dd").parse(ends);
+
+
         if(percent<= 100 && percent > 0){
             Discount d = new Discount(name, percent, start, end, this.getID(), max);
             return Admin.getInstance().addDiscount(d);

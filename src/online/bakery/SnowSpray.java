@@ -25,6 +25,10 @@ public class SnowSpray implements BirthdayItems {
         return s;
     }
 
+    public int getItemId() {
+        return itemId;
+    }
+
     public String getName() {
         return name;
     }

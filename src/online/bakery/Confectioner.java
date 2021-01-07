@@ -1,6 +1,7 @@
 package online.bakery;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.util.Date;
 import online.bakery.sweets.Rate;
 import online.bakery.sweets.Sweets;
@@ -31,11 +32,13 @@ public interface Confectioner {
 
     List<ConfectionerStatus> acceptOrder(Order order,List<SweetType> st);
 
-    boolean addDiscount(String name , int percent,Date start , Date end, int max);
+    boolean addDiscount() throws ParseException;
 
     boolean addNote(Note note, String extraText);
 
+    Sweets CreateSweets();
     boolean addOrderSweet();
+
     List<Sweets> getOrderSweets();
     boolean deleteOrderSweet(Sweets sweet);
 

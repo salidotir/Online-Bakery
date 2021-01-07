@@ -6,6 +6,8 @@ public interface BirthdayItems {
 
     String getDescription();
 
+    int getItemId();
+
 
     String getName();
     void setName(String Name);

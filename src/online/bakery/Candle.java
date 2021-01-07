@@ -22,6 +22,10 @@ public class Candle implements BirthdayItems {
         this.color = color;
     }
 
+    public int getItemId() {
+        return itemId;
+    }
+
     public String getDescription(){
         String s = name + "  " + number + "\n color : "+color + "\n" + cost + " Tooman" ;
         return s;

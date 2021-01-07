@@ -3,11 +3,11 @@ package online.bakery;
 import javafx.util.Pair;
 import online.bakery.decorators.Decorator;
 import online.bakery.decorators.DecoratorToBuild;
-import online.bakery.sweets.Cake;
-import online.bakery.sweets.Rate;
-import online.bakery.sweets.Sweets;
+import online.bakery.sweets.*;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class Baker extends Account implements Confectioner{
@@ -58,14 +58,112 @@ public class Baker extends Account implements Confectioner{
 
 
 
-    public boolean addOrderSweet(){
-        ArrayList<Sweets> ss = new ArrayList<Sweets>();
-        ArrayList<DecoratorToBuild> decorators = new ArrayList<DecoratorToBuild>();
-        decorators.add(new DecoratorToBuild(Decorator.FLOUR, new BigDecimal(100), new BigDecimal(400)));
-        decorators.add(new DecoratorToBuild(Decorator.SUGAR, new BigDecimal(300), new BigDecimal(40)));
-        decorators.add(new DecoratorToBuild(Decorator.BAKING_POWDER, new BigDecimal(200), new BigDecimal(500)));
-        Sweets sweet = new Cake.CakeBuilder(decorators).build();
-        return Admin.getInstance().addOrderSweet(this,sweet);
+    public Sweets CreateSweets() {
+        Sweets sweets;
+        Scanner sc = new Scanner(System.in);
+        System.out.println("please select Number of Sweets: ");
+
+        TypeOfSweets[] sweetTypes = TypeOfSweets.values();
+        Decorator[] decorators = Decorator.values();
+        int j = 1;
+        for (TypeOfSweets st : sweetTypes
+        ) {
+            System.out.print(j + " " + st.toString() + "\t");
+            j += 1;
+        }
+        int WhichSweet = sc.nextInt();
+        ArrayList<DecoratorToBuild> mydecorators = new ArrayList<DecoratorToBuild>();
+
+        while (true) {
+            int i = 1;
+            System.out.println("please select one of the decorator:");
+            for (Decorator d : decorators
+            ) {
+                System.out.print(i + " " + d.toString() + "\t");
+                i += 1;
+            }
+            int Which_decorator = sc.nextInt();
+            System.out.println("How much in grams");
+            int grams = sc.nextInt();
+            System.out.println("Cost");
+            int cost = sc.nextInt();
+            System.out.println("break? y/n");
+            mydecorators.add(new DecoratorToBuild(decorators[Which_decorator - 1], new BigDecimal(grams), new BigDecimal(cost)));
+
+            //String y = sc.nextLine();
+            //if (y.equals("n")) break;
+            char y = sc.next().charAt(0);
+            if (y == 'y') break;
+
+        }
+        sc.nextLine();
+
+        switch (sweetTypes[WhichSweet-1]) {
+
+            case CAKE:
+
+                sweets = new Cake.CakeBuilder(mydecorators).build();
+                System.out.println("choose name: ");
+                String y = sc.nextLine();
+                sweets.setName(y);
+                System.out.println("Fee: ");
+                int fee = sc.nextInt();
+                sc.nextLine();
+                sweets.setFee(new BigDecimal(fee));
+                System.out.println("Image : ");
+                String image = sc.nextLine();
+                sweets.addImages(image);
+
+                break;
+            case TART:
+                sweets = new Tart.TartBuilder(mydecorators).build();
+                System.out.println("choose name: ");
+                String name = sc.nextLine();
+                sweets.setName(name);
+                System.out.println("Fee: ");
+                fee = sc.nextInt();
+                sc.nextLine();
+                sweets.setFee(new BigDecimal(fee));
+                System.out.println("Image : ");
+                image = sc.nextLine();
+                sweets.addImages(image);
+                break;
+            case COOKIE:
+                sweets = new Cookie.CookieBuilder(mydecorators).build();
+                System.out.println("choose name: ");
+                y = sc.nextLine();
+                sweets.setName(y);
+                System.out.println("Fee: ");
+                fee = sc.nextInt();
+                sc.nextLine();
+                sweets.setFee(new BigDecimal(fee));
+                System.out.println("Image : ");
+                image = sc.nextLine();
+                sweets.addImages(image);
+                break;
+            case UNKNOWN:
+
+                sweets = new Unknown.UnknownBuilder(mydecorators).build();
+                System.out.println("choose name: ");
+                y = sc.nextLine();
+                sweets.setName(y);
+                System.out.println("Fee: ");
+                fee = sc.nextInt();
+                sc.nextLine();
+                sweets.setFee(new BigDecimal(fee));
+                System.out.println("Image : ");
+                image = sc.nextLine();
+                sweets.addImages(image);
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + sweetTypes[j - 1]);
+        }
+        return sweets;
+    }
+
+    public boolean addOrderSweet() {
+        Sweets sweet = CreateSweets();
+        return Admin.getInstance().addOrderSweet(this, sweet);
     }
 
     public boolean deleteOrderSweet(Sweets sweet){
@@ -134,7 +232,27 @@ public class Baker extends Account implements Confectioner{
 
 
 
-    public boolean addDiscount(String name , int percent,Date start , Date end, int max) {
+    public boolean addDiscount() throws ParseException {
+
+
+        int max = 1000;
+        Scanner scan = new Scanner(System.in);
+        System.out.println("Baker  --> add Discount ___________________________________________________________________");
+        System.out.println("choose name :");
+        String name = scan.nextLine();
+
+        System.out.println("choose percent :");
+        int percent = scan.nextInt();
+
+        System.out.println("choose start date (1399/10/1) :");
+        String starts  = scan.nextLine();
+        Date start = new SimpleDateFormat("yyyy/MM/dd").parse(starts);
+
+        System.out.println("choose end date (1399/10/10) :");
+        String ends  = scan.nextLine();
+        Date end = new SimpleDateFormat("yyyy/MM/dd").parse(ends);
+
+
         if(percent<= 100 && percent > 0){
             Discount d = new Discount(name, percent, start, end, this.getID(), max);
             return Admin.getInstance().addDiscount(d);
@@ -146,7 +264,7 @@ public class Baker extends Account implements Confectioner{
         return Admin.getInstance().getDiscount(this.getID());
     }
 
-    @Override
+
     public String getProfile() {
         String bakeryP = name +"\n" + description + "\n" + super.getProfile() + "Score : " +Admin.getInstance().getScoreBaker(this) + "/5 + \n" ;
         return bakeryP;

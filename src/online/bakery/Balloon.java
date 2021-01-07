@@ -22,6 +22,10 @@ public class Balloon implements BirthdayItems{
         this.color = color;
     }
 
+    public int getItemId() {
+        return itemId;
+    }
+
     public String getDescription(){
         String s = name + "\nmaterial : " + material + "\n color : "+color + "\n" + cost + " Tooman" ;
         return s;
