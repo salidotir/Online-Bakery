@@ -69,13 +69,6 @@ public class Employee extends Account{
         
         return true;
     }
-    
-    public boolean addNote(Note note, String extraText) {
-        if (this.getID() == note.getNoteEmployeeId()) {
-            note.setNoteEmployeeText(extraText);
-        }
-        return true;
-    }
 
     /**
      * @return the isBusy

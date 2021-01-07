@@ -32,6 +32,7 @@ public class Order {
     private DeliveryInformation delivery = null;
     private List<Discount> listDiscounts = new ArrayList<>();
     private Cost costOrder;
+    private Note note;
     
     public Order(Customer customer, List<Sweets> Sweets, List<BirthdayItems> items, Date expectedDeliveryTime) {
         this.customer = customer;
@@ -42,7 +43,31 @@ public class Order {
         this.items = items;
         this.expectedDeliveryTime = expectedDeliveryTime;
         this.orderStatus = OrderStatus.ORDERING_BY_CUSTOMER;
+        this.note = new Note(this.orderId, this.customer.getID());
         Admin.getInstance().addOrder(this);
+    }
+    
+    public boolean addNote(Account account, String extraText){
+        switch(account.role){
+            case CUSTOMER:
+                if (account.getID() == note.getNoteCustomerId()) {
+                    note.setNoteCustomerText(extraText);
+                }
+                return true;
+            case BAKERY:
+            case BAKER:
+                if (account.getID() == note.getNoteSellerId()) {
+                    note.setNoteSellerText(extraText);
+                }
+                return true;
+            case ADMIN:
+                note.setNoteAdminText(extraText);
+                return true;
+            case EMPLOEE:
+                note.setNoteEmployeeText(extraText);
+                return true;
+        }
+        return false;
     }
     
     public boolean SweetaddtoOrder(Sweets Sweet){
@@ -95,6 +120,7 @@ public class Order {
             this.chooseTypeBaker = 0;
             List<ConfectionerStatus> cs = staff.acceptOrder(this, s);
             orderStatus = OrderStatus.PENDING_CHOSEN_BAKER;
+            note.setNoteSellerId(staff.getID());
             return new AbstractMap.SimpleEntry(true, cs);
         }else
             return new AbstractMap.SimpleEntry(false, null);
@@ -107,6 +133,7 @@ public class Order {
             this.chooseTypeBaker = 1;
             List<ConfectionerStatus> cs = staff.acceptOrder(this, s);
             orderStatus = OrderStatus.PENDING_CHOSEN_BAKER;
+            note.setNoteSellerId(staff.getID());
             return new AbstractMap.SimpleEntry(true, cs);
         }else
             return new AbstractMap.SimpleEntry(false, null);
@@ -400,17 +427,21 @@ public class Order {
         s += "expected delivery time: "+ this.expectedDeliveryTime + "\n";
         if(orderStatus == OrderStatus.DELIVERED)
             s += "actuall delivery time: "+ this.delivery.getActualDeliveryTime() + "\n";
-        s += "****************\n";
+        s += "****************\n"+
+                note.getNoteInformation();
         
-        if(chooseTypeBaker == 1)
-            s += "coefectioner profile: " + this.bakery.getProfile() + "\n";
-        else if(chooseTypeBaker == 0)
-            s += "coefectioner profile: " + this.baker.getProfile() + "\n";
+        if(orderStatus == OrderStatus.ACCEPTED){
+            if(chooseTypeBaker == 1)
+                s += "coefectioner profile: " + this.bakery.getProfile() + "\n";
+            else if(chooseTypeBaker == 0)
+                s += "coefectioner profile: " + this.baker.getProfile() + "\n";
+        }
         
         s +=    "****************\n"+
                 "customer profile: \n" + this.customer.getProfile() +
-                "****************\n"+
-                "payment status: " + this.payment.getPaymentStatus() + "\n" +
+                "****************\n";
+        if(orderStatus == OrderStatus.PAYED)
+            s += "payment status: " + this.payment.getPaymentStatus() + "\n" +
                 "____________________________\n";
         return s;
     }
