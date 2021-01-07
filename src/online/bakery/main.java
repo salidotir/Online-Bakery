@@ -8,6 +8,7 @@ import online.bakery.sweets.*;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
+import java.time.LocalDate;
 import java.util.*;
 
 
@@ -17,7 +18,7 @@ public class main {
 //        test_multi_tiered();
 //        test_GiftCard();
 //        test1();
-        //test3();
+        test3();
 //        test2();
     }
     public static void test_GiftCard() {
@@ -84,7 +85,7 @@ public class main {
     }
     
    
-    /*private static void test3(){
+    private static void test3() throws ParseException {
         
         Date today=new Date();
 
@@ -111,7 +112,7 @@ public class main {
         Bakery b1 = new Bakery("شب شیرینی","usermane","pass","لحظات زندگی خود را با کمک ما شیرین کنید" , "07131111111" , "تاچارا");
 //        System.out.printf(b1.getProfile());
 
-        b1.addDiscount("تخفیف یلدایی" , 20 , new Date(1399,9,20),new Date(1399,10,1),200);
+        b1.addDiscount();
         
         Employee e1 = new Employee("salidotir", "4444", "Sara", "Limooee");
         Employee e2 = new Employee("hello", "1234", "firstname1", "lastname1");
@@ -136,7 +137,7 @@ public class main {
         stList.add(SweetType.READY);
                 
         List<BirthdayItems> listitem = new ArrayList<BirthdayItems>();
-        Candle candle = new Candle("happy",  new BigDecimal(1000), "123", "red");
+        Candle candle = new Candle("happy",  new BigDecimal(1000),new BigDecimal(500), "123", "red");
         Order o1 = c.createNewSweet(sList, listitem);
         o1.ItemaddtoOrder(candle);
         boolean result = true;
