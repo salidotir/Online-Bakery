@@ -594,9 +594,9 @@ public class DBMS {
            return false;
     }
         
-    public boolean firstOrder(Customer customer){
+    public boolean firstOrder(int customerID){
         for (Order order: DBMS.getDBMS().orders){
-            if(order.getCustomerId() == customer.getID() && 
+            if(order.getCustomerId() == customerID && 
                     order.getOrderStatus() != OrderStatus.ORDERING_BY_CUSTOMER &&
                     order.getOrderStatus() != OrderStatus.CANCELED_BY_CUSTOMER &&
                     order.getOrderStatus() != OrderStatus.CANCELED_BY_BAKER){

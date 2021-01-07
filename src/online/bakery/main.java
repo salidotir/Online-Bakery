@@ -6,14 +6,14 @@ import online.bakery.decorators.Design;
 import online.bakery.decorators.DesignDecoration;
 import online.bakery.sweets.*;
 
+import java.lang.reflect.Array;
 import java.math.BigDecimal;
-import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.*;
 
 
 public class main {
-    public static void main(String[] args) throws ParseException {
+    public static void main(String[] args) {
         // test4();
 //        test_multi_tiered();
 //        test_GiftCard();
@@ -85,14 +85,12 @@ public class main {
     }
     
    
-    private static void test3() throws ParseException {
+    private static void test3(){
         
-        Date today=new Date();
-
         LocalDate todayy = LocalDate.now();
         LocalDate tomorrow = todayy.plusDays( 3650 ) ;
         
-        Admin.getInstance().createFirstOrderDiscount("تخفیف اولین سفارش در اپ ما" , 20  
+        Admin.getInstance().createDiscount("تخفیف اولین سفارش در اپ ما" , 20  
                 , new Date(todayy.getYear()- 1900,todayy.getMonthValue() - 1, todayy.getDayOfMonth())
                 , new Date(tomorrow.getYear()- 1900,tomorrow.getMonthValue() -1,tomorrow.getDayOfMonth()), 20000);        
         
@@ -112,7 +110,12 @@ public class main {
         Bakery b1 = new Bakery("شب شیرینی","usermane","pass","لحظات زندگی خود را با کمک ما شیرین کنید" , "07131111111" , "تاچارا");
 //        System.out.printf(b1.getProfile());
 
-        b1.addDiscount();
+//        LocalDate baker_todey = LocalDate.now();
+//        LocalDate baker_tomorrow = todayy.plusDays( 10 ) ;
+//        b1.addDiscount("تخفیف یلدایی" , 20
+//                , new Date(baker_todey.getYear()- 1900,baker_todey.getMonthValue() - 1, baker_todey.getDayOfMonth())
+//                , new Date(baker_tomorrow.getYear()- 1900,baker_tomorrow.getMonthValue() -1,baker_tomorrow.getDayOfMonth()) 
+//                ,200);
         
         Employee e1 = new Employee("salidotir", "4444", "Sara", "Limooee");
         Employee e2 = new Employee("hello", "1234", "firstname1", "lastname1");
@@ -137,7 +140,7 @@ public class main {
         stList.add(SweetType.READY);
                 
         List<BirthdayItems> listitem = new ArrayList<BirthdayItems>();
-        Candle candle = new Candle("happy",  new BigDecimal(1000),new BigDecimal(500), "123", "red");
+        Candle candle = new Candle("happy",  new BigDecimal(1000), new BigDecimal(700), "3", "red");
         Order o1 = c.createNewSweet(sList, listitem);
         o1.ItemaddtoOrder(candle);
         boolean result = true;
