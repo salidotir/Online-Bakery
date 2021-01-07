@@ -402,6 +402,7 @@ public class Bakery extends Account implements Confectioner {
             System.out.println("break? y/n");
             char y = scan.next().charAt(0);
             if (y == 'y') break;
+            else scan.nextLine();
         }
         return Post.createPost(this,caption,images);
     }

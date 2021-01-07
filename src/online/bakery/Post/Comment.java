@@ -12,7 +12,7 @@ public class Comment {
     final private int postId;
     String text;
 
-    public Comment(String text,List<String> images,int authorId,int postId) {
+    public Comment(String text,int authorId,int postId) {
         this.id = atomicInteger.incrementAndGet();
         this.text = text;
         this.authorId = authorId;

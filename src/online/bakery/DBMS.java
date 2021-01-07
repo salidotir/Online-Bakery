@@ -78,6 +78,8 @@ public class DBMS {
         this.bakerOrderSweetMap = new HashMap<Integer, List<Sweets>>();
         this.bakerBirthdayItemsMap = new HashMap<Integer, List<Pair<BirthdayItems, Integer>>>();
         this.discounts = new ArrayList<Discount>();
+        this.posts = new ArrayList<Post>();
+        this.comments = new ArrayList<Comment>();
     }
 
     // function to give access to dbms only for admin
