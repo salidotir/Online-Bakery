@@ -336,7 +336,14 @@ public class Bakery extends Account implements Confectioner {
         for (Order o : orders){
             System.out.println(o.getOrderId());
 
-            Discount d = o.getDiscount();
+            List<Discount> discount = o.getDiscount();
+            Discount d = null;
+            for (Discount dd : discount){
+                if(dd.getCreatorID() == this.ID){
+                    d = dd;
+                }
+
+            }
             int percent = 0;
             if(d != null){
                 System.out.println("Discount made by you : " + d.getPercent()+ " % ");
@@ -350,7 +357,7 @@ public class Bakery extends Account implements Confectioner {
                 System.out.println(s.getDescription());
                 System.out.println(s.getTOTAL_COST());
                 System.out.println(s.get_OderCost());
-                ps.add(s.getFee().multiply(new BigDecimal((100 - percent)/100)));
+                ps = ps.add(s.getFee().multiply(new BigDecimal((100 - percent)/100)));
             }
             System.out.println("Profit for Sweet(s) : " + ps);
 
@@ -358,12 +365,12 @@ public class Bakery extends Account implements Confectioner {
                 System.out.println(b.getDescription());
                 System.out.println(b.getPurchasePrice());
 
-                pb.add(b.getCost().subtract(b.getPurchasePrice()).multiply(new BigDecimal((100 - percent)/100)));
+                pb = pb.add(b.getCost().subtract(b.getPurchasePrice()).multiply(new BigDecimal((100 - percent)/100)));
             }
             System.out.println("Profit for BirthdayItem(s) : " + pb);
 
-            profit.add(pb);
-            profit.add(ps);
+            profit = profit.add(pb);
+            profit = profit.add(ps);
         }
         return  profit;
 
