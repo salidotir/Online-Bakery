@@ -8,6 +8,8 @@ import online.bakery.sweets.*;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class Baker extends Account implements Confectioner{
@@ -246,11 +248,14 @@ public class Baker extends Account implements Confectioner{
 
         System.out.println("choose start date (1399/10/1) :");
         String starts  = scan.nextLine();
-        Date start = new SimpleDateFormat("yyyy/MM/dd").parse(starts);
+        LocalDate startL = LocalDate.parse(starts, DateTimeFormatter.ofPattern("yyyy/MM/dd"));
+        Date start = new Date(startL.getYear()- 1900,startL.getMonthValue() - 1, startL.getDayOfMonth());
+
 
         System.out.println("choose end date (1399/10/10) :");
         String ends  = scan.nextLine();
-        Date end = new SimpleDateFormat("yyyy/MM/dd").parse(ends);
+        LocalDate endL = LocalDate.parse(starts, DateTimeFormatter.ofPattern("yyyy/MM/dd"));
+        Date end = new Date(endL.getYear()- 1900,endL.getMonthValue() - 1, endL.getDayOfMonth());
 
 
         if(percent<= 100 && percent > 0){
@@ -266,7 +271,15 @@ public class Baker extends Account implements Confectioner{
 
 
     public String getProfile() {
-        String bakeryP = name +"\n" + description + "\n" + super.getProfile() + "Score : " +Admin.getInstance().getScoreBaker(this) + "/5 + \n" ;
+        double score = Admin.getInstance().getScoreBaker(this);
+        String bakeryP;
+        if(score == 0.0){
+            bakeryP = name +"\n" + description + "\n" + super.getProfile() + "\n" ;
+        }
+        else{
+            bakeryP = name +"\n" + description + "\n" + super.getProfile() + "Score : " + score + "/5 + \n" ;
+        }
+
         return bakeryP;
     }
 
