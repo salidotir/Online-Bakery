@@ -269,7 +269,7 @@ public class Baker extends Account implements Confectioner{
         double score = Admin.getInstance().getScoreBaker(this);
         String bakeryP;
         if(score == 0.0){
-            bakeryP = name +"\n" + description + "\n" + super.getProfile() + "\n" ;
+            bakeryP = name +"\n" + description + "\n" + super.getProfile()  ;
         }
         else{
             bakeryP = name +"\n" + description + "\n" + super.getProfile() + "Score : " + score + "/5 + \n" ;
