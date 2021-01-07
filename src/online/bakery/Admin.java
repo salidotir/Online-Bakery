@@ -45,7 +45,7 @@ public class Admin extends Account{
         return INSTANCE;
     }
     
-    public boolean createFirstOrderDiscount(String name , int percent,Date start , Date end, int max) {
+    public boolean createDiscount(String name , int percent,Date start , Date end, int max) {
         if(percent<= 100 && percent > 0){
             Discount d = new Discount(name, percent, start, end, this.getID(), max);
             return Admin.getInstance().addDiscount(d);
@@ -302,8 +302,8 @@ public class Admin extends Account{
         return DBMS.getDBMS(this).getDiscountsBaker(creatorID);
     }
     
-    public boolean firstOrder(Customer customer){
-        return DBMS.getDBMS(this).firstOrder(customer);
+    public boolean firstOrder(int customerID){
+        return DBMS.getDBMS(this).firstOrder(customerID);
     }
 
     public List<Discount> getActiveDiscount(int creatorID){

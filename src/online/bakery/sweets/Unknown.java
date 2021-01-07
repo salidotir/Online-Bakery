@@ -38,6 +38,8 @@ public class Unknown extends Sweets {
 
                 switch (decorator.decorator_name) {
                     case CHOCOLATE:
+                        unknown = new ChocolateCondimentDecorator(unknown, decorator.germs, decorator.cost);
+
                         break;
                     case BAKING_POWDER:
                         unknown = new BakingPowderCondimentDecorator(unknown, decorator.germs, decorator.cost);

@@ -38,6 +38,8 @@ public class Cake extends Sweets {
 
                 switch (decorator.decorator_name) {
                     case CHOCOLATE:
+                        cake = new ChocolateCondimentDecorator(cake, decorator.germs, decorator.cost);
+
                         break;
                     case BAKING_POWDER:
                         cake = new BakingPowderCondimentDecorator(cake, decorator.germs, decorator.cost);

@@ -40,6 +40,8 @@ public class Cookie extends Sweets {
 
                 switch (decorator.decorator_name) {
                     case CHOCOLATE:
+                        cookie = new ChocolateCondimentDecorator(cookie, decorator.germs, decorator.cost);
+
                         break;
                     case BAKING_POWDER:
                         cookie = new BakingPowderCondimentDecorator(cookie, decorator.germs, decorator.cost);
