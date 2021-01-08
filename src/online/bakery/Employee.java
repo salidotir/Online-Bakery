@@ -113,4 +113,9 @@ public class Employee extends Account{
         this.numOfPeopleWhoScored += 1;
         return this.score;
     }
+    
+    public boolean addNote(Order order, String text) {
+        order.addNote(this, text);
+        return true;
+    }
 }
