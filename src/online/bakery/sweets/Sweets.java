@@ -57,11 +57,11 @@ public abstract class Sweets {
     @Override
     public String toString() {
         return type.toString() + "{" +
-                ", Name=" + name +
+                "Name=" + name +
                 ", SweetId=" + SweetId +
                 ", description='" + description + '\'' +
                 ", TOTAL_Grams=" + getTOTAL_Grams().toString() +
-                ", TOTAL_COST=" + TOTAL_COST +
+                ", Order Cost=" + get_OderCost() +
                 ", Score=" + Score +
                 ", NumCustomerForScore=" + NumCustomerForScore +
                 '}';

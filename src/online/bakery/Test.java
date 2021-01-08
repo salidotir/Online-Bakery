@@ -82,8 +82,10 @@ public class Test {
         //this.AddCustomers();
         //System.out.println(BACKGROUNDS[15] + FOREGROUNDS[2] + "Buy a Gift Card (negin to sara)");
         //this.BuyGiftCard();
-        System.out.println(BACKGROUNDS[15] + FOREGROUNDS[2] + "Order Multi Tiered Cake By Melika to Bakery2");
-        this.CreateMultiTieredCake();
+        //System.out.println(BACKGROUNDS[15] + FOREGROUNDS[2] + "Order Multi Tiered Cake By Melika to Bakery2");
+        //this.CreateMultiTieredCake();
+        System.out.println(BACKGROUNDS[15] + FOREGROUNDS[2] + "Make Sweets by Confectioners (By Baker1)");
+        this.MakeSweetByBaker();
 
     }
 
@@ -240,8 +242,35 @@ public class Test {
             System.out.println(BACKGROUNDS[1] + FOREGROUNDS[15] + "Not Found");
             System.out.println(ANSI_RESET);
         }
-        Sweets multitieredCake=Melika.MakeMultitieredCake(bakeries.get(0));
+        Sweets multitieredCake = Melika.MakeMultitieredCake(bakeries.get(0));
         System.out.println(multitieredCake.getDescription());
-
     }
+
+    private void MakeSweetByBaker() {
+        List<Baker> bakers = Admin.getInstance().searchBakerByName("reza");
+        if (bakers.size() == 0) {
+
+            System.out.println(BACKGROUNDS[1] + FOREGROUNDS[15] + "Not Found");
+            System.out.println(ANSI_RESET);
+        } else {
+            Sweets sweets=bakers.get(0).CreateSweets();
+            System.out.println(BACKGROUNDS[2] + FOREGROUNDS[15] +sweets.toString());
+            System.out.println(ANSI_RESET);
+
+        }
+    }
+    private void MakeSweetByBakery() {
+        List<Bakery> bakeries = Admin.getInstance().searchBakeryByName("Bakery1");
+        if (bakeries.size() == 0) {
+
+            System.out.println(BACKGROUNDS[1] + FOREGROUNDS[15] + "Not Found");
+            System.out.println(ANSI_RESET);
+        } else {
+            Sweets sweets=bakeries.get(0).CreateSweets();
+            System.out.println(BACKGROUNDS[2] + FOREGROUNDS[15] +sweets.toString());
+            System.out.println(ANSI_RESET);
+
+        }
+    }
+
 }

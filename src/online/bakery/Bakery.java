@@ -15,6 +15,9 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
+import static online.bakery.Test.BACKGROUNDS;
+import static online.bakery.Test.FOREGROUNDS;
+
 public class Bakery extends Account implements Confectioner {
     private String name;
     private String description;
@@ -74,27 +77,32 @@ public class Bakery extends Account implements Confectioner {
     public Sweets CreateSweets() {
         Sweets sweets;
         Scanner sc = new Scanner(System.in);
-        System.out.println("please select Number of Sweets: ");
 
         TypeOfSweets[] sweetTypes = TypeOfSweets.values();
         Decorator[] decorators = Decorator.values();
         int j = 1;
+
+        System.out.println("Please select Number of Sweets: ");
         for (TypeOfSweets st : sweetTypes
         ) {
-            System.out.print(j + " " + st.toString() + "\t");
+            System.out.print(BACKGROUNDS[2] + FOREGROUNDS[15] +j + " " + st.toString() + "\t");
             j += 1;
         }
+        System.out.println('\n');
+
         int WhichSweet = sc.nextInt();
         ArrayList<DecoratorToBuild> mydecorators = new ArrayList<DecoratorToBuild>();
 
         while (true) {
             int i = 1;
-            System.out.println("please select one of the decorator:");
+            System.out.println("Please select one of the decorator:");
             for (Decorator d : decorators
             ) {
                 System.out.print(i + " " + d.toString() + "\t");
                 i += 1;
             }
+
+            System.out.println('\n');
             int Which_decorator = sc.nextInt();
             System.out.println("How much in grams");
             int grams = sc.nextInt();
