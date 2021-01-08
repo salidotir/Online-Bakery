@@ -81,10 +81,10 @@ public class Customer extends Account {
             int m = 1;
             for (String cake : AllPossibleTypeOfCake
             ) {
-                System.out.println(m + "\t" + cake);
+                System.out.print(m + " "+ cake+"\t");
                 m += 1;
             }
-            System.out.println("Please select one of the above: ");
+            System.out.println("\nPlease select one of the above: ");
             int WhichCake = sc.nextInt();
             Sweets sweets = Admin.getInstance().GetSweetsFromConfectioner(confectioner, AllPossibleTypeOfCake.get(WhichCake-1));
             System.out.println("Please select one of the above: ");
@@ -92,10 +92,10 @@ public class Customer extends Account {
             int j = 1;
             for (DesignDecoration dd : designDecor
             ) {
-                System.out.println(j + "\t" + dd.toString());
+                System.out.print(j + " " + dd.toString()+"\t");
                 j += 1;
             }
-            ArrayList<Integer> whichDecoration;
+            System.out.println('\n');
 
             String[] numbers= sc.nextLine().split(" ");
             numbers= sc.nextLine().split(" ");
@@ -112,9 +112,10 @@ public class Customer extends Account {
 
             for (Color color : allcolors
             ) {
-                System.out.println(k + "\t" + color.toString());
+                System.out.print(k + " " + color.toString()+"\t");
                 k += 1;
             }
+            System.out.print('\n');
             String[] numbers2= sc.nextLine().split(" ");
 
             for (String num:numbers2
