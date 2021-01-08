@@ -1024,11 +1024,11 @@ public class DBMS {
     }
 
     public Sweets GetSweetsFromConfectioner(Confectioner confectioner, String name) {
-        List<Pair<Sweets, Integer>> listSweets = DBMS.getDBMS().bakerReadySweetMap.get(confectioner.getID());
-        for (Pair<Sweets, Integer> sweets :
+        List<Sweets> listSweets = DBMS.getDBMS().bakerOrderSweetMap.get(confectioner.getID());
+        for (Sweets sweets :
                 listSweets) {
-            if (sweets.getKey().getName().equals(name)) {
-                return sweets.getKey();
+            if (sweets.getName().equals(name)) {
+                return sweets;
             }
 
         }
@@ -1151,8 +1151,8 @@ public class DBMS {
     }
 
     public Customer searchCustomerByContactNo(String num) {
-        for (Customer c:this.customers
-             ) {
+        for (Customer c : this.customers
+        ) {
             if (c.getContactNo().equals(num))
                 return c;
 

@@ -1,5 +1,13 @@
 package online.bakery;
 
+import online.bakery.decorators.Decorator;
+import online.bakery.decorators.DecoratorToBuild;
+import online.bakery.sweets.Cake;
+import online.bakery.sweets.Cookie;
+import online.bakery.sweets.Sweets;
+import online.bakery.sweets.Tart;
+
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -72,8 +80,10 @@ public class Test {
         this.AddCustomers();
         //System.out.println(BACKGROUNDS[15] + FOREGROUNDS[2] + "Add 3 Emploee");
         //this.AddCustomers();
-        System.out.println(BACKGROUNDS[15] + FOREGROUNDS[2] + "Buy a Gift Card (negin to sara)");
-        this.BuyGiftCard();
+        //System.out.println(BACKGROUNDS[15] + FOREGROUNDS[2] + "Buy a Gift Card (negin to sara)");
+        //this.BuyGiftCard();
+        System.out.println(BACKGROUNDS[15] + FOREGROUNDS[2] + "Order Multi Tiered Cake By Melika to Bakery2");
+        this.CreateMultiTieredCake();
 
     }
 
@@ -90,6 +100,33 @@ public class Test {
         Bakery bakery2 = new Bakery("Bakery2", "usermane3", "pass3", "Have a Good Time", "07131111113", "Farhang Shahr");
         bakery2.setFirstname("sara");
         bakery2.setLastname("Ahmadi");
+
+        //
+        ArrayList<DecoratorToBuild> decorators = new ArrayList<>();
+        decorators.add(new DecoratorToBuild(Decorator.FLOUR, new BigDecimal(100), new BigDecimal(400)));
+        decorators.add(new DecoratorToBuild(Decorator.SUGAR, new BigDecimal(300), new BigDecimal(40)));
+        decorators.add(new DecoratorToBuild(Decorator.BAKING_POWDER, new BigDecimal(200), new BigDecimal(500)));
+        Sweets cake1 = new Cake.CakeBuilder(decorators).build();
+        cake1.setName("Chocolate Cake");
+        cake1.setFee(new BigDecimal(100000));
+        decorators.add(new DecoratorToBuild(Decorator.STRAWBERRY, new BigDecimal(200), new BigDecimal(500)));
+        Sweets cake2 = new Cake.CakeBuilder(decorators).build();
+        cake2.setName("Vanilla Cake");
+        cake2.setFee(new BigDecimal(50000));
+        decorators.add(new DecoratorToBuild(Decorator.WALNUT, new BigDecimal(400), new BigDecimal(500)));
+        Sweets cake3 = new Cake.CakeBuilder(decorators).build();
+        cake3.setName("Walnut Cake");
+        Sweets cookie = new Cookie.CookieBuilder(decorators).build();
+        Sweets tart = new Tart.TartBuilder(decorators).build();
+
+        bakery2.addOrderSweet(cake1);
+        bakery2.addOrderSweet(cake2);
+        bakery2.addOrderSweet(cake3);
+        bakery2.addOrderSweet(cookie);
+        bakery2.addOrderSweet(tart);
+        bakery2.addReadySweet(tart, 12);
+        bakery2.addReadySweet(cake1, 1);
+        bakery2.addReadySweet(cookie, 10);
 
         Baker baker2 = new Baker("Baker2", "usermane4", "pass4", "Have a Good Time", "07131111114", "Tachara");
         baker2.setFirstname("reza");
@@ -193,5 +230,18 @@ public class Test {
         Customer sara = Admin.getInstance().searchCustomerByContactNo("0914843533");
         Customer negin = Admin.getInstance().searchCustomerByContactNo("0914863532");
         negin.BuyGiftCardTo(sara);
+    }
+
+    private void CreateMultiTieredCake() {
+        Customer Melika = Admin.getInstance().searchCustomerByContactNo("0917863532");
+        List<Bakery> bakeries = Admin.getInstance().searchBakeryByName("Bakery2");
+        if (bakeries.size() == 0) {
+
+            System.out.println(BACKGROUNDS[1] + FOREGROUNDS[15] + "Not Found");
+            System.out.println(ANSI_RESET);
+        }
+        Sweets multitieredCake=Melika.MakeMultitieredCake(bakeries.get(0));
+        System.out.println(multitieredCake.getDescription());
+
     }
 }

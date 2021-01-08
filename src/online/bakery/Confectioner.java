@@ -36,7 +36,7 @@ public interface Confectioner {
     boolean addDiscount();
 
     Sweets CreateSweets();
-    boolean addOrderSweet();
+    boolean addOrderSweet(Sweets sweets);
 
     List<Sweets> getOrderSweets();
     boolean deleteOrderSweet(Sweets sweet);

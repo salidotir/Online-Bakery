@@ -164,8 +164,8 @@ public class Baker extends Account implements Confectioner{
         return sweets;
     }
 
-    public boolean addOrderSweet() {
-        Sweets sweet = CreateSweets();
+    public boolean addOrderSweet(Sweets sweet) {
+        //Sweets sweet = CreateSweets();
         return Admin.getInstance().addOrderSweet(this, sweet);
     }
 

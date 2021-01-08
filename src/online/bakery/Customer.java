@@ -41,7 +41,7 @@ public class Customer extends Account {
     }
 
     public void ShowReceivedGiftCard(GiftCard giftCard) {
-        System.out.println(BACKGROUNDS[12] + FOREGROUNDS[15]  +giftCard.GiftCardInformation());
+        System.out.println(BACKGROUNDS[12] + FOREGROUNDS[15] + giftCard.GiftCardInformation());
         System.out.println(ANSI_RESET);
     }
 
@@ -69,61 +69,71 @@ public class Customer extends Account {
         int i = 1;
         Scanner sc = new Scanner(System.in);
         ArrayList<String> AllPossibleTypeOfCake = Admin.getInstance().GetAllPossibleTypeOfCake(confectioner);
-        System.out.println("please select Number of tier: ");
+        System.out.println(BACKGROUNDS[3] + FOREGROUNDS[15] + "please select Number of tier: ");
         int tiers = sc.nextInt();
         DesignDecoration[] designDecor = DesignDecoration.values();
+
         Color[] allcolors = Color.values();
 
         ArrayList<Design> design = new ArrayList<>();
         for (i = 1; i < tiers + 1; i += 1) {
-            System.out.println("Tier: " + i + ": ");
+            System.out.println("Tier " + i + ": ");
             int m = 1;
             for (String cake : AllPossibleTypeOfCake
             ) {
                 System.out.println(m + "\t" + cake);
                 m += 1;
             }
-            System.out.println("\n please select one of the above: ");
+            System.out.println("Please select one of the above: ");
             int WhichCake = sc.nextInt();
-            Sweets sweets = Admin.getInstance().GetSweetsFromConfectioner(confectioner, AllPossibleTypeOfCake.get(WhichCake));
-            System.out.println("\n please select one of the above: ");
+            Sweets sweets = Admin.getInstance().GetSweetsFromConfectioner(confectioner, AllPossibleTypeOfCake.get(WhichCake-1));
+            System.out.println("Please select one of the above: ");
             ArrayList<DesignDecoration> mydesignDecorations = new ArrayList<>();
             int j = 1;
             for (DesignDecoration dd : designDecor
             ) {
                 System.out.println(j + "\t" + dd.toString());
                 j += 1;
-                ArrayList<Integer> whichDecoration;
-                while (sc.hasNext()) {
-
-                    mydesignDecorations.add(designDecor[sc.nextInt() - 1]);
-
-                }
-
             }
+            ArrayList<Integer> whichDecoration;
+
+            String[] numbers= sc.nextLine().split(" ");
+            numbers= sc.nextLine().split(" ");
+            for (String num:numbers
+                 ) {
+                mydesignDecorations.add(designDecor[Integer.parseInt(num) - 1]);
+            }
+
+
+
+
             int k = 1;
             ArrayList<Color> mycolors = new ArrayList<>();
 
             for (Color color : allcolors
             ) {
                 System.out.println(k + "\t" + color.toString());
-                j += 1;
-                while (sc.hasNext()) {
+                k += 1;
+            }
+            String[] numbers2= sc.nextLine().split(" ");
 
-                    mycolors.add(allcolors[sc.nextInt() - 1]);
-                }
-
-
+            for (String num:numbers2
+            ) {
+                mycolors.add(allcolors[Integer.parseInt(num) - 1]);
             }
 
 
-            design.add(new Design(mycolors, mydesignDecorations, sweets));
+            design.add(new
 
+                    Design(mycolors, mydesignDecorations, sweets));
 
         }
 
 
-        return new MultiTieredCake(tiers, design);
+        return new
+
+                MultiTieredCake(tiers, design);
+
     }
 
     public Boolean BuyGiftCardTo(@NotNull Customer customer) {

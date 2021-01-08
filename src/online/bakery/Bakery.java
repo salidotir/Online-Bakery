@@ -60,13 +60,13 @@ public class Bakery extends Account implements Confectioner {
 
     //public boolean addPost(Sweets sweet){this.post.add(sweet);}
 
-    public boolean addReadySweet() {
+    public boolean addReadySweet(Sweets sweet,int number) {
 
-        Sweets sweet = CreateSweets();
+        /*Sweets sweet = CreateSweets();
         Scanner scan = new Scanner(System.in);
         System.out.printf("Please Enter Number for this Sweet : ");
         int number = scan.nextInt();
-        scan.nextLine();
+        scan.nextLine();*/
 
         return Admin.getInstance().addReadySweet(this, sweet, number);
     }
@@ -174,8 +174,8 @@ public class Bakery extends Account implements Confectioner {
         return sweets;
     }
 
-    public boolean addOrderSweet() {
-        Sweets sweet = CreateSweets();
+    public boolean addOrderSweet(Sweets sweet) {
+        //Sweets sweet = CreateSweets();
         return Admin.getInstance().addOrderSweet(this, sweet);
     }
 
