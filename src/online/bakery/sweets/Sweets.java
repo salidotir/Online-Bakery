@@ -15,7 +15,7 @@ public abstract class Sweets {
     public String description = "Unknown Sweets";
     public BigDecimal TOTAL_Grams = new BigDecimal(0);
     public BigDecimal TOTAL_COST = new BigDecimal(0);
-    protected BigDecimal fee;
+    protected BigDecimal fee = new BigDecimal(0);
     protected ArrayList<String> Images = new ArrayList<>();
     protected TypeOfSweets type;
 

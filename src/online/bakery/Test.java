@@ -140,6 +140,7 @@ public class Test {
         decorators.add(new DecoratorToBuild(Decorator.WALNUT, new BigDecimal(400), new BigDecimal(500)));
         Sweets cake3 = new Cake.CakeBuilder(decorators).build();
         cake3.setName("Walnut Cake");
+        cake3.setFee(new BigDecimal(5000));
         Sweets cookie = new Cookie.CookieBuilder(decorators).build();
         Sweets tart = new Tart.TartBuilder(decorators).build();
 
@@ -373,250 +374,279 @@ public class Test {
 
         if(whichRole == 1) {
             List<Baker> bakers = ShowAllBakers();
-            System.out.println("Enter number of Baker:");
-            int whichBaker = 1;
-            whichBaker = scan.nextInt();
-            scan.nextLine();
-            List<Sweets> sweetsOrder = new ArrayList<Sweets>();
-            List<SweetType> sweetTypes = new ArrayList<SweetType>();
-
-            while (true) {
-                System.out.println("1) Order Sweets    2)Make Sweets");
-                int whichTypeSweet = 1;
-                whichTypeSweet = scan.nextInt();
-                scan.nextLine();
-                switch (whichTypeSweet) {
-                    case 1:
-                        System.out.println("Order Sweets for baker " + bakers.get(whichBaker - 1).getName());
-                        int i = 1;
-                        for (Sweets s : bakers.get(whichBaker - 1).getOrderSweets()) {
-                            System.out.println(i + ") name sweet: " + s.getName() + "\n" + "Image(s): ");
-
-                            for (String image : s.getImages()) {
-                                System.out.print(image + "\t");
-                            }
-                            System.out.println("\n cost: " + s.get_OderCost());
-
-                        }
-                        System.out.println("Enter number of Sweet:");
-                        int whichSweet = 1;
-                        whichSweet = scan.nextInt();
-                        scan.nextLine();
-                        sweetsOrder.add(bakers.get(whichBaker - 1).getOrderSweets().get(whichSweet - 1));
-                        sweetTypes.add(SweetType.CREATE_CONFECTIONER);
-                        break;
-                    case 2:
-                        Sweets multiTieredCake = customer.MakeMultitieredCake(bakers.get(whichBaker - 1));
-                        sweetsOrder.add(multiTieredCake);
-                        sweetTypes.add(SweetType.CREATE_CUSTOMER);
-                        break;
-                }
-
-                System.out.println("break ? y/n");
-                char y = scan.next().charAt(0);
-                if (y == 'y') break;
+            if(bakers.size() == 0){
+                System.out.println("Baker Not Found");
+                ScenarioOrder(customer);
+                return;
             }
-            List<BirthdayItems> item = new ArrayList<BirthdayItems>();
+            else {
+                System.out.println("Enter number of Baker:");
+                int whichBaker = 1;
+                whichBaker = scan.nextInt();
+                scan.nextLine();
+                List<Sweets> sweetsOrder = new ArrayList<Sweets>();
+                List<SweetType> sweetTypes = new ArrayList<SweetType>();
 
-            Order o1 = customer.createNewSweet(sweetsOrder, item);
+                while (true) {
+                    System.out.println("1) Order Sweets    2)Make Sweets");
+                    int whichTypeSweet = 1;
+                    whichTypeSweet = scan.nextInt();
+                    scan.nextLine();
+                    switch (whichTypeSweet) {
+                        case 1:
+                            if(bakers.get(whichBaker - 1).getOrderSweets().size() == 0) {
+                                System.out.println("Order Sweets not available");
+                                continue;
+                            }
+                            System.out.println("Order Sweets for baker " + bakers.get(whichBaker - 1).getName());
+                            int i = 1;
+                            for (Sweets s : bakers.get(whichBaker - 1).getOrderSweets()) {
+                                System.out.println(i + ") name sweet: " + s.getName() + "\n" + "Image(s): ");
 
-            boolean result = true;
-            while (result) {
-                result = o1.finalizedOrder();
-                if (!result)
-                    break;
-                AbstractMap.SimpleEntry res = o1.chooseBaker(bakers.get(whichBaker - 1), sweetTypes);
-                result = (boolean) res.getKey();
-                if (!result)
-                    break;
+                                for (String image : s.getImages()) {
+                                    System.out.print(image + "\t");
+                                }
+                                System.out.println("\n cost: " + s.get_OderCost());
 
-                List<ConfectionerStatus> cs1 = (List<ConfectionerStatus>) res.getValue();
-                ConfectionerStatus s = o1.getConfirmBaker(cs1);
-                if (s == ConfectionerStatus.ACCEPT) {
-                    customer.setAddress("ملاصدرا دانشکده کامپیوتر");
-
-                    res = o1.setDelivery();
-                    result = (boolean) res.getKey();
-                    System.out.println(res.getValue());
-                    if (!result)
-                        break;
-                    result = o1.payOrder("paying order o1");
-                    if (!result)
-                        break;
-                    result = o1.setBakerStatus(sweetTypes);
-                    if (!result)
-                        break;
-                    result = o1.callDelivery();
-                    if (!result)
-                        break;
-
-
-                    DeliverySystem deliverySystem = DeliverySystem.getDeliverySystem();
-                    deliverySystem.assignEmployeesToOrder();
-                    System.out.println(deliverySystem.toStringGetOrderEmployeeMap());
-                    Employee e1 = new Employee("salidotir12", "4444", "Sara", "Limooee");
-
-                    e1.deliverOrder(o1);
-
-                    System.out.println(e1.getProfile());
-
-                    System.out.println("------------------------------------------------------");
-                    System.out.println(o1.getOrderInformation());
-                    System.out.println(o1.getDelivery().getDeliveryInformation());
-
-                    if (o1.getOrderStatus() == OrderStatus.DELIVERED) {
-                        for (Sweets sweet : o1.getSweets()) {
-                            o1.addScore(sweet, Rate.FOUR);
-                        }
-
+                            }
+                            System.out.println("Enter number of Sweet:");
+                            int whichSweet = 1;
+                            whichSweet = scan.nextInt();
+                            scan.nextLine();
+                            sweetsOrder.add(bakers.get(whichBaker - 1).getOrderSweets().get(whichSweet - 1));
+                            sweetTypes.add(SweetType.CREATE_CONFECTIONER);
+                            break;
+                        case 2:
+                            Sweets multiTieredCake = customer.MakeMultitieredCake(bakers.get(whichBaker - 1));
+                            sweetsOrder.add(multiTieredCake);
+                            sweetTypes.add(SweetType.CREATE_CUSTOMER);
+                            break;
                     }
-//                System.out.println(o1.getOrderInformation());
+
+                    System.out.println("break ? y/n");
+                    char y = scan.next().charAt(0);
+                    if (y == 'y') break;
                 }
+                List<BirthdayItems> item = new ArrayList<BirthdayItems>();
+
+                Order o1 = customer.createNewSweet(sweetsOrder, item);
+
+                boolean result = true;
+                while (result) {
+                    result = o1.finalizedOrder();
+                    if (!result)
+                        break;
+                    AbstractMap.SimpleEntry res = o1.chooseBaker(bakers.get(whichBaker - 1), sweetTypes);
+                    result = (boolean) res.getKey();
+                    if (!result)
+                        break;
+
+                    List<ConfectionerStatus> cs1 = (List<ConfectionerStatus>) res.getValue();
+                    ConfectionerStatus s = o1.getConfirmBaker(cs1);
+                    if (s == ConfectionerStatus.ACCEPT) {
+                        customer.setAddress("ملاصدرا دانشکده کامپیوتر");
+
+                        res = o1.setDelivery();
+                        result = (boolean) res.getKey();
+                        System.out.println(res.getValue());
+                        if (!result)
+                            break;
+                        result = o1.payOrder("paying order o1");
+                        if (!result)
+                            break;
+                        result = o1.setBakerStatus(sweetTypes);
+                        if (!result)
+                            break;
+                        result = o1.callDelivery();
+                        if (!result)
+                            break;
 
 
+                        DeliverySystem deliverySystem = DeliverySystem.getDeliverySystem();
+                        deliverySystem.assignEmployeesToOrder();
+                        System.out.println(deliverySystem.toStringGetOrderEmployeeMap());
+                        Employee e1 = new Employee("salidotir12", "4444", "Sara", "Limooee");
+
+                        e1.deliverOrder(o1);
+
+                        System.out.println(e1.getProfile());
+
+                        System.out.println("------------------------------------------------------");
+                        System.out.println(o1.getOrderInformation());
+                        System.out.println(o1.getDelivery().getDeliveryInformation());
+
+                        if (o1.getOrderStatus() == OrderStatus.DELIVERED) {
+                            for (Sweets sweet : o1.getSweets()) {
+                                o1.addScore(sweet, Rate.FOUR);
+                            }
+
+                        }
+//                System.out.println(o1.getOrderInformation());
+                    }
+
+
+                }
             }
         }
-        else{
-            List<Bakery> bakeries =ShowAllBakeries();
-            System.out.println("Enter number of Bakery:");
-            int whichBakery = 1;
-            whichBakery = scan.nextInt();
-            scan.nextLine();
-            List<Sweets> sweetsOrder = new ArrayList<Sweets>();
-            List<SweetType> sweetTypes = new ArrayList<SweetType>();
-            List<BirthdayItems> item = new ArrayList<BirthdayItems>();
-            while (true) {
-                System.out.println("1) Order Sweets    2) Make Sweets   3) Ready Sweets   4)Birthday Items");
-                int whichTypeSweet = 1;
-                whichTypeSweet = scan.nextInt();
+        else {
+            List<Bakery> bakeries = ShowAllBakeries();
+            if (bakeries.size() == 0) {
+                System.out.println("Bakery Not Found");
+                ScenarioOrder(customer);
+                return;
+            } else {
+                System.out.println("Enter number of Bakery:");
+                int whichBakery = 1;
+                whichBakery = scan.nextInt();
                 scan.nextLine();
-                switch (whichTypeSweet) {
-                    case 1:
-                        System.out.println("Order Sweets for bakery " + bakeries.get(whichBakery - 1).getName());
-                        int i = 1;
-                        for (Sweets s : bakeries.get(whichBakery - 1).getOrderSweets()) {
-                            System.out.println(i + ") name sweet: " + s.getName() + "\n" + "Image(s): ");
-
-                            for (String image : s.getImages()) {
-                                System.out.print(image + "\t");
+                List<Sweets> sweetsOrder = new ArrayList<Sweets>();
+                List<SweetType> sweetTypes = new ArrayList<SweetType>();
+                List<BirthdayItems> item = new ArrayList<BirthdayItems>();
+                while (true) {
+                    System.out.println("1) Order Sweets    2) Make Sweets   3) Ready Sweets   4)Birthday Items");
+                    int whichTypeSweet = 1;
+                    whichTypeSweet = scan.nextInt();
+                    scan.nextLine();
+                    switch (whichTypeSweet) {
+                        case 1:
+                            if(bakeries.get(whichBakery - 1).getOrderSweets().size() == 0) {
+                                System.out.println("Order Sweets not available");
+                                continue;
                             }
-                            System.out.println("\n cost: " + s.get_OderCost());
-                            i+=1;
-                        }
-                        System.out.println("Enter number of Sweet:");
-                        int whichSweet = 1;
-                        whichSweet = scan.nextInt();
-                        scan.nextLine();
-                        sweetsOrder.add(bakeries.get(whichBakery - 1).getOrderSweets().get(whichSweet - 1));
-                        sweetTypes.add(SweetType.CREATE_CONFECTIONER);
-                        break;
-                    case 2:
-                        Sweets multiTieredCake = customer.MakeMultitieredCake(bakeries.get(whichBakery - 1));
-                        sweetsOrder.add(multiTieredCake);
-                        sweetTypes.add(SweetType.CREATE_CUSTOMER);
-                        break;
+                            System.out.println("Order Sweets for bakery " + bakeries.get(whichBakery - 1).getName());
+                            int i = 1;
+                            for (Sweets s : bakeries.get(whichBakery - 1).getOrderSweets()) {
+                                System.out.println(i + ") name sweet: " + s.getName() + "\n" + "Image(s): ");
 
-                    case 3:
-                        System.out.println("Ready Sweets for bakery " + bakeries.get(whichBakery - 1).getName());
-                        i = 1;
-                        for (Pair<Sweets,Integer> s: bakeries.get(whichBakery - 1).getReadySweets()) {
-                            System.out.println(i + ") name sweet: " + s.getKey().getName() + "\n" + "Image(s): ");
-
-                            for (String image : s.getKey().getImages()) {
-                                System.out.print(image + "\t");
+                                for (String image : s.getImages()) {
+                                    System.out.print(image + "\t");
+                                }
+                                System.out.println("\n cost: " + s.get_OderCost());
+                                i += 1;
                             }
-                            System.out.println("\n cost: " + s.getKey().get_OderCost());
-                            System.out.println("Number: " + s.getValue());
-                            i+=1;
-                        }
-                        System.out.println("Enter number of Sweet:");
-                        whichSweet = 1;
-                        whichSweet = scan.nextInt();
-                        scan.nextLine();
-                        sweetsOrder.add(bakeries.get(whichBakery - 1).getReadySweets().get(whichSweet - 1).getKey());
-                        sweetTypes.add(SweetType.READY);
-                        break;
+                            System.out.println("Enter number of Sweet:");
+                            int whichSweet = 1;
+                            whichSweet = scan.nextInt();
+                            scan.nextLine();
+                            sweetsOrder.add(bakeries.get(whichBakery - 1).getOrderSweets().get(whichSweet - 1));
+                            sweetTypes.add(SweetType.CREATE_CONFECTIONER);
+                            break;
+                        case 2:
+                            Sweets multiTieredCake = customer.MakeMultitieredCake(bakeries.get(whichBakery - 1));
+                            sweetsOrder.add(multiTieredCake);
+                            sweetTypes.add(SweetType.CREATE_CUSTOMER);
+                            break;
 
-                    case 4:
-                        System.out.println("Birthday Items for bakery " + bakeries.get(whichBakery - 1).getName());
-                        i = 1;
-                        for (Pair<BirthdayItems,Integer> s: bakeries.get(whichBakery - 1).getBirthdayItem()) {
-                            System.out.println(i + ") name sweet: " + s.getKey().getDescription());
-                            System.out.println("Number: " + s.getValue());
-                            i+=1;
-                        }
-                        System.out.println("Enter number of Birthday Item:");
-                        int whichItem = 1;
-                        whichItem = scan.nextInt();
-                        scan.nextLine();
-                        item.add(bakeries.get(whichBakery - 1).getBirthdayItem().get(whichItem - 1).getKey());
-                        break;
-                }
+                        case 3:
+                            if(bakeries.get(whichBakery - 1).getReadySweets().size() == 0) {
+                                System.out.println("Ready Sweets not available");
+                                continue;
+                            }
+                            System.out.println("Ready Sweets for bakery " + bakeries.get(whichBakery - 1).getName());
+                            i = 1;
+                            for (Pair<Sweets, Integer> s : bakeries.get(whichBakery - 1).getReadySweets()) {
+                                System.out.println(i + ") name sweet: " + s.getKey().getName() + "\n" + "Image(s): ");
 
-                System.out.println("break ? y/n");
-                char y = scan.next().charAt(0);
-                if (y == 'y') break;
-            }
+                                for (String image : s.getKey().getImages()) {
+                                    System.out.print(image + "\t");
+                                }
+                                System.out.println("\n cost: " + s.getKey().get_OderCost());
+                                System.out.println("Number: " + s.getValue());
+                                i += 1;
+                            }
+                            System.out.println("Enter number of Sweet:");
+                            whichSweet = 1;
+                            whichSweet = scan.nextInt();
+                            scan.nextLine();
+                            sweetsOrder.add(bakeries.get(whichBakery - 1).getReadySweets().get(whichSweet - 1).getKey());
+                            sweetTypes.add(SweetType.READY);
+                            break;
 
-
-            Order o1 = customer.createNewSweet(sweetsOrder, item);
-
-            boolean result = true;
-            while (result) {
-                result = o1.finalizedOrder();
-                if (!result)
-                    break;
-                AbstractMap.SimpleEntry res = o1.chooseBakery(bakeries.get(whichBakery - 1), sweetTypes);
-                result = (boolean) res.getKey();
-                if (!result)
-                    break;
-
-                List<ConfectionerStatus> cs1 = (List<ConfectionerStatus>) res.getValue();
-                ConfectionerStatus s = o1.getConfirmBaker(cs1);
-                if (s == ConfectionerStatus.ACCEPT) {
-                    customer.setAddress("ملاصدرا دانشکده کامپیوتر");
-
-                    res = o1.setDelivery();
-                    result = (boolean) res.getKey();
-                    System.out.println(res.getValue());
-                    if (!result)
-                        break;
-                    result = o1.payOrder("paying order o1");
-                    if (!result)
-                        break;
-                    result = o1.setBakerStatus(sweetTypes);
-                    if (!result)
-                        break;
-                    result = o1.callDelivery();
-                    if (!result)
-                        break;
-
-
-                    DeliverySystem deliverySystem = DeliverySystem.getDeliverySystem();
-                    deliverySystem.assignEmployeesToOrder();
-                    System.out.println(deliverySystem.toStringGetOrderEmployeeMap());
-                    Employee e1 = new Employee("salidotir15", "4444", "Sara", "Limooee");
-
-                    e1.deliverOrder(o1);
-
-                    System.out.println(e1.getProfile());
-
-                    System.out.println("------------------------------------------------------");
-                    System.out.println(o1.getOrderInformation());
-                    System.out.println(o1.getDelivery().getDeliveryInformation());
-
-                    if (o1.getOrderStatus() == OrderStatus.DELIVERED) {
-                        for (Sweets sweet : o1.getSweets()) {
-                            o1.addScore(sweet, Rate.FOUR);
-                        }
-
+                        case 4:
+                            if(bakeries.get(whichBakery - 1).getBirthdayItem().size() == 0) {
+                                System.out.println("Birthday Items not available");
+                                continue;
+                            }
+                            System.out.println("Birthday Items for bakery " + bakeries.get(whichBakery - 1).getName());
+                            i = 1;
+                            for (Pair<BirthdayItems, Integer> s : bakeries.get(whichBakery - 1).getBirthdayItem()) {
+                                System.out.println(i + ") name sweet: " + s.getKey().getDescription());
+                                System.out.println("Number: " + s.getValue());
+                                i += 1;
+                            }
+                            System.out.println("Enter number of Birthday Item:");
+                            int whichItem = 1;
+                            whichItem = scan.nextInt();
+                            scan.nextLine();
+                            item.add(bakeries.get(whichBakery - 1).getBirthdayItem().get(whichItem - 1).getKey());
+                            break;
                     }
-//                System.out.println(o1.getOrderInformation());
+
+                    System.out.println("break ? y/n");
+                    char y = scan.next().charAt(0);
+                    if (y == 'y') break;
                 }
 
 
-            }
+                Order o1 = customer.createNewSweet(sweetsOrder, item);
 
+                boolean result = true;
+                while (result) {
+                    result = o1.finalizedOrder();
+                    if (!result)
+                        break;
+                    AbstractMap.SimpleEntry res = o1.chooseBakery(bakeries.get(whichBakery - 1), sweetTypes);
+                    result = (boolean) res.getKey();
+                    if (!result)
+                        break;
+
+                    List<ConfectionerStatus> cs1 = (List<ConfectionerStatus>) res.getValue();
+                    ConfectionerStatus s = o1.getConfirmBaker(cs1);
+                    if (s == ConfectionerStatus.ACCEPT) {
+                        customer.setAddress("ملاصدرا دانشکده کامپیوتر");
+
+                        res = o1.setDelivery();
+                        result = (boolean) res.getKey();
+                        System.out.println(res.getValue());
+                        if (!result)
+                            break;
+                        result = o1.payOrder("paying order o1");
+                        if (!result)
+                            break;
+                        result = o1.setBakerStatus(sweetTypes);
+                        if (!result)
+                            break;
+                        result = o1.callDelivery();
+                        if (!result)
+                            break;
+
+
+                        DeliverySystem deliverySystem = DeliverySystem.getDeliverySystem();
+                        deliverySystem.assignEmployeesToOrder();
+                        System.out.println(deliverySystem.toStringGetOrderEmployeeMap());
+                        Employee e1 = new Employee("salidotir15", "4444", "Sara", "Limooee");
+
+                        e1.deliverOrder(o1);
+
+                        System.out.println(e1.getProfile());
+
+                        System.out.println("------------------------------------------------------");
+                        System.out.println(o1.getOrderInformation());
+                        System.out.println(o1.getDelivery().getDeliveryInformation());
+
+                        if (o1.getOrderStatus() == OrderStatus.DELIVERED) {
+                            for (Sweets sweet : o1.getSweets()) {
+                                o1.addScore(sweet, Rate.FOUR);
+                            }
+
+                        }
+//                System.out.println(o1.getOrderInformation());
+                    }
+
+
+                }
+
+            }
         }
 
 
@@ -636,6 +666,7 @@ public class Test {
         int j = 1;
         for(Role r:roles){
             System.out.print(j+") "+r + "\t");
+            j+=1;
         }
         boolean t = true;
         int whichRole = 1;
