@@ -84,10 +84,12 @@ public class Test {
         //this.BuyGiftCard();
         //System.out.println(BACKGROUNDS[15] + FOREGROUNDS[2] + "Order Multi Tiered Cake By Melika to Bakery2");
         //this.CreateMultiTieredCake();
-        System.out.println(BACKGROUNDS[15] + FOREGROUNDS[2] + "Make Sweets by Confectioners (By Baker1)");
-        this.MakeSweetByBaker();
-
+        //System.out.println(BACKGROUNDS[15] + FOREGROUNDS[2] + "Make Sweets by Confectioners (By Baker1)");
+        //this.MakeSweetByBaker();
+        System.out.println(BACKGROUNDS[15] + FOREGROUNDS[2] + "Add discount by Confectioners (By Bakery2)");
+        this.AddDiscountByBakery();
     }
+
 
 
     void AddConfectioner() {
@@ -272,5 +274,16 @@ public class Test {
 
         }
     }
+    private void AddDiscountByBakery() {
+        List<Bakery> bakeries = Admin.getInstance().searchBakeryByName("Bakery2");
+        if (bakeries.size() == 0) {
+
+            System.out.println(BACKGROUNDS[1] + FOREGROUNDS[15] + "Not Found");
+            System.out.println(ANSI_RESET);
+        } else {
+            bakeries.get(0).addDiscount();
+        }
+    }
+
 
 }
