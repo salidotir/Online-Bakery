@@ -2,8 +2,7 @@ package online.bakery;
 
 import javafx.util.Pair;
 import online.bakery.Post.Post;
-import online.bakery.birthdayItems.BirthdayItems;
-import online.bakery.birthdayItems.Candle;
+import online.bakery.birthdayItems.*;
 import online.bakery.decorators.Decorator;
 import online.bakery.decorators.DecoratorToBuild;
 import online.bakery.sweets.*;
@@ -177,7 +176,7 @@ public class Bakery extends Account implements Confectioner {
                 sweets.addImages(image);
                 break;
             default:
-                throw new IllegalStateException("Unexpected value: " + sweetTypes[j - 1]);
+                throw new IllegalStateException("Unexpected value: " + WhichSweet);
         }
         return sweets;
     }
@@ -187,15 +186,70 @@ public class Bakery extends Account implements Confectioner {
         return Admin.getInstance().addOrderSweet(this, sweet);
     }
 
-    public boolean addBirthdayItem() {
-        BigDecimal cost = new BigDecimal("20000");
-        BigDecimal price = new BigDecimal("10000");
-        BirthdayItems item = new Candle("اکلیلی", cost,price ," عدد ۲", "قرمز");
-        System.out.println(item.getDescription());
-        Scanner scan = new Scanner(System.in);
-        System.out.printf("Please Enter Number for this BirthdayItem : ");
-        int number = scan.nextInt();
-        return Admin.getInstance().addBirthdayItem(this, item, number);
+    public BirthdayItems CreateBirthdayItem() {
+        BirthdayItems item;
+        Scanner sc = new Scanner(System.in);
+
+        TypeOfItems[] itemTypes = TypeOfItems.values();
+        Decorator[] decorators = Decorator.values();
+        int j = 1;
+
+        System.out.println("Please select Number of Birthday Item: ");
+        for (TypeOfItems it : itemTypes
+        ) {
+            System.out.print(it + "\t");
+            j += 1;
+        }
+        System.out.println('\n');
+
+        int WhichItem = sc.nextInt();
+
+        System.out.println("choose name: ");
+        String name = sc.nextLine();
+
+        System.out.println("cost : ");
+        int cost = sc.nextInt();
+        sc.nextLine();
+
+        System.out.println("purchasePrice: ");
+        int purchasePrice = sc.nextInt();
+        sc.nextLine();
+
+        switch (itemTypes[WhichItem-1]) {
+
+            case BALLOON:
+                System.out.println("material: ");
+                String material = sc.nextLine();
+
+                System.out.println("color: ");
+                String color = sc.nextLine();
+
+                item = new Balloon(name,new BigDecimal(cost),new BigDecimal(purchasePrice),material,color);
+
+                break;
+            case CANDLE:
+
+                System.out.println("number: ");
+                String number = sc.nextLine();
+
+                System.out.println("color: ");
+                color = sc.nextLine();
+
+                item = new Candle(name,new BigDecimal(cost),new BigDecimal(purchasePrice),number,color);
+                break;
+            case SNOWSPRAY:
+
+                item = new SnowSpray(name,new BigDecimal(cost),new BigDecimal(purchasePrice));
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + WhichItem);
+        }
+        return item;
+    }
+
+    public boolean addBirthdayItem(BirthdayItems birthdayItems , int number) {
+
+        return Admin.getInstance().addBirthdayItem(this, birthdayItems, number);
     }
 
     public boolean deleteReadySweet(Sweets sweet, int number) {
