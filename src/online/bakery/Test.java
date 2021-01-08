@@ -67,6 +67,10 @@ public class Test {
     ArrayList<Confectioner> conf = new ArrayList<>();
 
     public Test() {
+        List<String> questions = new ArrayList<>();
+        questions.add("What is your grandfader first name?");
+        Admin.getInstance().setQuestions(questions);
+
         System.out.println(BACKGROUNDS[15] + FOREGROUNDS[2] + "Add 4 Confectioners");
         this.AddConfectioner();
         System.out.println(BACKGROUNDS[15] + FOREGROUNDS[2] + "Show All Bakeries");
@@ -79,6 +83,8 @@ public class Test {
         this.SearchByNameBakers();
         System.out.println(BACKGROUNDS[15] + FOREGROUNDS[2] + "Add 4 Customers");
         this.AddCustomers();
+        System.out.println(BACKGROUNDS[15] + FOREGROUNDS[2] + "Senario Forgot password");
+        this.ForgetPass();
         //System.out.println(BACKGROUNDS[15] + FOREGROUNDS[2] + "Add 3 Emploee");
         //this.AddCustomers();
         //System.out.println(BACKGROUNDS[15] + FOREGROUNDS[2] + "Buy a Gift Card (negin to sara)");
@@ -239,7 +245,7 @@ public class Test {
 
         System.out.println(BACKGROUNDS[12] + FOREGROUNDS[15] + c4.getProfile());
         System.out.println(ANSI_RESET);
-
+        
     }
 
     private void BuyGiftCard() {
@@ -363,14 +369,6 @@ public class Test {
 
         ArrayList<Confectioner> conf = new ArrayList<>();
         Bakery b1 = new Bakery("شب شیرینی", "usermane", "pass", "لحظات زندگی خود را با کمک ما شیرین کنید", "07131111111", "تاچارا");
-//        System.out.printf(b1.getProfile());
-
-//        LocalDate baker_todey = LocalDate.now();
-//        LocalDate baker_tomorrow = todayy.plusDays( 10 ) ;
-//        b1.addDiscount("تخفیف یلدایی" , 20
-//                , new Date(baker_todey.getYear()- 1900,baker_todey.getMonthValue() - 1, baker_todey.getDayOfMonth())
-//                , new Date(baker_tomorrow.getYear()- 1900,baker_tomorrow.getMonthValue() -1,baker_tomorrow.getDayOfMonth())
-//                ,200);
 
         Employee e1 = new Employee("salidotir", "4444", "Sara", "Limooee");
         Employee e2 = new Employee("hello", "1234", "firstname1", "lastname1");
@@ -463,11 +461,10 @@ public class Test {
     }
     private void ForgetPass(){
         Admin.getInstance().setQuestions(new ArrayList<String>());
-        Customer c1 = new Customer("Sara","4444");
-        c1.setFirstname("sara");
+        Customer c1 = new Customer("ali","4444");
+        c1.setFirstname("ali");
         c1.setLastname("limoe");
         System.out.println(c1.getLastLogin());
-        Customer c2 = new Customer("neg","4444");
 
         //checking toggle Activeness
 //        System.out.println(c1.getActiveness());
@@ -475,14 +472,23 @@ public class Test {
 //        System.out.println(c1.getActiveness());
 
 
-        System.out.println(c1.forgotPassword().getValue());
-//        c1.changePassword();
-
-        c1.LogOut();
-        System.out.println(c1.forgotPassword());
-        c1.Login("Sara", "4444", Role.CUSTOMER);
         System.out.println(c1.getLastLogin());
-
+        
+        c1.LogOut();
+        AbstractMap.SimpleEntry result = Account.Login("sara", "4434", Role.CUSTOMER);
+        if( result.getValue() != null){
+            Customer cust = (Customer)result.getValue();
+            System.out.println(cust.getProfile());  
+            
+            cust.LogOut();
+        }
+        
+        AbstractMap.SimpleEntry resu = Account.forgotPassword(Role.CUSTOMER, "sara");
+        if((boolean) resu.getKey())
+            System.out.println(resu.getValue());
+        else
+            System.out.println(resu.getValue());
+        
     }
 
 }

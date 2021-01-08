@@ -60,8 +60,6 @@ public class Admin extends Account{
     }
     
     void setQuestions(List<String> questions){
-        String q1= "how old are you? ";
-        questions.add(q1);
         DBMS.getDBMS(this).setQuestions(questions);
     }
     
@@ -75,6 +73,14 @@ public class Admin extends Account{
     
     List<String> getAnswer(String username){
         return DBMS.getDBMS(this).getAnswers(username);
+    }
+    
+    public AbstractMap.SimpleEntry findAccountWithRoleAndUsername(Role role, String username){
+        return DBMS.getDBMS(this).findAccountWithRoleAndUsername(role, username);
+    }
+    
+    public boolean getLogedInAccount(Role role, String username){
+        return DBMS.getDBMS(this).getLogedInAccount(role, username);
     }
     
     boolean changePassword(String username, String password){
