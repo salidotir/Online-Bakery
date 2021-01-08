@@ -11,6 +11,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.*;
 
 import static online.bakery.Test.BACKGROUNDS;
@@ -239,7 +240,6 @@ public class Baker extends Account implements Confectioner{
 
     public boolean addDiscount(){
 
-
         int max = 1000;
         Scanner scan = new Scanner(System.in);
         System.out.println("Baker  --> add Discount ___________________________________________________________________");
@@ -251,15 +251,25 @@ public class Baker extends Account implements Confectioner{
 
         System.out.println("choose start date (1399/10/1) :");
         String starts  = scan.nextLine();
-        LocalDate startL = LocalDate.parse(starts, DateTimeFormatter.ofPattern("yyyy/MM/dd"));
+        LocalDate startL;
+        try {
+            startL = LocalDate.parse(starts, DateTimeFormatter.ofPattern("yyyy/MM/dd"));
+        }catch (DateTimeParseException e){
+            throw new IllegalArgumentException("Unexpected Date" + starts);
+        }
         Date start = new Date(startL.getYear()- 1900,startL.getMonthValue() - 1, startL.getDayOfMonth());
 
 
         System.out.println("choose end date (1399/10/10) :");
         String ends  = scan.nextLine();
-        LocalDate endL = LocalDate.parse(starts, DateTimeFormatter.ofPattern("yyyy/MM/dd"));
-        Date end = new Date(endL.getYear()- 1900,endL.getMonthValue() - 1, endL.getDayOfMonth());
+        LocalDate endL;
+        try {
+            endL = LocalDate.parse(starts, DateTimeFormatter.ofPattern("yyyy/MM/dd"));
+        }catch (DateTimeParseException e) {
+            throw new IllegalArgumentException("Unexpected Date" + ends);
+        }
 
+        Date end = new Date(endL.getYear()- 1900,endL.getMonthValue() - 1, endL.getDayOfMonth());
 
         if(percent<= 100 && percent > 0){
             Discount d = new Discount(name, percent, start, end, this.getID(), max);
