@@ -358,7 +358,7 @@ public class Bakery extends Account implements Confectioner {
         System.out.println("Choose percent :(1-100)");
         int percent = scan.nextInt();
         scan.nextLine();
-        System.out.println("Choose start date (1399/10/1) :");
+        System.out.println("Choose start date (2020/01/01) :");
         String starts = scan.nextLine();
         LocalDate startL;
         try {
@@ -369,7 +369,7 @@ public class Bakery extends Account implements Confectioner {
         Date start = new Date(startL.getYear()- 1900,startL.getMonthValue() - 1, startL.getDayOfMonth());
 
 
-        System.out.println("choose end date (1399/10/10) :");
+        System.out.println("choose end date (2021/01/01) :");
         String ends  = scan.nextLine();
         LocalDate endL;
         try {

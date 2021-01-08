@@ -101,11 +101,11 @@ public class main {
 
 
         c1.BuyGiftCardTo(c2);
-        System.out.println(c1.forgotPassword().getValue());
+        //System.out.println(c1.forgotPassword().getValue());
 //        c1.changePassword();
         
         c1.LogOut();
-        System.out.println(c1.forgotPassword());
+        //System.out.println(c1.forgotPassword());
         c1.Login("Sara", "4444", Role.CUSTOMER);
         System.out.println(c1.getLastLogin());
 

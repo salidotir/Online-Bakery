@@ -1,6 +1,7 @@
 package online.bakery;
 
 import com.sun.istack.internal.NotNull;
+import javafx.util.Pair;
 import online.bakery.Post.Post;
 import online.bakery.birthdayItems.BirthdayItems;
 import online.bakery.birthdayItems.Candle;
@@ -83,8 +84,8 @@ public class Test {
         this.SearchByNameBakers();
         System.out.println(BACKGROUNDS[15] + FOREGROUNDS[2] + "Add 4 Customers");
         this.AddCustomers();
-        System.out.println(BACKGROUNDS[15] + FOREGROUNDS[2] + "Senario Forgot password");
-        this.ForgetPass();
+        //////System.out.println(BACKGROUNDS[15] + FOREGROUNDS[2] + "Senario Forgot password");
+        //////this.ForgetPass();
         //System.out.println(BACKGROUNDS[15] + FOREGROUNDS[2] + "Add 3 Emploee");
         //this.AddCustomers();
         //System.out.println(BACKGROUNDS[15] + FOREGROUNDS[2] + "Buy a Gift Card (negin to sara)");
@@ -104,8 +105,8 @@ public class Test {
         //this.AddComment(prevPost);
         //System.out.println(BACKGROUNDS[15] + FOREGROUNDS[2] + "Add Like (Prev post /Melika)");
         //this.AddLike(prevPost);
-        System.out.println(BACKGROUNDS[15] + FOREGROUNDS[2] + "Scenario1");
-        this.Scenario1();
+        System.out.println(BACKGROUNDS[15] + FOREGROUNDS[2] + "ScenarioLogin");
+        this.ScenarioLogin();
 
     }
 
@@ -122,6 +123,7 @@ public class Test {
         Bakery bakery2 = new Bakery("Bakery2", "usermane3", "pass3", "Have a Good Time", "07131111113", "Farhang Shahr");
         bakery2.setFirstname("sara");
         bakery2.setLastname("Ahmadi");
+        bakery2.addDiscount();
 
         //
         ArrayList<DecoratorToBuild> decorators = new ArrayList<>();
@@ -161,24 +163,30 @@ public class Test {
         System.out.println(ANSI_RESET);
     }
 
-    void ShowAllBakeries() {
+    List<Bakery> ShowAllBakeries() {
         List<Bakery> All_bakeries = Admin.getInstance().ShowAllBakery();
+        int i = 1;
         for (Bakery bakery : All_bakeries
         ) {
-            System.out.println(BACKGROUNDS[2] + FOREGROUNDS[15] + bakery.getProfile());
+            System.out.println(BACKGROUNDS[2] + FOREGROUNDS[15] + i + ") " + bakery.getProfile());
             System.out.println(ANSI_RESET);
+            i+=1;
 
         }
+        return All_bakeries;
     }
 
-    void ShowAllBakers() {
-        List<Baker> All_bakeries = Admin.getInstance().ShowAllBakers();
-        for (Baker bakery : All_bakeries
+    List<Baker> ShowAllBakers() {
+        List<Baker> All_bakers = Admin.getInstance().ShowAllBakers();
+        int i = 1;
+        for (Baker bakery : All_bakers
         ) {
-            System.out.println(BACKGROUNDS[3] + FOREGROUNDS[15] + bakery.getProfile());
+            System.out.println(BACKGROUNDS[3] + FOREGROUNDS[15] + i + ") " + bakery.getProfile());
             System.out.println(ANSI_RESET);
+            i+=1;
 
         }
+        return All_bakers;
     }
 
     private void SearchByNameBakeries() {
@@ -221,30 +229,37 @@ public class Test {
         c.setAddress("Bahonar");
         System.out.println(BACKGROUNDS[12] + FOREGROUNDS[15] + c.getProfile());
         System.out.println(ANSI_RESET);
+        c.LogOut();
+
+
         Customer c2 = new Customer("melika", "1234");
         c2.setFirstname("Melika");
         c2.setLastname("zare");
         c2.setContactNo("0917863532");
         c2.setAddress("Mellat");
-
         System.out.println(BACKGROUNDS[12] + FOREGROUNDS[15] + c2.getProfile());
         System.out.println(ANSI_RESET);
+        c2.LogOut();
+
+
         Customer c3 = new Customer("neg", "4444");
         c3.setFirstname("Negin");
         c3.setLastname("Khalifat");
         c3.setContactNo("0914863532");
         c3.setAddress("Bagh shah");
-
         System.out.println(BACKGROUNDS[12] + FOREGROUNDS[15] + c3.getProfile());
         System.out.println(ANSI_RESET);
+        c3.LogOut();
+
+
         Customer c4 = new Customer("sara", "4434");
         c4.setFirstname("Sara");
         c4.setLastname("LimooE");
         c4.setContactNo("0914843533");
         c4.setAddress("MaliAbad");
-
         System.out.println(BACKGROUNDS[12] + FOREGROUNDS[15] + c4.getProfile());
         System.out.println(ANSI_RESET);
+        c4.LogOut();
         
     }
 
@@ -346,6 +361,331 @@ public class Test {
         Customer Melika = Admin.getInstance().searchCustomerByContactNo("0917863532");
         post.addLike(Melika);
         System.out.println(BACKGROUNDS[2] + FOREGROUNDS[15] + post.toString());
+    }
+
+    private void ScenarioOrder(Customer customer){
+        Scanner scan = new Scanner(System.in);
+        System.out.println("1)Baker 2)Bakery");
+        int whichRole = 1;
+        whichRole = scan.nextInt();
+        scan.nextLine();
+
+
+        if(whichRole == 1) {
+            List<Baker> bakers = ShowAllBakers();
+            System.out.println("Enter number of Baker:");
+            int whichBaker = 1;
+            whichBaker = scan.nextInt();
+            scan.nextLine();
+            List<Sweets> sweetsOrder = new ArrayList<Sweets>();
+            List<SweetType> sweetTypes = new ArrayList<SweetType>();
+
+            while (true) {
+                System.out.println("1) Order Sweets    2)Make Sweets");
+                int whichTypeSweet = 1;
+                whichTypeSweet = scan.nextInt();
+                scan.nextLine();
+                switch (whichTypeSweet) {
+                    case 1:
+                        System.out.println("Order Sweets for baker " + bakers.get(whichBaker - 1).getName());
+                        int i = 1;
+                        for (Sweets s : bakers.get(whichBaker - 1).getOrderSweets()) {
+                            System.out.println(i + ") name sweet: " + s.getName() + "\n" + "Image(s): ");
+
+                            for (String image : s.getImages()) {
+                                System.out.print(image + "\t");
+                            }
+                            System.out.println("\n cost: " + s.get_OderCost());
+
+                        }
+                        System.out.println("Enter number of Sweet:");
+                        int whichSweet = 1;
+                        whichSweet = scan.nextInt();
+                        scan.nextLine();
+                        sweetsOrder.add(bakers.get(whichBaker - 1).getOrderSweets().get(whichSweet - 1));
+                        sweetTypes.add(SweetType.CREATE_CONFECTIONER);
+                        break;
+                    case 2:
+                        Sweets multiTieredCake = customer.MakeMultitieredCake(bakers.get(whichBaker - 1));
+                        sweetsOrder.add(multiTieredCake);
+                        sweetTypes.add(SweetType.CREATE_CUSTOMER);
+                        break;
+                }
+
+                System.out.println("break ? y/n");
+                char y = scan.next().charAt(0);
+                if (y == 'y') break;
+            }
+            List<BirthdayItems> item = new ArrayList<BirthdayItems>();
+
+            Order o1 = customer.createNewSweet(sweetsOrder, item);
+
+            boolean result = true;
+            while (result) {
+                result = o1.finalizedOrder();
+                if (!result)
+                    break;
+                AbstractMap.SimpleEntry res = o1.chooseBaker(bakers.get(whichBaker - 1), sweetTypes);
+                result = (boolean) res.getKey();
+                if (!result)
+                    break;
+
+                List<ConfectionerStatus> cs1 = (List<ConfectionerStatus>) res.getValue();
+                ConfectionerStatus s = o1.getConfirmBaker(cs1);
+                if (s == ConfectionerStatus.ACCEPT) {
+                    customer.setAddress("ملاصدرا دانشکده کامپیوتر");
+
+                    res = o1.setDelivery();
+                    result = (boolean) res.getKey();
+                    System.out.println(res.getValue());
+                    if (!result)
+                        break;
+                    result = o1.payOrder("paying order o1");
+                    if (!result)
+                        break;
+                    result = o1.setBakerStatus(sweetTypes);
+                    if (!result)
+                        break;
+                    result = o1.callDelivery();
+                    if (!result)
+                        break;
+
+
+                    DeliverySystem deliverySystem = DeliverySystem.getDeliverySystem();
+                    deliverySystem.assignEmployeesToOrder();
+                    System.out.println(deliverySystem.toStringGetOrderEmployeeMap());
+                    Employee e1 = new Employee("salidotir12", "4444", "Sara", "Limooee");
+
+                    e1.deliverOrder(o1);
+
+                    System.out.println(e1.getProfile());
+
+                    System.out.println("------------------------------------------------------");
+                    System.out.println(o1.getOrderInformation());
+                    System.out.println(o1.getDelivery().getDeliveryInformation());
+
+                    if (o1.getOrderStatus() == OrderStatus.DELIVERED) {
+                        for (Sweets sweet : o1.getSweets()) {
+                            o1.addScore(sweet, Rate.FOUR);
+                        }
+
+                    }
+//                System.out.println(o1.getOrderInformation());
+                }
+
+
+            }
+        }
+        else{
+            List<Bakery> bakeries =ShowAllBakeries();
+            System.out.println("Enter number of Bakery:");
+            int whichBakery = 1;
+            whichBakery = scan.nextInt();
+            scan.nextLine();
+            List<Sweets> sweetsOrder = new ArrayList<Sweets>();
+            List<SweetType> sweetTypes = new ArrayList<SweetType>();
+            List<BirthdayItems> item = new ArrayList<BirthdayItems>();
+            while (true) {
+                System.out.println("1) Order Sweets    2) Make Sweets   3) Ready Sweets   4)Birthday Items");
+                int whichTypeSweet = 1;
+                whichTypeSweet = scan.nextInt();
+                scan.nextLine();
+                switch (whichTypeSweet) {
+                    case 1:
+                        System.out.println("Order Sweets for bakery " + bakeries.get(whichBakery - 1).getName());
+                        int i = 1;
+                        for (Sweets s : bakeries.get(whichBakery - 1).getOrderSweets()) {
+                            System.out.println(i + ") name sweet: " + s.getName() + "\n" + "Image(s): ");
+
+                            for (String image : s.getImages()) {
+                                System.out.print(image + "\t");
+                            }
+                            System.out.println("\n cost: " + s.get_OderCost());
+                            i+=1;
+                        }
+                        System.out.println("Enter number of Sweet:");
+                        int whichSweet = 1;
+                        whichSweet = scan.nextInt();
+                        scan.nextLine();
+                        sweetsOrder.add(bakeries.get(whichBakery - 1).getOrderSweets().get(whichSweet - 1));
+                        sweetTypes.add(SweetType.CREATE_CONFECTIONER);
+                        break;
+                    case 2:
+                        Sweets multiTieredCake = customer.MakeMultitieredCake(bakeries.get(whichBakery - 1));
+                        sweetsOrder.add(multiTieredCake);
+                        sweetTypes.add(SweetType.CREATE_CUSTOMER);
+                        break;
+
+                    case 3:
+                        System.out.println("Ready Sweets for bakery " + bakeries.get(whichBakery - 1).getName());
+                        i = 1;
+                        for (Pair<Sweets,Integer> s: bakeries.get(whichBakery - 1).getReadySweets()) {
+                            System.out.println(i + ") name sweet: " + s.getKey().getName() + "\n" + "Image(s): ");
+
+                            for (String image : s.getKey().getImages()) {
+                                System.out.print(image + "\t");
+                            }
+                            System.out.println("\n cost: " + s.getKey().get_OderCost());
+                            System.out.println("Number: " + s.getValue());
+                            i+=1;
+                        }
+                        System.out.println("Enter number of Sweet:");
+                        whichSweet = 1;
+                        whichSweet = scan.nextInt();
+                        scan.nextLine();
+                        sweetsOrder.add(bakeries.get(whichBakery - 1).getReadySweets().get(whichSweet - 1).getKey());
+                        sweetTypes.add(SweetType.READY);
+                        break;
+
+                    case 4:
+                        System.out.println("Birthday Items for bakery " + bakeries.get(whichBakery - 1).getName());
+                        i = 1;
+                        for (Pair<BirthdayItems,Integer> s: bakeries.get(whichBakery - 1).getBirthdayItem()) {
+                            System.out.println(i + ") name sweet: " + s.getKey().getDescription());
+                            System.out.println("Number: " + s.getValue());
+                            i+=1;
+                        }
+                        System.out.println("Enter number of Birthday Item:");
+                        int whichItem = 1;
+                        whichItem = scan.nextInt();
+                        scan.nextLine();
+                        item.add(bakeries.get(whichBakery - 1).getBirthdayItem().get(whichItem - 1).getKey());
+                        break;
+                }
+
+                System.out.println("break ? y/n");
+                char y = scan.next().charAt(0);
+                if (y == 'y') break;
+            }
+
+
+            Order o1 = customer.createNewSweet(sweetsOrder, item);
+
+            boolean result = true;
+            while (result) {
+                result = o1.finalizedOrder();
+                if (!result)
+                    break;
+                AbstractMap.SimpleEntry res = o1.chooseBakery(bakeries.get(whichBakery - 1), sweetTypes);
+                result = (boolean) res.getKey();
+                if (!result)
+                    break;
+
+                List<ConfectionerStatus> cs1 = (List<ConfectionerStatus>) res.getValue();
+                ConfectionerStatus s = o1.getConfirmBaker(cs1);
+                if (s == ConfectionerStatus.ACCEPT) {
+                    customer.setAddress("ملاصدرا دانشکده کامپیوتر");
+
+                    res = o1.setDelivery();
+                    result = (boolean) res.getKey();
+                    System.out.println(res.getValue());
+                    if (!result)
+                        break;
+                    result = o1.payOrder("paying order o1");
+                    if (!result)
+                        break;
+                    result = o1.setBakerStatus(sweetTypes);
+                    if (!result)
+                        break;
+                    result = o1.callDelivery();
+                    if (!result)
+                        break;
+
+
+                    DeliverySystem deliverySystem = DeliverySystem.getDeliverySystem();
+                    deliverySystem.assignEmployeesToOrder();
+                    System.out.println(deliverySystem.toStringGetOrderEmployeeMap());
+                    Employee e1 = new Employee("salidotir15", "4444", "Sara", "Limooee");
+
+                    e1.deliverOrder(o1);
+
+                    System.out.println(e1.getProfile());
+
+                    System.out.println("------------------------------------------------------");
+                    System.out.println(o1.getOrderInformation());
+                    System.out.println(o1.getDelivery().getDeliveryInformation());
+
+                    if (o1.getOrderStatus() == OrderStatus.DELIVERED) {
+                        for (Sweets sweet : o1.getSweets()) {
+                            o1.addScore(sweet, Rate.FOUR);
+                        }
+
+                    }
+//                System.out.println(o1.getOrderInformation());
+                }
+
+
+            }
+
+        }
+
+
+
+    }
+
+    private void ScenarioLogin(){
+        //System.out.println("1)Login 2)Sign up");
+        Scanner scan = new Scanner(System.in);
+        Role[] roles = Role.values();
+
+        System.out.printf("Username : ");
+        String username = scan.next();
+        System.out.printf("password : ");
+        String pass = scan.next();
+
+        int j = 1;
+        for(Role r:roles){
+            System.out.print(j+") "+r + "\t");
+        }
+        boolean t = true;
+        int whichRole = 1;
+        while (t) {
+            whichRole = scan.nextInt();
+            scan.nextLine();
+            if(whichRole <= roles.length && whichRole > 0){
+                t = false;
+            }
+            else{
+                System.out.println("Wrong Num ... try again");
+            }
+        }
+
+        switch (roles[whichRole - 1]){
+            case CUSTOMER:
+                System.out.println("Login Customer_________");
+                AbstractMap.SimpleEntry result = Account.Login(username, pass, Role.CUSTOMER);
+                if( result.getValue() != null){
+                    Customer c1= (Customer)result.getValue();
+                    System.out.println(c1.getProfile());
+                    ScenarioOrder(c1);
+                }
+
+                break;
+            case BAKER:
+                System.out.println("Login Baker_________");
+                break;
+            case BAKERY:
+                System.out.println("Login Bakery_________");
+                break;
+            case EMPLOEE:
+                System.out.println("Login Employee_________");
+                break;
+            case ADMIN:
+                System.out.println("Login Admin_________");
+                break;
+        }
+
+
+
+
+        //Customer c1 = Admin.getInstance().LoginAccount(username,pass,Role.CUSTOMER);
+
+
+
+        //Customer c2;
+        //c2.Login("Sara", "4444", Role.CUSTOMER);
+        //System.out.println();
+
     }
 
     private void Scenario1() {
