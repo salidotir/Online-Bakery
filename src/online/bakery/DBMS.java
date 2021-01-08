@@ -1163,7 +1163,97 @@ public class DBMS {
 
     }
 
-
+    public AbstractMap.SimpleEntry findAccountWithRoleAndUsername(Role role, String username){
+        switch(role){
+            case CUSTOMER:
+                for(Customer c : DBMS.getDBMS().getListOfCustomers()){
+                    if(c.getUsername().equals(username)){
+                        c.setIsLogedIn(true);
+                        c.setLastLoginTime(new Date());
+                        return new AbstractMap.SimpleEntry(role, c);
+                    }
+                }
+                break;
+            case BAKER:
+                for(Baker b : DBMS.getDBMS().getListOfBakers()){
+                    if(b.getUsername().equals(username)){
+                        b.setIsLogedIn(true);
+                        b.setLastLoginTime(new Date());
+                        return new AbstractMap.SimpleEntry(role, b);
+                    }
+                }
+                break;
+            case BAKERY:
+                for(Bakery b : DBMS.getDBMS().getListOfBakeries()){
+                    if(b.getUsername().equals(username)){
+                        b.setIsLogedIn(true);
+                        b.setLastLoginTime(new Date());
+                        return new AbstractMap.SimpleEntry(role, b);
+                    }
+                }
+                break;
+            case ADMIN:
+                for(Admin admin : DBMS.getDBMS().getAdmins()){ // have some error
+                    if(admin.getUsername().equals(username)){
+                        admin.setIsLogedIn(true);
+                        admin.setLastLoginTime(new Date());
+                        return new AbstractMap.SimpleEntry(role, admin);
+                    }
+                }
+                break;
+            case EMPLOEE:
+                for(Employee e : DBMS.getDBMS().getListOfEmployees()){
+                    if(e.getUsername().equals(username)){
+                        e.setIsLogedIn(true);
+                        e.setLastLoginTime(new Date());
+                        return new AbstractMap.SimpleEntry(role, e);
+                    }
+                }
+                break;
+        }       
+        return new AbstractMap.SimpleEntry(role, null);
+    }
+    
+    public boolean getLogedInAccount(Role role, String username){
+        switch(role){
+            case CUSTOMER:
+                for(Customer c : DBMS.getDBMS().getListOfCustomers()){
+                    if(c.getUsername().equals(username)){
+                        return c.isIsLogedIn();
+                    }
+                }
+                break;
+            case BAKER:
+                for(Baker b : DBMS.getDBMS().getListOfBakers()){
+                    if(b.getUsername().equals(username)){
+                        return b.isIsLogedIn();
+                    }
+                }
+                break;
+            case BAKERY:
+                for(Bakery b : DBMS.getDBMS().getListOfBakeries()){
+                    if(b.getUsername().equals(username)){
+                        b.isIsLogedIn();                            
+                    }
+                }
+                break;
+            case ADMIN:
+                for(Admin admin : DBMS.getDBMS().getAdmins()){
+                    if(admin.getUsername().equals(username)){
+                        admin.isIsLogedIn();
+                    }
+                }
+                break;
+            case EMPLOEE:
+                for(Employee e : DBMS.getDBMS().getListOfEmployees()){
+                    if(e.getUsername().equals(username)){
+                        e.isIsLogedIn();
+                    }
+                }
+                break;
+        }       
+        return false;
+    }
     //~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~
 
 

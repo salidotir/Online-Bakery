@@ -5,6 +5,7 @@
  */
 package online.bakery;
 
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -23,6 +24,9 @@ public class Login {
                 return false;
             }
             else{
+                System.out.print("Hello ");
+                System.out.println(username);
+                System.out.println("Please answer these security questions.");
                 Admin.getInstance().addEntry(username, password);
                 List<String> answers = new ArrayList<>();
                 Admin.getInstance().getQuestions().stream().map((q) -> {
@@ -39,10 +43,15 @@ public class Login {
         }
     }
     
-    public static boolean ValidateLogin(String username, String password, Role role){
+    public static AbstractMap.SimpleEntry ValidateLogin(String username, String password, Role role){
         if(!Admin.getInstance().hasEntry(username, password) || !Admin.getInstance().hasSalt(username)){
-            return false;
-        }else
-            return Admin.getInstance().checkPasword(username , password);
+            return new AbstractMap.SimpleEntry(role, null);
+        }else{
+            boolean res = Admin.getInstance().checkPasword(username , password);
+            if(res){
+                return Admin.getInstance().findAccountWithRoleAndUsername(role, username);
+            }else
+                return new AbstractMap.SimpleEntry(role, null);
+        }
     }
 }
