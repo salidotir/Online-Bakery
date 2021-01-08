@@ -351,7 +351,7 @@ public class Admin extends Account{
         return DBMS.getDBMS(this).editPost(post.getId(),post.getCaption(),post.getLikeId());
     }
 
-    public boolean createPost(){
+    public Post createPost(){
         List<String> images = new ArrayList<String>();
         Scanner scan = new Scanner(System.in);
         System.out.println("Enter caption post");

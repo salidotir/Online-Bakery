@@ -1,5 +1,7 @@
 package online.bakery;
 
+import online.bakery.Post.Post;
+import online.bakery.birthdayItems.BirthdayItems;
 import online.bakery.decorators.Decorator;
 import online.bakery.decorators.DecoratorToBuild;
 import online.bakery.sweets.Cake;
@@ -10,6 +12,7 @@ import online.bakery.sweets.Tart;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class Test {
     public static final String ANSI_RESET = "\u001B[0m";
@@ -86,8 +89,12 @@ public class Test {
         //this.CreateMultiTieredCake();
         //System.out.println(BACKGROUNDS[15] + FOREGROUNDS[2] + "Make Sweets by Confectioners (By Baker1)");
         //this.MakeSweetByBaker();
-        System.out.println(BACKGROUNDS[15] + FOREGROUNDS[2] + "Add discount by Confectioners (By Bakery2)");
-        this.AddDiscountByBakery();
+        //System.out.println(BACKGROUNDS[15] + FOREGROUNDS[2] + "Add discount by Confectioners (By Bakery2)");
+        //this.AddDiscountByBakery();
+        //System.out.println(BACKGROUNDS[15] + FOREGROUNDS[2] + "Add BirthDay Item to Bakery (By Bakery2)");
+        //this.AddBirthDayItemBakery();
+        System.out.println(BACKGROUNDS[15] + FOREGROUNDS[2] + "Add Post By Bakery (By Bakery2)");
+        this.AddCreatePostByBakery();
     }
 
 
@@ -282,6 +289,34 @@ public class Test {
             System.out.println(ANSI_RESET);
         } else {
             bakeries.get(0).addDiscount();
+        }
+    }
+    private void AddBirthDayItemBakery() {
+        List<Bakery> bakeries = Admin.getInstance().searchBakeryByName("Bakery2");
+        if (bakeries.size() == 0) {
+
+            System.out.println(BACKGROUNDS[1] + FOREGROUNDS[15] + "Not Found");
+            System.out.println(ANSI_RESET);
+        } else {
+            BirthdayItems birthdayItems =bakeries.get(0).CreateBirthdayItem();
+            System.out.println("Please Enter number of this item:");
+            Scanner sc=new Scanner(System.in);
+            int num=sc.nextInt();
+            bakeries.get(0).addBirthdayItem(birthdayItems,num);
+        }
+    }
+
+    private void AddCreatePostByBakery() {
+        List<Bakery> bakeries = Admin.getInstance().searchBakeryByName("Bakery2");
+        if (bakeries.size() == 0) {
+
+            System.out.println(BACKGROUNDS[1] + FOREGROUNDS[15] + "Not Found");
+            System.out.println(ANSI_RESET);
+        } else {
+            Post post=bakeries.get(0).createPost();
+
+            System.out.println(post.toString());
+
         }
     }
 

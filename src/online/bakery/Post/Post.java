@@ -27,13 +27,13 @@ public class Post {
         Admin.getInstance().addPost(this);
     }
 
-     public static boolean createPost(Account account, String caption, List<String> images){
+     public static Post createPost(Account account, String caption, List<String> images){
         if(account.role == Role.BAKERY || account.role == Role.BAKER || account.role == Role.ADMIN){
-           new Post( caption,images,account.getID());
-           return true;
+
+           return new Post( caption,images,account.getID());
         }
         else{
-            return false;
+            return null;
         }
 
     }
@@ -85,6 +85,27 @@ public class Post {
 
         new Comment(text,account.getID(),this.id);
         return true;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder comments=new StringBuilder();
+        for(Comment comment:getComments()){
+            comments.append(comment.getAuthorId()).append(" : ").append( comment.getText()).append('\n');
+        }
+        if (!comments.equals("")){
+            comments=new StringBuilder();
+            comments.append("No Comments Yet.");
+        }
+
+        return "Post{" +
+                "images=" + images +
+                ", likes=" + likeId.size() +
+                ", authorId=" + authorId +"\n"+
+                ", Comments= "+comments+
+
+                ", caption='" + caption + '\'' +
+                '}';
     }
 
     public List<Comment> getComments(){

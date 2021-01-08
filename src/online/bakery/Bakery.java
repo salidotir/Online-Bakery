@@ -62,7 +62,7 @@ public class Bakery extends Account implements Confectioner {
 
     //public boolean addPost(Sweets sweet){this.post.add(sweet);}
 
-    public boolean addReadySweet(Sweets sweet,int number) {
+    public boolean addReadySweet(Sweets sweet, int number) {
 
         /*Sweets sweet = CreateSweets();
         Scanner scan = new Scanner(System.in);
@@ -84,7 +84,7 @@ public class Bakery extends Account implements Confectioner {
         System.out.println("Please select Number of Sweets: ");
         for (TypeOfSweets st : sweetTypes
         ) {
-            System.out.print(BACKGROUNDS[2] + FOREGROUNDS[15] +j + " " + st.toString() + "\t");
+            System.out.print(BACKGROUNDS[2] + FOREGROUNDS[15] + j + " " + st.toString() + "\t");
             j += 1;
         }
         System.out.println('\n');
@@ -118,7 +118,7 @@ public class Bakery extends Account implements Confectioner {
         }
         sc.nextLine();
 
-        switch (sweetTypes[WhichSweet-1]) {
+        switch (sweetTypes[WhichSweet - 1]) {
 
             case CAKE:
 
@@ -194,52 +194,52 @@ public class Bakery extends Account implements Confectioner {
         Decorator[] decorators = Decorator.values();
         int j = 1;
 
-        System.out.println("Please select Number of Birthday Item: ");
+        System.out.println(BACKGROUNDS[6] + FOREGROUNDS[15] + "Please select Number of Birthday Item: ");
         for (TypeOfItems it : itemTypes
         ) {
-            System.out.print(it + "\t");
+            System.out.print(j + " " + it + "\t");
             j += 1;
         }
         System.out.println('\n');
 
         int WhichItem = sc.nextInt();
 
-        System.out.println("choose name: ");
+        System.out.println("Choose name: ");
         String name = sc.nextLine();
-
-        System.out.println("cost : ");
+        name = sc.nextLine();
+        System.out.println("Cost : ");
         int cost = sc.nextInt();
         sc.nextLine();
 
-        System.out.println("purchasePrice: ");
+        System.out.println("PurchasePrice: ");
         int purchasePrice = sc.nextInt();
         sc.nextLine();
 
-        switch (itemTypes[WhichItem-1]) {
+        switch (itemTypes[WhichItem - 1]) {
 
             case BALLOON:
-                System.out.println("material: ");
+                System.out.println("Material: ");
                 String material = sc.nextLine();
 
-                System.out.println("color: ");
+                System.out.println("Color: ");
                 String color = sc.nextLine();
 
-                item = new Balloon(name,new BigDecimal(cost),new BigDecimal(purchasePrice),material,color);
+                item = new Balloon(name, new BigDecimal(cost), new BigDecimal(purchasePrice), material, color);
 
                 break;
             case CANDLE:
 
-                System.out.println("number: ");
+                System.out.println("Number: ");
                 String number = sc.nextLine();
 
-                System.out.println("color: ");
+                System.out.println("Color: ");
                 color = sc.nextLine();
 
-                item = new Candle(name,new BigDecimal(cost),new BigDecimal(purchasePrice),number,color);
+                item = new Candle(name, new BigDecimal(cost), new BigDecimal(purchasePrice), number, color);
                 break;
             case SNOWSPRAY:
 
-                item = new SnowSpray(name,new BigDecimal(cost),new BigDecimal(purchasePrice));
+                item = new SnowSpray(name, new BigDecimal(cost), new BigDecimal(purchasePrice));
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + WhichItem);
@@ -247,7 +247,7 @@ public class Bakery extends Account implements Confectioner {
         return item;
     }
 
-    public boolean addBirthdayItem(BirthdayItems birthdayItems , int number) {
+    public boolean addBirthdayItem(BirthdayItems birthdayItems, int number) {
 
         return Admin.getInstance().addBirthdayItem(this, birthdayItems, number);
     }
@@ -346,7 +346,7 @@ public class Bakery extends Account implements Confectioner {
         return Admin.getInstance().getBirthdayItem(this);
     }
 
-    public boolean addDiscount(){
+    public boolean addDiscount() {
 
 
         int max = 1000;
@@ -358,22 +358,22 @@ public class Bakery extends Account implements Confectioner {
         int percent = scan.nextInt();
         scan.nextLine();
         System.out.println("Choose start date (1399/10/1) :");
-        String starts  = scan.nextLine();
+        String starts = scan.nextLine();
         LocalDate startL = LocalDate.parse(starts, DateTimeFormatter.ofPattern("yyyy/MM/dd"));
-        Date start = new Date(startL.getYear()- 1900,startL.getMonthValue() - 1, startL.getDayOfMonth());
+        Date start = new Date(startL.getYear() - 1900, startL.getMonthValue() - 1, startL.getDayOfMonth());
 
 
         System.out.println("choose end date (1399/10/10) :");
-        String ends  = scan.nextLine();
+        String ends = scan.nextLine();
         LocalDate endL = LocalDate.parse(starts, DateTimeFormatter.ofPattern("yyyy/MM/dd"));
-        Date end = new Date(endL.getYear()- 1900,endL.getMonthValue() - 1, endL.getDayOfMonth());
+        Date end = new Date(endL.getYear() - 1900, endL.getMonthValue() - 1, endL.getDayOfMonth());
 
 
-        if(percent<= 100 && percent > 0){
+        if (percent <= 100 && percent > 0) {
             Discount d = new Discount(name, percent, start, end, this.getID(), max);
             return Admin.getInstance().addDiscount(d);
 
-        }else
+        } else
             return false;
     }
 
@@ -385,79 +385,78 @@ public class Bakery extends Account implements Confectioner {
     public String getProfile() {
         double score = Admin.getInstance().getScoreBaker(this);
         String bakeryP;
-        if(score == 0.0){
-            bakeryP = name +"\n" + description + "\n" + super.getProfile()  ;
-        }
-        else{
-            bakeryP = name +"\n" + description + "\n" + super.getProfile() + "Score : " + score + "/5 + \n" ;
+        if (score == 0.0) {
+            bakeryP = name + "\n" + description + "\n" + super.getProfile();
+        } else {
+            bakeryP = name + "\n" + description + "\n" + super.getProfile() + "Score : " + score + "/5 + \n";
         }
         return bakeryP;
     }
 
-    public  BigDecimal getProfit(Date start , Date end){
-        List <Order> orders = Admin.getInstance().getOrderDate(this,start,end,OrderStatus.DELIVERED);
+    public BigDecimal getProfit(Date start, Date end) {
+        List<Order> orders = Admin.getInstance().getOrderDate(this, start, end, OrderStatus.DELIVERED);
         BigDecimal profit = new BigDecimal("0");
-        for (Order o : orders){
+        for (Order o : orders) {
             System.out.println(o.getOrderId());
 
             List<Discount> discount = o.getDiscount();
             Discount d = null;
-            for (Discount dd : discount){
-                if(dd.getCreatorID() == this.ID){
+            for (Discount dd : discount) {
+                if (dd.getCreatorID() == this.ID) {
                     d = dd;
                 }
 
             }
             int percent = 0;
-            if(d != null){
-                System.out.println("Discount made by you : " + d.getPercent()+ " % ");
+            if (d != null) {
+                System.out.println("Discount made by you : " + d.getPercent() + " % ");
                 percent = d.getPercent();
             }
 
             BigDecimal ps = new BigDecimal("0");
             BigDecimal pb = new BigDecimal("0");
-            for(Sweets s : o.getSweets()){
+            for (Sweets s : o.getSweets()) {
                 System.out.println(s.getName());
                 System.out.println(s.getDescription());
                 System.out.println(s.getTOTAL_COST());
                 System.out.println(s.get_OderCost());
-                ps = ps.add(s.getFee().multiply(new BigDecimal((100 - percent)/100)));
+                ps = ps.add(s.getFee().multiply(new BigDecimal((100 - percent) / 100)));
             }
             System.out.println("Profit for Sweet(s) : " + ps);
 
-            for(BirthdayItems b: o.getItems()){
+            for (BirthdayItems b : o.getItems()) {
                 System.out.println(b.getDescription());
                 System.out.println(b.getPurchasePrice());
 
-                pb = pb.add(b.getCost().subtract(b.getPurchasePrice()).multiply(new BigDecimal((100 - percent)/100)));
+                pb = pb.add(b.getCost().subtract(b.getPurchasePrice()).multiply(new BigDecimal((100 - percent) / 100)));
             }
             System.out.println("Profit for BirthdayItem(s) : " + pb);
 
             profit = profit.add(pb);
             profit = profit.add(ps);
         }
-        return  profit;
+        return profit;
 
     }
 
-    public boolean createPost(){
-        List<String> images = new ArrayList<String>();
+    public Post createPost() {
+        List<String> images = new ArrayList<>();
         Scanner scan = new Scanner(System.in);
-        System.out.println("Enter caption post");
+        System.out.println(BACKGROUNDS[6] + FOREGROUNDS[15] + "Enter caption for the post");
         String caption = scan.nextLine();
         System.out.println("Enter number of image : ");
         int num = scan.nextInt();
         scan.nextLine();
-        for(int i = 0; i < num; i++){
-            System.out.println("Enter image");
+        for (int i = 0; i < num; i++) {
+            System.out.println("Enter image:");
             String s = scan.nextLine();
             images.add(s);
 
         }
-        return Post.createPost(this,caption,images);
+        return Post.createPost(this, caption, images);
     }
 
-    public List<Post> getPosts(){
+    public List<Post> getPosts() {
         return Admin.getInstance().getPosts(this.ID);
     }
 

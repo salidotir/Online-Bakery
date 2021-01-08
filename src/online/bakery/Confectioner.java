@@ -47,7 +47,7 @@ public interface Confectioner {
     BigDecimal getProfit(Date start , Date end);
 
 
-    boolean createPost();
+    Post createPost();
     List<Post> getPosts();
 
 

@@ -322,7 +322,7 @@ public class Baker extends Account implements Confectioner{
 
     }
 
-    public boolean createPost(){
+    public Post createPost(){
         List<String> images = new ArrayList<String>();
         Scanner scan = new Scanner(System.in);
         System.out.println("Enter caption post");
