@@ -34,9 +34,9 @@ public class main {
         System.out.println(b1.getProfile());
         //Discount d1 = new Discoun("تخفیف یلدایی" , 20 , new Date(1399,9,20),new Date(1399,10,1),b1.getID());
 
-        /*
+
         // test Discount
-        b1.addDiscount();
+        /*b1.addDiscount();
 
         List<Discount> ddd = b1.getDiscountList();
         for(Discount d : ddd){
@@ -45,12 +45,12 @@ public class main {
 
         // test post
 
-        if(b1.createPost()){
+       /* if(b1.createPost()){
             System.out.println("Post create" + "\n ________________________________");
         }
         if(b1.createPost()){
             System.out.println("Post create" + "\n ________________________________");
-        }
+        }*/
 
 
 

@@ -3,17 +3,14 @@ package online.bakery;
 import com.sun.istack.internal.NotNull;
 import online.bakery.Post.Post;
 import online.bakery.birthdayItems.BirthdayItems;
+import online.bakery.birthdayItems.Candle;
 import online.bakery.decorators.Decorator;
 import online.bakery.decorators.DecoratorToBuild;
-import online.bakery.sweets.Cake;
-import online.bakery.sweets.Cookie;
-import online.bakery.sweets.Sweets;
-import online.bakery.sweets.Tart;
+import online.bakery.sweets.*;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.time.LocalDate;
+import java.util.*;
 
 public class Test {
     public static final String ANSI_RESET = "\u001B[0m";
@@ -94,15 +91,17 @@ public class Test {
         //this.AddDiscountByBakery();
         //System.out.println(BACKGROUNDS[15] + FOREGROUNDS[2] + "Add BirthDay Item to Bakery (By Bakery2)");
         //this.AddBirthDayItemBakery();
-        System.out.println(BACKGROUNDS[15] + FOREGROUNDS[2] + "Add Post By Bakery (By Bakery2)");
-        Post prevPost=this.AddCreatePostByBakery();
+        //System.out.println(BACKGROUNDS[15] + FOREGROUNDS[2] + "Add Post By Bakery (By Bakery2)");
+        //Post prevPost = this.AddCreatePostByBakery();
 
         //System.out.println(BACKGROUNDS[15] + FOREGROUNDS[2] + "Add Comment (Prev post /Melika)");
         //this.AddComment(prevPost);
-        System.out.println(BACKGROUNDS[15] + FOREGROUNDS[2] + "Add Like (Prev post /Melika)");
-        this.AddLike(prevPost);
-    }
+        //System.out.println(BACKGROUNDS[15] + FOREGROUNDS[2] + "Add Like (Prev post /Melika)");
+        //this.AddLike(prevPost);
+        System.out.println(BACKGROUNDS[15] + FOREGROUNDS[2] + "Scenario1");
+        this.Scenario1();
 
+    }
 
 
     void AddConfectioner() {
@@ -268,12 +267,13 @@ public class Test {
             System.out.println(BACKGROUNDS[1] + FOREGROUNDS[15] + "Not Found");
             System.out.println(ANSI_RESET);
         } else {
-            Sweets sweets=bakers.get(0).CreateSweets();
-            System.out.println(BACKGROUNDS[2] + FOREGROUNDS[15] +sweets.toString());
+            Sweets sweets = bakers.get(0).CreateSweets();
+            System.out.println(BACKGROUNDS[2] + FOREGROUNDS[15] + sweets.toString());
             System.out.println(ANSI_RESET);
 
         }
     }
+
     private void MakeSweetByBakery() {
         List<Bakery> bakeries = Admin.getInstance().searchBakeryByName("Bakery1");
         if (bakeries.size() == 0) {
@@ -281,12 +281,13 @@ public class Test {
             System.out.println(BACKGROUNDS[1] + FOREGROUNDS[15] + "Not Found");
             System.out.println(ANSI_RESET);
         } else {
-            Sweets sweets=bakeries.get(0).CreateSweets();
-            System.out.println(BACKGROUNDS[2] + FOREGROUNDS[15] +sweets.toString());
+            Sweets sweets = bakeries.get(0).CreateSweets();
+            System.out.println(BACKGROUNDS[2] + FOREGROUNDS[15] + sweets.toString());
             System.out.println(ANSI_RESET);
 
         }
     }
+
     private void AddDiscountByBakery() {
         List<Bakery> bakeries = Admin.getInstance().searchBakeryByName("Bakery2");
         if (bakeries.size() == 0) {
@@ -297,6 +298,7 @@ public class Test {
             bakeries.get(0).addDiscount();
         }
     }
+
     private void AddBirthDayItemBakery() {
         List<Bakery> bakeries = Admin.getInstance().searchBakeryByName("Bakery2");
         if (bakeries.size() == 0) {
@@ -304,11 +306,11 @@ public class Test {
             System.out.println(BACKGROUNDS[1] + FOREGROUNDS[15] + "Not Found");
             System.out.println(ANSI_RESET);
         } else {
-            BirthdayItems birthdayItems =bakeries.get(0).CreateBirthdayItem();
+            BirthdayItems birthdayItems = bakeries.get(0).CreateBirthdayItem();
             System.out.println("Please Enter number of this item:");
-            Scanner sc=new Scanner(System.in);
-            int num=sc.nextInt();
-            bakeries.get(0).addBirthdayItem(birthdayItems,num);
+            Scanner sc = new Scanner(System.in);
+            int num = sc.nextInt();
+            bakeries.get(0).addBirthdayItem(birthdayItems, num);
         }
     }
 
@@ -320,7 +322,7 @@ public class Test {
             System.out.println(ANSI_RESET);
             return null;
         } else {
-            Post post=bakeries.get(0).createPost();
+            Post post = bakeries.get(0).createPost();
 
             System.out.println(post.toString());
             return post;
@@ -333,10 +335,154 @@ public class Test {
         post.addComment(Melika);
         System.out.println(post.toString());
     }
+
     private void AddLike(Post post) {
         Customer Melika = Admin.getInstance().searchCustomerByContactNo("0917863532");
         post.addLike(Melika);
-        System.out.println(BACKGROUNDS[2] + FOREGROUNDS[15]+post.toString());
+        System.out.println(BACKGROUNDS[2] + FOREGROUNDS[15] + post.toString());
+    }
+
+    private void Scenario1() {
+        LocalDate todayy = LocalDate.now();
+        LocalDate tomorrow = todayy.plusDays(3650);
+
+        Admin.getInstance().createDiscount("تخفیف اولین سفارش در اپ ما", 20
+                , new Date(todayy.getYear() - 1900, todayy.getMonthValue() - 1, todayy.getDayOfMonth())
+                , new Date(tomorrow.getYear() - 1900, tomorrow.getMonthValue() - 1, tomorrow.getDayOfMonth()), 20000);
+
+        ArrayList<Sweets> ss = new ArrayList<Sweets>();
+        ArrayList<DecoratorToBuild> decorators = new ArrayList<DecoratorToBuild>();
+        decorators.add(new DecoratorToBuild(Decorator.FLOUR, new BigDecimal(100), new BigDecimal(400)));
+        decorators.add(new DecoratorToBuild(Decorator.SUGAR, new BigDecimal(300), new BigDecimal(40)));
+        decorators.add(new DecoratorToBuild(Decorator.BAKING_POWDER, new BigDecimal(200), new BigDecimal(500)));
+        Sweets s1 = new Cake.CakeBuilder(decorators).build();
+        decorators.add(new DecoratorToBuild(Decorator.STRAWBERRY, new BigDecimal(200), new BigDecimal(500)));
+        Sweets s2 = new Cookie.CookieBuilder(decorators).build();
+        ss.add(s1);
+        ss.add(s2);
+
+        ArrayList<Confectioner> conf = new ArrayList<>();
+        Bakery b1 = new Bakery("شب شیرینی", "usermane", "pass", "لحظات زندگی خود را با کمک ما شیرین کنید", "07131111111", "تاچارا");
+//        System.out.printf(b1.getProfile());
+
+//        LocalDate baker_todey = LocalDate.now();
+//        LocalDate baker_tomorrow = todayy.plusDays( 10 ) ;
+//        b1.addDiscount("تخفیف یلدایی" , 20
+//                , new Date(baker_todey.getYear()- 1900,baker_todey.getMonthValue() - 1, baker_todey.getDayOfMonth())
+//                , new Date(baker_tomorrow.getYear()- 1900,baker_tomorrow.getMonthValue() -1,baker_tomorrow.getDayOfMonth())
+//                ,200);
+
+        Employee e1 = new Employee("salidotir", "4444", "Sara", "Limooee");
+        Employee e2 = new Employee("hello", "1234", "firstname1", "lastname1");
+        Employee e3 = new Employee("world", "5678", "firstname2", "lastname2");
+
+        // craete a list of vehicles
+        Vehicle v1 = new Vehicle(VehicleType.MOTOR, "12M345");
+        Vehicle v2 = new Vehicle(VehicleType.CAR, "89D3673");
+        Vehicle v3 = new Vehicle(VehicleType.TRUCK, "34A300");
+
+
+        Customer c2 = Admin.getInstance().searchCustomerByContactNo("0914843533");
+        Customer c = Admin.getInstance().searchCustomerByContactNo("0914863532");
+        c2.BuyGiftCardTo(c);
+
+        List<Sweets> sList = new ArrayList<>();
+        List<SweetType> stList = new ArrayList<>();
+        sList.add(s2);
+        stList.add(SweetType.CREATE_CUSTOMER);
+
+        sList.add(s1);
+        stList.add(SweetType.READY);
+
+        List<BirthdayItems> listitem = new ArrayList<>();
+        Candle candle = new Candle("happy", new BigDecimal(1000), new BigDecimal(700), "3", "red");
+        Order o1 = c.createNewSweet(sList, listitem);
+        o1.ItemaddtoOrder(candle);
+        boolean result = true;
+        while (result) {
+            result = o1.finalizedOrder();
+            if (!result)
+                break;
+            AbstractMap.SimpleEntry res = o1.chooseBakery(b1, stList);
+            result = (boolean) res.getKey();
+            if (!result)
+                break;
+
+            List<ConfectionerStatus> cs1 = (List<ConfectionerStatus>) res.getValue();
+            ConfectionerStatus s = o1.getConfirmBaker(cs1);
+            if (s == ConfectionerStatus.ACCEPT) {
+                c.setAddress("ملاصدرا دانشکده کامپیوتر");
+
+                res = o1.setDelivery();
+                result = (boolean) res.getKey();
+                System.out.println(res.getValue());
+                if (!result)
+                    break;
+                result = o1.payOrder("paying order o1");
+                if (!result)
+                    break;
+                result = o1.setBakerStatus(stList);
+                if (!result)
+                    break;
+                result = o1.callDelivery();
+                if (!result)
+                    break;
+
+//                System.out.println(Admin.getInstance().getOrders().size());
+
+                DeliverySystem deliverySystem = DeliverySystem.getDeliverySystem();
+                deliverySystem.assignEmployeesToOrder();
+                System.out.println(deliverySystem.toStringGetOrderEmployeeMap());
+
+                e1.deliverOrder(o1);
+//                e1.ruineOrder(o1);
+
+                System.out.println(e1.getProfile());
+
+//                System.out.println(deliverySystem.toStringGetOrderEmployeeMap());
+//
+//                for(Order order: Admin.getInstance().getOrders()){
+//                    System.out.println(order.getOrderInformation());
+//                    System.out.println(order.getDelivery().getDeliveryInformation());
+//                }
+                System.out.println("------------------------------------------------------");
+                System.out.println(o1.getOrderInformation());
+                System.out.println(o1.getDelivery().getDeliveryInformation());
+
+                if (o1.getOrderStatus() == OrderStatus.DELIVERED) {
+                    for (Sweets sweet : o1.getSweets()) {
+                        o1.addScore(sweet, Rate.FOUR);
+                    }
+
+                }
+//                System.out.println(o1.getOrderInformation());
+            }
+
+        }
+
+    }
+    private void ForgetPass(){
+        Admin.getInstance().setQuestions(new ArrayList<String>());
+        Customer c1 = new Customer("Sara","4444");
+        c1.setFirstname("sara");
+        c1.setLastname("limoe");
+        System.out.println(c1.getLastLogin());
+        Customer c2 = new Customer("neg","4444");
+
+        //checking toggle Activeness
+//        System.out.println(c1.getActiveness());
+//        Admin.getInstance().toggleActiveness(c1);
+//        System.out.println(c1.getActiveness());
+
+
+        System.out.println(c1.forgotPassword().getValue());
+//        c1.changePassword();
+
+        c1.LogOut();
+        System.out.println(c1.forgotPassword());
+        c1.Login("Sara", "4444", Role.CUSTOMER);
+        System.out.println(c1.getLastLogin());
+
     }
 
 }
