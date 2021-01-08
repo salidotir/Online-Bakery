@@ -1,5 +1,6 @@
 package online.bakery;
 
+import com.sun.istack.internal.NotNull;
 import online.bakery.Post.Post;
 import online.bakery.birthdayItems.BirthdayItems;
 import online.bakery.decorators.Decorator;
@@ -94,7 +95,12 @@ public class Test {
         //System.out.println(BACKGROUNDS[15] + FOREGROUNDS[2] + "Add BirthDay Item to Bakery (By Bakery2)");
         //this.AddBirthDayItemBakery();
         System.out.println(BACKGROUNDS[15] + FOREGROUNDS[2] + "Add Post By Bakery (By Bakery2)");
-        this.AddCreatePostByBakery();
+        Post prevPost=this.AddCreatePostByBakery();
+
+        //System.out.println(BACKGROUNDS[15] + FOREGROUNDS[2] + "Add Comment (Prev post /Melika)");
+        //this.AddComment(prevPost);
+        System.out.println(BACKGROUNDS[15] + FOREGROUNDS[2] + "Add Like (Prev post /Melika)");
+        this.AddLike(prevPost);
     }
 
 
@@ -306,19 +312,31 @@ public class Test {
         }
     }
 
-    private void AddCreatePostByBakery() {
+    private Post AddCreatePostByBakery() {
         List<Bakery> bakeries = Admin.getInstance().searchBakeryByName("Bakery2");
         if (bakeries.size() == 0) {
 
             System.out.println(BACKGROUNDS[1] + FOREGROUNDS[15] + "Not Found");
             System.out.println(ANSI_RESET);
+            return null;
         } else {
             Post post=bakeries.get(0).createPost();
 
             System.out.println(post.toString());
+            return post;
 
         }
     }
 
+    private void AddComment(@NotNull Post post) {
+        Customer Melika = Admin.getInstance().searchCustomerByContactNo("0917863532");
+        post.addComment(Melika);
+        System.out.println(post.toString());
+    }
+    private void AddLike(Post post) {
+        Customer Melika = Admin.getInstance().searchCustomerByContactNo("0917863532");
+        post.addLike(Melika);
+        System.out.println(BACKGROUNDS[2] + FOREGROUNDS[15]+post.toString());
+    }
 
 }

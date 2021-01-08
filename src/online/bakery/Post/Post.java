@@ -10,6 +10,9 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static online.bakery.Test.BACKGROUNDS;
+import static online.bakery.Test.FOREGROUNDS;
+
 public class Post {
     final private int id;
     static AtomicInteger atomicInteger = new AtomicInteger(0);
@@ -80,7 +83,7 @@ public class Post {
     }
     public boolean addComment(Account account){
         Scanner scan = new Scanner(System.in);
-        System.out.println("Enter text comment");
+        System.out.println(BACKGROUNDS[4] + FOREGROUNDS[15]+"Enter text comment");
         String text = scan.nextLine();
 
         new Comment(text,account.getID(),this.id);
@@ -90,10 +93,10 @@ public class Post {
     @Override
     public String toString() {
         StringBuilder comments=new StringBuilder();
-        for(Comment comment:getComments()){
-            comments.append(comment.getAuthorId()).append(" : ").append( comment.getText()).append('\n');
+        for(Comment comment:this.getComments()){
+            comments.append("{ ").append(comment.getAuthorId()).append(" : ").append( comment.getText()).append('}').append('\n');
         }
-        if (!comments.equals("")){
+        if (this.getComments().size()==0){
             comments=new StringBuilder();
             comments.append("No Comments Yet.");
         }
