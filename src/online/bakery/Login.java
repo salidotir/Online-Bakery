@@ -19,7 +19,16 @@ public class Login {
     public static boolean SignUp(String username, String password, Role role){
         if (role == Role.ADMIN){
             return false;
-        }else{
+        }
+        else if(role == Role.EMPLOEE) {
+            if (Admin.getInstance().hasEntry(username, password)){
+                return false;
+            }
+            System.out.print("Hello ");
+            System.out.println(username);
+            Admin.getInstance().addEntry(username, password);
+            return true;
+        } else{
             if (Admin.getInstance().hasEntry(username, password)){
                 return false;
             }
