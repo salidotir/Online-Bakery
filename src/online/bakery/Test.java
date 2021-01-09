@@ -71,7 +71,11 @@ public class Test {
         List<String> questions = new ArrayList<>();
         questions.add("What is your grandfader first name?");
         Admin.getInstance().setQuestions(questions);
-
+        
+        System.out.println(BACKGROUNDS[15] + FOREGROUNDS[2] + "Add 3 Delivery Employees");
+        this.AddEmployees();
+        System.out.println(BACKGROUNDS[15] + FOREGROUNDS[2] + "Add 3 Delivery Vehicles");
+        this.AddVehicles();
         System.out.println(BACKGROUNDS[15] + FOREGROUNDS[2] + "Add 4 Confectioners");
         this.AddConfectioner();
         System.out.println(BACKGROUNDS[15] + FOREGROUNDS[2] + "Show All Bakeries");
@@ -110,7 +114,22 @@ public class Test {
 
     }
 
-
+    void AddEmployees() {
+        Employee e1 = new Employee("salidotir", "4444", "Sara", "Limooee");
+        Employee e2 = new Employee("hello", "1234", "firstname1", "lastname1");
+        Employee e3 = new Employee("world", "5678", "firstname2", "lastname2");
+    }
+    
+    void AddVehicles() {
+        // create a list of vehicles
+        Vehicle v1 = new Vehicle(VehicleType.MOTOR, "12M345");
+        System.out.println("Added new vehicle");
+        Vehicle v2 = new Vehicle(VehicleType.CAR, "89D3673");
+        System.out.println("Added new vehicle");
+        Vehicle v3 = new Vehicle(VehicleType.TRUCK, "34A300");
+        System.out.println("Added new vehicle");
+    }
+    
     void AddConfectioner() {
         Bakery bakery1 = new Bakery("Bakery1", "usermane1", "pass1", "Have a Good Time", "07131111110", "Eram");
         bakery1.setFirstname("Mitra");
@@ -465,12 +484,25 @@ public class Test {
                         DeliverySystem deliverySystem = DeliverySystem.getDeliverySystem();
                         deliverySystem.assignEmployeesToOrder();
                         System.out.println(deliverySystem.toStringGetOrderEmployeeMap());
-                        Employee e1 = new Employee("salidotir12", "4444", "Sara", "Limooee");
-
-                        e1.deliverOrder(o1);
-
-                        System.out.println(e1.getProfile());
-
+                        //Employee e1 = new Employee("salidotir12", "4444", "Sara", "Limooee");
+                        //e1.deliverOrder(o1);
+                        //System.out.println(e1.getProfile());
+                        
+                        // employee login to say if it has deivered th eorder or not
+                        Employee e1 = (Employee)this.ScenarioLogin();
+                        System.out.println("What did tou do with the order? ");
+                        System.out.println("1. Delivered        2. Ruined!");
+                        Scanner sc = new Scanner(System.in);
+                        int employeeChoice = sc.nextInt();
+                        if (employeeChoice != 1 && employeeChoice != 2) {
+                            employeeChoice = sc.nextInt();
+                        }
+                        if (employeeChoice == 1) {
+                            e1.deliverOrder(o1);
+                        }
+                        else if (employeeChoice == 2) {
+                            e1.ruineOrder(o1);
+                        }
                         System.out.println("------------------------------------------------------");
                         System.out.println(o1.getOrderInformation());
                         System.out.println(o1.getDelivery().getDeliveryInformation());
@@ -481,7 +513,6 @@ public class Test {
                             }
 
                         }
-//                System.out.println(o1.getOrderInformation());
                     }
 
 
@@ -624,12 +655,26 @@ public class Test {
                         DeliverySystem deliverySystem = DeliverySystem.getDeliverySystem();
                         deliverySystem.assignEmployeesToOrder();
                         System.out.println(deliverySystem.toStringGetOrderEmployeeMap());
-                        Employee e1 = new Employee("salidotir15", "4444", "Sara", "Limooee");
-
-                        e1.deliverOrder(o1);
-
-                        System.out.println(e1.getProfile());
-
+                        //Employee e1 = new Employee("salidotir12", "4444", "Sara", "Limooee");
+                        //e1.deliverOrder(o1);
+                        //System.out.println(e1.getProfile());
+                        
+                        // employee login to say if it has deivered th eorder or not
+                        Employee e1 = (Employee)this.ScenarioLogin();
+                        System.out.println("What did tou do with the order? ");
+                        System.out.println("1. Delivered        2. Ruined!");
+                        Scanner sc = new Scanner(System.in);
+                        int employeeChoice = sc.nextInt();
+                        if (employeeChoice != 1 && employeeChoice != 2) {
+                            employeeChoice = sc.nextInt();
+                        }
+                        if (employeeChoice == 1) {
+                            e1.deliverOrder(o1);
+                        }
+                        else if (employeeChoice == 2) {
+                            e1.ruineOrder(o1);
+                        }
+                        
                         System.out.println("------------------------------------------------------");
                         System.out.println(o1.getOrderInformation());
                         System.out.println(o1.getDelivery().getDeliveryInformation());
@@ -640,7 +685,6 @@ public class Test {
                             }
 
                         }
-//                System.out.println(o1.getOrderInformation());
                     }
 
 
@@ -653,7 +697,7 @@ public class Test {
 
     }
 
-    private void ScenarioLogin(){
+    private Account ScenarioLogin(){
         //System.out.println("1)Login 2)Sign up");
         Scanner scan = new Scanner(System.in);
         Role[] roles = Role.values();
@@ -700,6 +744,12 @@ public class Test {
                 break;
             case EMPLOEE:
                 System.out.println("Login Employee_________");
+                AbstractMap.SimpleEntry result1 = Account.Login(username, pass, Role.EMPLOEE);
+                if( result1.getValue() != null){
+                    Employee e1= (Employee)result1.getValue();
+                    System.out.println(e1.getProfile());
+                    return e1;
+                }
                 break;
             case ADMIN:
                 System.out.println("Login Admin_________");
@@ -711,7 +761,7 @@ public class Test {
 
         //Customer c1 = Admin.getInstance().LoginAccount(username,pass,Role.CUSTOMER);
 
-
+        return null;
 
         //Customer c2;
         //c2.Login("Sara", "4444", Role.CUSTOMER);
