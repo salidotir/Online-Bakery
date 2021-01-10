@@ -23,7 +23,7 @@ public class SnowSpray implements BirthdayItems {
     }
 
     public String getDescription(){
-        String s = name + "\n" + cost + " Tooman" ;
+        String s = name + "\t" + "cost : " + cost ;
         return s;
     }
 

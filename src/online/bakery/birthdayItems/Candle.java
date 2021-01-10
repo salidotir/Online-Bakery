@@ -29,7 +29,7 @@ public class Candle implements BirthdayItems {
     }
 
     public String getDescription(){
-        String s = name + "  " + number + "\n color : "+color + "\n" + cost + " Tooman" ;
+        String s = name + "  " + number + "\t color : "+color + "\t" + "cost : " + cost ;
         return s;
     }
 

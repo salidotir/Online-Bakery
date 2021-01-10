@@ -29,7 +29,7 @@ public class Balloon implements BirthdayItems {
     }
 
     public String getDescription(){
-        String s = name + "\nmaterial : " + material + "\n color : "+color + "\n" + cost + " Tooman" ;
+        String s = name + "\tmaterial : " + material + "\t color : "+ color + "\t" + "cost : " + cost  ;
         return s;
     }
 

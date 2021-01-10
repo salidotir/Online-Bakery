@@ -110,7 +110,9 @@ public class Test {
         //System.out.println(BACKGROUNDS[15] + FOREGROUNDS[2] + "Add Like (Prev post /Melika)");
         //this.AddLike(prevPost);
         System.out.println(BACKGROUNDS[15] + FOREGROUNDS[2] + "ScenarioLogin");
-        this.ScenarioLogin();
+        Customer cu = (Customer) this.ScenarioLogin();
+        this.ScenarioOrder(cu);
+
 
     }
 
@@ -404,8 +406,6 @@ public class Test {
         int whichRole = 1;
         whichRole = scan.nextInt();
         scan.nextLine();
-
-
         if(whichRole == 1) {
             List<Baker> bakers = ShowAllBakers();
             if(bakers.size() == 0){
@@ -459,7 +459,22 @@ public class Test {
                 }
                 List<BirthdayItems> item = new ArrayList<BirthdayItems>();
 
+                System.out.println(BACKGROUNDS[15] + FOREGROUNDS[5] + "           Shopping list             ");
+                int i = 1;
+                for (Sweets s : sweetsOrder){
+                    System.out.println(i +") name item : "+ s.getSweet() + "\n");
+                }
+                System.out.println("Buy ? y/n");
+                char y = scan.next().charAt(0);
+                if (y == 'n') {
+                    ScenarioOrder(customer);
+                    return;
+                }
+
                 Order o1 = customer.createNewSweet(sweetsOrder, item);
+                System.out.println(o1.getOrderInformation());
+
+
 
                 boolean result = true;
                 while (result) {
@@ -638,8 +653,7 @@ public class Test {
 
                 Order o1 = customer.createNewSweet(sweetsOrder, item);
 
-                System.out.println("List Sweets");
-                System.out.println();
+                System.out.println(o1.getOrderInformation());
 
                 boolean result = true;
                 while (result) {
@@ -752,7 +766,8 @@ public class Test {
                 if( result.getValue() != null){
                     Customer c1= (Customer)result.getValue();
                     System.out.println(c1.getProfile());
-                    ScenarioOrder(c1);
+                    //ScenarioOrder(c1);
+                    return c1;
                 }
 
                 break;

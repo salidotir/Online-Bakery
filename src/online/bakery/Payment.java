@@ -180,8 +180,18 @@ public class Payment {
         else {
             pay.setPaymentStatus(PaymentStatus.UNSUCCESSFUL);
             System.out.println( BACKGROUNDS[1] + FOREGROUNDS[15] + "There is not enough money in the wallet.");
+            Scanner sc = new Scanner(System.in);
+            System.out.println(BACKGROUNDS[1] + FOREGROUNDS[15] + "Do you want to charge your wallet?(y/n)");
+            char y = sc.next().charAt(0);
+            if (y == 'y') {
+                System.out.println("How much?");
+                BigDecimal price_add = sc.nextBigDecimal();
+                source.getWallet().addAmount(price_add);
+                return payFromWallet(pay,source,destination);
+            }
             return false;
         }
+
     }
     
     private static boolean payOnline(Payment pay, Account destination) {
