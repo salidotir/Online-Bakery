@@ -399,7 +399,7 @@ public class Test {
         System.out.println(BACKGROUNDS[2] + FOREGROUNDS[15] + post.toString());
     }
 
-    private void ScenarioOrder(Customer customer){
+    private void ScenarioOrder(@NotNull Customer customer){
         System.out.println(BACKGROUNDS[15] + FOREGROUNDS[10] + "_________________________ you login _________________________");
         Scanner scan = new Scanner(System.in);
         System.out.println("1)Baker 2)Bakery");
@@ -741,6 +741,8 @@ public class Test {
         System.out.printf("password : ");
         String pass = scan.next();
 
+
+
         int j = 1;
         for(Role r:roles){
             System.out.print(j+") "+r + "\t");
@@ -769,8 +771,10 @@ public class Test {
                     //ScenarioOrder(c1);
                     return c1;
                 }
-
-                break;
+                else {
+                    System.out.println("You are not Customer");
+                    return ScenarioLogin();
+                }
             case BAKER:
                 System.out.println("Login Baker_________");
                 AbstractMap.SimpleEntry result1 = Account.Login(username, pass, Role.BAKER);
@@ -781,8 +785,9 @@ public class Test {
                 }
                 else {
                     System.out.println("You are not Baker");
+                    return ScenarioLogin();
                 }
-                break;
+
             case BAKERY:
                 System.out.println("Login Bakery_________");
                 AbstractMap.SimpleEntry result2 = Account.Login(username, pass, Role.BAKERY);
@@ -793,8 +798,9 @@ public class Test {
                 }
                 else {
                     System.out.println("You are not Bakery");
+                    return ScenarioLogin();
                 }
-                break;
+
             case EMPLOEE:
                 System.out.println("Login Employee_________");
                 AbstractMap.SimpleEntry result3 = Account.Login(username, pass, Role.EMPLOEE);
@@ -805,8 +811,9 @@ public class Test {
                 }
                 else {
                     System.out.println("You are not Employee");
+                    return ScenarioLogin();
                 }
-                break;
+
             case ADMIN:
                 System.out.println("Login Admin_________");
                 AbstractMap.SimpleEntry result4 = Account.Login(username, pass, Role.ADMIN);
@@ -817,8 +824,9 @@ public class Test {
                 }
                 else {
                     System.out.println("You are not Admin");
+                    return ScenarioLogin();
                 }
-                break;
+
         }
 
 
