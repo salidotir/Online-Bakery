@@ -369,7 +369,7 @@ public class Order {
         for (Sweets i : sweet_score.keySet()) {
             sweet += i.getDescription();
             sweet += " : ";
-            sweet += i.getTOTAL_COST().toString();
+            sweet += i.get_OderCost().toString();
             sweet += "\n";
         }
         for (BirthdayItems b: items){
@@ -394,7 +394,7 @@ public class Order {
     private BigDecimal getCost(){
         BigDecimal sweet_cost = new BigDecimal(0);
         for (Sweets i : sweet_score.keySet()) {
-            sweet_cost = sweet_cost.add(i.getTOTAL_COST());
+            sweet_cost = sweet_cost.add(i.get_OderCost());
         }
         BigDecimal item_cost = new BigDecimal(0);
         for (BirthdayItems b: items){
