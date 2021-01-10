@@ -272,7 +272,7 @@ public class Baker extends Account implements Confectioner{
         String ends  = scan.nextLine();
         LocalDate endL;
         try {
-            endL = LocalDate.parse(starts, DateTimeFormatter.ofPattern("yyyy/MM/dd"));
+            endL = LocalDate.parse(ends, DateTimeFormatter.ofPattern("yyyy/MM/dd"));
         }catch (DateTimeParseException e) {
             throw new IllegalArgumentException("Unexpected Date : " + ends);
         }

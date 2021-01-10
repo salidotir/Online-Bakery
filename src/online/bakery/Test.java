@@ -70,8 +70,15 @@ public class Test {
     public Test() {
         List<String> questions = new ArrayList<>();
         questions.add("What is your grandfader first name?");
-        Admin.getInstance().setQuestions(questions);
+//        Admin.getInstance().setQuestions(questions);
         
+        LocalDate todayy = LocalDate.now();
+        LocalDate tomorrow = todayy.plusDays(3650);
+
+        Admin.getInstance().createDiscount("تخفیف اولین سفارش در اپ ما", 20
+                , new Date(todayy.getYear() - 1900, todayy.getMonthValue() - 1, todayy.getDayOfMonth())
+                , new Date(tomorrow.getYear() - 1900, tomorrow.getMonthValue() - 1, tomorrow.getDayOfMonth()), 20000);
+
         System.out.println(BACKGROUNDS[15] + FOREGROUNDS[2] + "Add 3 Delivery Employees");
         this.AddEmployees();
         System.out.println(BACKGROUNDS[15] + FOREGROUNDS[2] + "Add 3 Delivery Vehicles");
@@ -843,13 +850,8 @@ public class Test {
     }
 
     private void Scenario1() {
-        LocalDate todayy = LocalDate.now();
-        LocalDate tomorrow = todayy.plusDays(3650);
 
-        Admin.getInstance().createDiscount("تخفیف اولین سفارش در اپ ما", 20
-                , new Date(todayy.getYear() - 1900, todayy.getMonthValue() - 1, todayy.getDayOfMonth())
-                , new Date(tomorrow.getYear() - 1900, tomorrow.getMonthValue() - 1, tomorrow.getDayOfMonth()), 20000);
-
+        
         ArrayList<Sweets> ss = new ArrayList<Sweets>();
         ArrayList<DecoratorToBuild> decorators = new ArrayList<DecoratorToBuild>();
         decorators.add(new DecoratorToBuild(Decorator.FLOUR, new BigDecimal(100), new BigDecimal(400)));

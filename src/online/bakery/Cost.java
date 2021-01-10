@@ -36,14 +36,16 @@ public class Cost {
      
     public String getDetailCosts(){
         String s;
-        s = "Actuall Cost sweets and birthday items: "+ sweetCost.add(itemCost) + "\n"+
+        BigDecimal temp = sweetCost;
+        temp = temp.add(itemCost);
+        s = "Actuall Cost sweets and birthday items: "+ temp + "\n"+
             "Actuall Cost delivery: "+ this.deliveryCost + "\n";
         if(this.costWithDisocunt != null)
-            s += "Cost sweets and birthday items with discount: " + this.costWithDisocunt + "\n"; 
+            s += "Cost payed for sweets and birthday items with discount: " + this.costWithDisocunt + "\n"; 
         if(this.costSweetWithGiftCard != null)
-            s += "Cost sweets and birthday items with Gift Card: "+ this.costSweetWithGiftCard + "\n";
+            s += "Cost payed for sweets and birthday items with Gift Card: "+ this.costSweetWithGiftCard + "\n";
         if(this.costDeliveryWithGiftCard != null)
-            s += "Cost delivery with Gift Card: "+ this.costDeliveryWithGiftCard + "\n" ;
+            s += "Cost payed for delivery: "+ this.costDeliveryWithGiftCard + "\n" ;
         if(this.finalCost != null)
             s += "Final Cost: " + this.finalCost + "\n";
         return s;
@@ -102,7 +104,7 @@ public class Cost {
         BigDecimal newcost = cost;
         this.adminCostDiscount = BigDecimal.ZERO;
         Discount victoryDiscount = null;
-        boolean usedAppDiscount = false;
+        boolean usedAppDiscount = false;               
         
         List<Discount> listAdmin = Admin.getInstance().getActiveDiscount(Admin.getInstance().getID());
         if(listAdmin.size() > 0){
@@ -176,11 +178,11 @@ public class Cost {
     }
 
     private BigDecimal applyGiftCard(BigDecimal cost){
-        BigDecimal newcost = cost;
         this.adminCostGiftCardBaker = BigDecimal.ZERO;
         this.adminCostGiftCardEmploee = BigDecimal.ZERO;
         this.costSweetWithGiftCard = cost;
         this.costDeliveryWithGiftCard = this.deliveryCost;
+        BigDecimal newcost = cost;
         
         List<GiftCard> giftCards = order.getCustomer().getGiftCards();
         if(giftCards.size() > 0){
@@ -193,8 +195,15 @@ public class Cost {
             }
             System.out.print("Delivery Cost: ");
             System.out.println(this.deliveryCost);
+            System.out.println("____________list GiftCards_____________");
+            this.costSweetWithGiftCard = cost;           
+            this.costDeliveryWithGiftCard = this.deliveryCost;
+        }else{
+            System.out.print("Final Cost with delivery: ");
+            newcost = newcost.add(this.deliveryCost);
+            System.out.println(newcost);
         }
-        System.out.println("____________list GiftCards_____________");
+        
         int i = 1;
         for(GiftCard gift: order.getCustomer().getGiftCards()){
             System.out.print("GiftCard number ");
@@ -208,6 +217,7 @@ public class Cost {
         if(giftCards.size() > 0){
             int choose = -1;
             boolean getCorrectInput = false;
+            newcost = cost;
             while(!getCorrectInput){
                 System.out.print("Choose one of gift cards from above(if you don't want to please enter 0): ");            
                 Scanner sc = new Scanner(System.in);
@@ -278,7 +288,9 @@ public class Cost {
     }
     
     public BigDecimal getCost(){
-        this.costWithDisocunt = applyDiscount(sweetCost.add(itemCost));
+        BigDecimal temp = sweetCost;
+        temp = temp.add(itemCost);
+        this.costWithDisocunt = applyDiscount(temp);
         this.finalCost = applyGiftCard(this.costWithDisocunt);
         return this.finalCost;
     }
