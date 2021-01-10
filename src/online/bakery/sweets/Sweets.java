@@ -119,4 +119,13 @@ public abstract class Sweets {
     public BigDecimal get_OderCost(){
         return TOTAL_COST.add(fee);
     }
+
+    public String getSweet(){
+        String out = "";
+        out = name +"\t cost: " + get_OderCost()+ "\n" + "Image(s): ";
+        for (String image : Images) {
+            out += image + "\t";
+        }
+        return out;
+    }
 }

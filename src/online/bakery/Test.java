@@ -144,6 +144,10 @@ public class Test {
         bakery2.setLastname("Ahmadi");
         bakery2.addDiscount();
 
+        Baker baker2 = new Baker("Baker2", "usermane4", "pass4", "Have a Good Time", "07131111114", "Tachara");
+        baker2.setFirstname("reza");
+        baker2.setLastname("Salmani");
+
         //
         ArrayList<DecoratorToBuild> decorators = new ArrayList<>();
         decorators.add(new DecoratorToBuild(Decorator.FLOUR, new BigDecimal(100), new BigDecimal(400)));
@@ -161,20 +165,30 @@ public class Test {
         cake3.setName("Walnut Cake");
         cake3.setFee(new BigDecimal(5000));
         Sweets cookie = new Cookie.CookieBuilder(decorators).build();
+        cookie.setName("Chocolate Cookie");
         Sweets tart = new Tart.TartBuilder(decorators).build();
+        tart.setName("Raspberry Tart");
 
-        bakery2.addOrderSweet(cake1);
-        bakery2.addOrderSweet(cake2);
+        baker2.addOrderSweet(cake1);
+        baker2.addOrderSweet(cake2);
+
+        baker1.addOrderSweet(cookie);
+
         bakery2.addOrderSweet(cake3);
         bakery2.addOrderSweet(cookie);
-        bakery2.addOrderSweet(tart);
         bakery2.addReadySweet(tart, 12);
-        bakery2.addReadySweet(cake1, 1);
-        bakery2.addReadySweet(cookie, 10);
 
-        Baker baker2 = new Baker("Baker2", "usermane4", "pass4", "Have a Good Time", "07131111114", "Tachara");
-        baker2.setFirstname("reza");
-        baker2.setLastname("Salmani");
+        bakery1.addOrderSweet(tart);
+        bakery1.addReadySweet(cake1, 1);
+        bakery1.addReadySweet(cookie, 10);
+        BirthdayItems b = bakery2.CreateBirthdayItem();
+        Scanner scan = new Scanner(System.in);
+        System.out.println("Enter number of item : ");
+        int num = scan.nextInt();
+        scan.nextLine();
+        bakery2.addBirthdayItem(b,num);
+
+
         conf.add(baker1);
         conf.add(baker2);
         conf.add(bakery1);
@@ -384,6 +398,7 @@ public class Test {
     }
 
     private void ScenarioOrder(Customer customer){
+        System.out.println(BACKGROUNDS[15] + FOREGROUNDS[10] + "_________________________ you login _________________________");
         Scanner scan = new Scanner(System.in);
         System.out.println("1)Baker 2)Bakery");
         int whichRole = 1;
@@ -420,13 +435,9 @@ public class Test {
                             System.out.println("Order Sweets for baker " + bakers.get(whichBaker - 1).getName());
                             int i = 1;
                             for (Sweets s : bakers.get(whichBaker - 1).getOrderSweets()) {
-                                System.out.println(i + ") name sweet: " + s.getName() + "\n" + "Image(s): ");
-
-                                for (String image : s.getImages()) {
-                                    System.out.print(image + "\t");
-                                }
-                                System.out.println("\n cost: " + s.get_OderCost());
-
+                                System.out.println(i +") name sweet : "+ s.getSweet());
+                                System.out.println();
+                                i += 1;
                             }
                             System.out.println("Enter number of Sweet:");
                             int whichSweet = 1;
@@ -547,12 +558,8 @@ public class Test {
                             System.out.println("Order Sweets for bakery " + bakeries.get(whichBakery - 1).getName());
                             int i = 1;
                             for (Sweets s : bakeries.get(whichBakery - 1).getOrderSweets()) {
-                                System.out.println(i + ") name sweet: " + s.getName() + "\n" + "Image(s): ");
-
-                                for (String image : s.getImages()) {
-                                    System.out.print(image + "\t");
-                                }
-                                System.out.println("\n cost: " + s.get_OderCost());
+                                System.out.println(i +") name sweet : "+ s.getSweet());
+                                System.out.println();
                                 i += 1;
                             }
                             System.out.println("Enter number of Sweet:");
@@ -576,13 +583,8 @@ public class Test {
                             System.out.println("Ready Sweets for bakery " + bakeries.get(whichBakery - 1).getName());
                             i = 1;
                             for (Pair<Sweets, Integer> s : bakeries.get(whichBakery - 1).getReadySweets()) {
-                                System.out.println(i + ") name sweet: " + s.getKey().getName() + "\n" + "Image(s): ");
-
-                                for (String image : s.getKey().getImages()) {
-                                    System.out.print(image + "\t");
-                                }
-                                System.out.println("\n cost: " + s.getKey().get_OderCost());
-                                System.out.println("Number: " + s.getValue());
+                                System.out.println(i +") name sweet : "+ s.getKey().getSweet() + "\t" + "Number: " + s.getValue());
+                                System.out.println();
                                 i += 1;
                             }
                             System.out.println("Enter number of Sweet:");
@@ -600,9 +602,9 @@ public class Test {
                             }
                             System.out.println("Birthday Items for bakery " + bakeries.get(whichBakery - 1).getName());
                             i = 1;
-                            for (Pair<BirthdayItems, Integer> s : bakeries.get(whichBakery - 1).getBirthdayItem()) {
-                                System.out.println(i + ") name sweet: " + s.getKey().getDescription());
-                                System.out.println("Number: " + s.getValue());
+                            for (Pair<BirthdayItems, Integer> b : bakeries.get(whichBakery - 1).getBirthdayItem()) {
+                                System.out.println(i + ") name item : " + b.getKey().getDescription() + "\t" +"Number: " + b.getValue());
+                                System.out.println();
                                 i += 1;
                             }
                             System.out.println("Enter number of Birthday Item:");
@@ -617,9 +619,27 @@ public class Test {
                     char y = scan.next().charAt(0);
                     if (y == 'y') break;
                 }
-
+                System.out.println(BACKGROUNDS[15] + FOREGROUNDS[5] + "           Shopping list             ");
+                int i = 1;
+                for (Sweets s : sweetsOrder){
+                    System.out.println(i +") name item : "+ s.getSweet() + "\n");
+                }
+                i = 1;
+                for (BirthdayItems b : item) {
+                    System.out.println(i + ") name item : " + b.getDescription());
+                    i += 1;
+                }
+                System.out.println("Buy ? y/n");
+                char y = scan.next().charAt(0);
+                if (y == 'n') {
+                    ScenarioOrder(customer);
+                    return;
+                }
 
                 Order o1 = customer.createNewSweet(sweetsOrder, item);
+
+                System.out.println("List Sweets");
+                System.out.println();
 
                 boolean result = true;
                 while (result) {
@@ -738,21 +758,51 @@ public class Test {
                 break;
             case BAKER:
                 System.out.println("Login Baker_________");
+                AbstractMap.SimpleEntry result1 = Account.Login(username, pass, Role.BAKER);
+                if( result1.getValue() != null){
+                    Baker b1= (Baker) result1.getValue();
+                    System.out.println(b1.getProfile());
+                    return b1;
+                }
+                else {
+                    System.out.println("You are not Baker");
+                }
                 break;
             case BAKERY:
                 System.out.println("Login Bakery_________");
+                AbstractMap.SimpleEntry result2 = Account.Login(username, pass, Role.BAKERY);
+                if( result2.getValue() != null){
+                    Bakery b1= (Bakery) result2.getValue();
+                    System.out.println(b1.getProfile());
+                    return b1;
+                }
+                else {
+                    System.out.println("You are not Bakery");
+                }
                 break;
             case EMPLOEE:
                 System.out.println("Login Employee_________");
-                AbstractMap.SimpleEntry result1 = Account.Login(username, pass, Role.EMPLOEE);
-                if( result1.getValue() != null){
-                    Employee e1= (Employee)result1.getValue();
+                AbstractMap.SimpleEntry result3 = Account.Login(username, pass, Role.EMPLOEE);
+                if( result3.getValue() != null){
+                    Employee e1= (Employee)result3.getValue();
                     System.out.println(e1.getProfile());
                     return e1;
+                }
+                else {
+                    System.out.println("You are not Employee");
                 }
                 break;
             case ADMIN:
                 System.out.println("Login Admin_________");
+                AbstractMap.SimpleEntry result4 = Account.Login(username, pass, Role.ADMIN);
+                if( result4.getValue() != null){
+                    Admin a1= (Admin) result4.getValue();
+                    System.out.println(a1.getProfile());
+                    return a1;
+                }
+                else {
+                    System.out.println("You are not Admin");
+                }
                 break;
         }
 

@@ -1,6 +1,9 @@
 package online.bakery;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.*;
 
 import com.sun.istack.internal.NotNull;
@@ -222,7 +225,18 @@ public class Customer extends Account {
     }
 
     public Order createNewSweet(List<Sweets> sweetlist, List<BirthdayItems> items) {
-        Order order = new Order(this, sweetlist, items, new Date());
+
+        System.out.println("Choose date for order (2020/01/01) : ");
+        Scanner scan = new Scanner(System.in);
+        String D = scan.nextLine();
+        LocalDate expectedDeliveryTimeLD;
+        try {
+            expectedDeliveryTimeLD = LocalDate.parse(D, DateTimeFormatter.ofPattern("yyyy/MM/dd"));
+        }catch (DateTimeParseException e){
+            throw new IllegalArgumentException("Unexpected Date : " + D);
+        }
+        Date expectedDeliveryTime = new Date(expectedDeliveryTimeLD.getYear()- 1900,expectedDeliveryTimeLD.getMonthValue() - 1, expectedDeliveryTimeLD.getDayOfMonth());
+        Order order = new Order(this, sweetlist, items, expectedDeliveryTime);
         this.Orders.add(order);
         return order;
     }

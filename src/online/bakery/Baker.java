@@ -66,6 +66,10 @@ public class Baker extends Account implements Confectioner{
 
 
     public Sweets CreateSweets() {
+
+        System.out.println(BACKGROUNDS[1] + FOREGROUNDS[0]+"___________________________Baker: " + this.name + "  terminal______________________________");
+        System.out.println("                           Create Sweet                          ");
+
         Sweets sweets;
         Scanner sc = new Scanner(System.in);
 
@@ -170,6 +174,7 @@ public class Baker extends Account implements Confectioner{
             default:
                 throw new IllegalStateException("Unexpected value: " + sweetTypes[j - 1]);
         }
+        System.out.println("\u001B[0m");
         return sweets;
     }
 
@@ -199,9 +204,12 @@ public class Baker extends Account implements Confectioner{
 
 
     public List<ConfectionerStatus> acceptOrder(Order order,List<SweetType> st){
+
+        System.out.println(BACKGROUNDS[1] + FOREGROUNDS[0]+"___________________________Baker: " + this.name + "  terminal______________________________");
+        System.out.println("                           accept Order                           ");
+
         List<ConfectionerStatus> out = new ArrayList<ConfectionerStatus>();
-        System.out.println("Customer");
-        System.out.println(order.getCustomerProfile());
+        System.out.println("Customer : "+order.getCustomerProfile());
         System.out.println("Sweet");
         List<Sweets> s = order.getSweets();
         for (int i = 0;i < s.size();i++) {
@@ -221,7 +229,7 @@ public class Baker extends Account implements Confectioner{
             int num = scan.nextInt();
             out.add(ConfectionerStatus.values()[num - 1]);
         }
-
+        System.out.println("\u001B[0m");
         return out;
 
     }
@@ -237,44 +245,44 @@ public class Baker extends Account implements Confectioner{
     }
 
 
-
-    public boolean addDiscount(){
+    public boolean addDiscount() {
+        System.out.println(BACKGROUNDS[1] + FOREGROUNDS[0]+"___________________________Bakery: " + this.name + "  terminal______________________________");
+        System.out.println("                           add Discount                           ");
 
         int max = 1000;
         Scanner scan = new Scanner(System.in);
-        System.out.println("Baker  --> add Discount ___________________________________________________________________");
-        System.out.println("choose name :");
+        System.out.println("Choose the name of discount :");
         String name = scan.nextLine();
 
-        System.out.println("choose percent :");
+        System.out.println("Choose percent (1-100) : ");
         int percent = scan.nextInt();
-
-        System.out.println("choose start date (2020/01/01) :");
-        String starts  = scan.nextLine();
+        scan.nextLine();
+        System.out.println("Choose start date (2020/01/01) : ");
+        String starts = scan.nextLine();
         LocalDate startL;
         try {
             startL = LocalDate.parse(starts, DateTimeFormatter.ofPattern("yyyy/MM/dd"));
         }catch (DateTimeParseException e){
-            throw new IllegalArgumentException("Unexpected Date" + starts);
+            throw new IllegalArgumentException("Unexpected Date : " + starts);
         }
         Date start = new Date(startL.getYear()- 1900,startL.getMonthValue() - 1, startL.getDayOfMonth());
 
 
-        System.out.println("choose end date (2021/01/01) :");
+        System.out.println("choose end date (2021/01/01) : ");
         String ends  = scan.nextLine();
         LocalDate endL;
         try {
             endL = LocalDate.parse(starts, DateTimeFormatter.ofPattern("yyyy/MM/dd"));
         }catch (DateTimeParseException e) {
-            throw new IllegalArgumentException("Unexpected Date" + ends);
+            throw new IllegalArgumentException("Unexpected Date : " + ends);
         }
-
-        Date end = new Date(endL.getYear()- 1900,endL.getMonthValue() - 1, endL.getDayOfMonth());
-
-        if(percent<= 100 && percent > 0){
+        Date end = new Date(endL.getYear() - 1900, endL.getMonthValue() - 1, endL.getDayOfMonth());
+        System.out.println("\u001B[0m");
+        if (percent <= 100 && percent > 0) {
             Discount d = new Discount(name, percent, start, end, this.getID(), max);
             return Admin.getInstance().addDiscount(d);
-        }else
+
+        } else
             return false;
     }
     
@@ -328,11 +336,15 @@ public class Baker extends Account implements Confectioner{
             //profit.add(pb);
             profit = profit.add(ps);
         }
+        System.out.println("\u001B[0m");
         return  profit;
 
     }
 
     public Post createPost(){
+        System.out.println(BACKGROUNDS[1] + FOREGROUNDS[0]+"___________________________Baker: " + this.name + "  terminal______________________________");
+        System.out.println("                           Create Post                          ");
+
         List<String> images = new ArrayList<String>();
         Scanner scan = new Scanner(System.in);
         System.out.println("Enter caption post");
@@ -346,6 +358,7 @@ public class Baker extends Account implements Confectioner{
             images.add(s);
 
         }
+        System.out.println("\u001B[0m");
         return Post.createPost(this,caption,images);
     }
 
