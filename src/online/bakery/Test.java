@@ -70,7 +70,7 @@ public class Test {
     public Test() {
         List<String> questions = new ArrayList<>();
         questions.add("What is your grandfader first name?");
-//        Admin.getInstance().setQuestions(questions);
+        Admin.getInstance().setQuestions(questions);
         
         LocalDate todayy = LocalDate.now();
         LocalDate tomorrow = todayy.plusDays(3650);
