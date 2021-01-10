@@ -112,7 +112,6 @@ public class DeliverySystem {
                         p.getKey().cancelByDelivery();
                         // just to remove it from order queue later
                         shippedOrders.add(p);
-                        System.out.println("sfjkzASdl");
                         test = false;
                     }
                 }
