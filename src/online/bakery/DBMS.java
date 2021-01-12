@@ -62,6 +62,8 @@ public class DBMS {
     private List<Discount> discounts;
     private List<Post> posts;
     private List<Comment> comments;
+    
+    private List<Complaint> complaints;
 
     private DBMS() {
         this.customers = new ArrayList<Customer>();
@@ -83,6 +85,8 @@ public class DBMS {
         this.discounts = new ArrayList<Discount>();
         this.posts = new ArrayList<Post>();
         this.comments = new ArrayList<Comment>();
+        
+        this.complaints = new ArrayList<Complaint>();
     }
 
     // function to give access to dbms only for admin
@@ -98,7 +102,47 @@ public class DBMS {
         return DBMS.dbms;
     }
 
+    //~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~ 
 
+    // return all complaints of a user
+    public List<Complaint> getUserComplaints(int id) {
+        List<Complaint> out = new ArrayList<Complaint>();
+        for (Complaint c : DBMS.getDBMS().complaints) {
+            if (c.getComplainant().ID == id) {
+                out.add(c);
+            }
+        }
+        return out;
+    }
+    
+    // return the list of not respond complaints to be checked
+    public List<Complaint> getNotRespondComplaints() {
+        List<Complaint> out = new ArrayList<Complaint>();
+        for (Complaint c : DBMS.getDBMS().complaints) {
+            if (c.isResponced() == false) {
+                out.add(c);
+            }
+        }
+        return out;        
+    }
+    
+    // return the list of all complaints
+    public List<Complaint> getAllComplaints() {
+        return DBMS.getDBMS().complaints;
+    }    
+    
+    public boolean addNewComplaint(Complaint complaint) {
+        DBMS.getDBMS().complaints.add(complaint);
+        return true;
+    }
+    
+    // set respond attribute of complaint to true
+    public boolean responceComplaint(Complaint complaint) {
+        int index = DBMS.getDBMS().complaints.indexOf(complaint);
+        DBMS.getDBMS().complaints.get(index).setRespondTrue();
+        return true;  
+    }
+    
     //~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~ 
 
     /**
