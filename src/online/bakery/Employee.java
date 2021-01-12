@@ -17,7 +17,7 @@ public class Employee extends Account{
     
     public Employee(String username, String password,String FirstName, String LastName) {
         super();
-        super.SignUp(username, password, Role.EMPLOEE);
+        super.SignUp(username, password, Role.EMPLOYEE);
         super.setFirstname(FirstName);
         super.setLastname(LastName);
         this.score = 0;

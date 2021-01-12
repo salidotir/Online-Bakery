@@ -1,10 +1,11 @@
-package online.bakery;
+package online.bakery.Confectioner;
 
 import java.math.BigDecimal;
-import java.text.ParseException;
 import java.util.Date;
 
+import online.bakery.Order;
 import online.bakery.Post.Post;
+import online.bakery.Status.ConfectionerStatus;
 import online.bakery.sweets.Rate;
 import online.bakery.sweets.Sweets;
 
@@ -31,7 +32,7 @@ public interface Confectioner {
 
 
 
-    List<ConfectionerStatus> acceptOrder(Order order,List<SweetType> st);
+    List<ConfectionerStatus> acceptOrder(Order order, List<SweetType> st);
 
     boolean addDiscount();
 

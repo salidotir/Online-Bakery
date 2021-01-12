@@ -1,4 +1,6 @@
-package online.bakery;
+package online.bakery.Discount;
+
+import online.bakery.Admin;
 
 import java.math.BigDecimal;
 import java.util.*;

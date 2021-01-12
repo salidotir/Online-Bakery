@@ -3,6 +3,8 @@
  */
 package online.bakery;
 
+import online.bakery.Status.PaymentStatus;
+
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Scanner;

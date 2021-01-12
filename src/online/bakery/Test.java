@@ -2,7 +2,11 @@ package online.bakery;
 
 import com.sun.istack.internal.NotNull;
 import javafx.util.Pair;
+import online.bakery.Confectioner.Confectioner;
+import online.bakery.Status.ConfectionerStatus;
+import online.bakery.Confectioner.SweetType;
 import online.bakery.Post.Post;
+import online.bakery.Status.OrderStatus;
 import online.bakery.birthdayItems.BirthdayItems;
 import online.bakery.birthdayItems.Candle;
 import online.bakery.decorators.Decorator;
@@ -811,9 +815,9 @@ public class Test {
                     return ScenarioLogin();
                 }
 
-            case EMPLOEE:
+            case EMPLOYEE:
                 System.out.println("Login Employee_________");
-                AbstractMap.SimpleEntry result3 = Account.Login(username, pass, Role.EMPLOEE);
+                AbstractMap.SimpleEntry result3 = Account.Login(username, pass, Role.EMPLOYEE);
                 if( result3.getValue() != null){
                     Employee e1= (Employee)result3.getValue();
                     System.out.println(e1.getProfile());

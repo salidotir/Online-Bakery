@@ -8,6 +8,8 @@ import java.util.*;
 
 import com.sun.istack.internal.NotNull;
 import javafx.util.Pair;
+import online.bakery.Confectioner.Confectioner;
+import online.bakery.GiftCard.GiftCard;
 import online.bakery.birthdayItems.BirthdayItems;
 import online.bakery.decorators.Design;
 import online.bakery.decorators.DesignDecoration;

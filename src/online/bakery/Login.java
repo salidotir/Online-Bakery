@@ -20,7 +20,7 @@ public class Login {
         if (role == Role.ADMIN){
             return false;
         }
-        else if(role == Role.EMPLOEE) {
+        else if(role == Role.EMPLOYEE) {
             if (Admin.getInstance().hasEntry(username, password)){
                 return false;
             }

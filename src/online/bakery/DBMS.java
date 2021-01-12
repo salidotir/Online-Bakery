@@ -14,8 +14,13 @@ import java.util.Map;
 import java.util.Scanner;
 
 import javafx.util.Pair;
+import online.bakery.Confectioner.Confectioner;
+import online.bakery.Discount.Discount;
+import online.bakery.GiftCard.GiftCard;
 import online.bakery.Post.Comment;
 import online.bakery.Post.Post;
+import online.bakery.Status.OrderStatus;
+import online.bakery.Status.PaymentStatus;
 import online.bakery.birthdayItems.BirthdayItems;
 import online.bakery.sweets.Rate;
 import online.bakery.sweets.TypeOfSweets;
@@ -1245,7 +1250,7 @@ public class DBMS {
                     }
                 }
                 break;
-            case EMPLOEE:
+            case EMPLOYEE:
                 for(Employee e : DBMS.getDBMS().getListOfEmployees()){
                     if(e.getUsername().equals(username)){
                         e.setIsLogedIn(true);
@@ -1288,7 +1293,7 @@ public class DBMS {
                     }
                 }
                 break;
-            case EMPLOEE:
+            case EMPLOYEE:
                 for(Employee e : DBMS.getDBMS().getListOfEmployees()){
                     if(e.getUsername().equals(username)){
                         e.isIsLogedIn();

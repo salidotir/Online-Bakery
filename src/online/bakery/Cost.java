@@ -1,6 +1,9 @@
 
 package online.bakery;
 
+import online.bakery.Discount.Discount;
+import online.bakery.GiftCard.GiftCard;
+
 import java.math.BigDecimal;
 import java.util.AbstractMap;
 import java.util.List;

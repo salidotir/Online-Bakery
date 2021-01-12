@@ -1,4 +1,4 @@
-package online.bakery;
+package online.bakery.Status;
 
 public enum ConfectionerStatus {
     ACCEPT,

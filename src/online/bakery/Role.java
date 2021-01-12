@@ -13,6 +13,6 @@ public enum Role {
     CUSTOMER,
     BAKERY,
     BAKER,
-    EMPLOEE,
+    EMPLOYEE,
     ADMIN
 }

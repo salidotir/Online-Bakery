@@ -6,8 +6,13 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import online.bakery.Discount.Discount;
+import online.bakery.Note.Note;
+import online.bakery.Status.ConfectionerStatus;
+import online.bakery.Confectioner.SweetType;
+import online.bakery.Status.OrderStatus;
 import online.bakery.birthdayItems.BirthdayItems;
 import online.bakery.sweets.Rate;
 import online.bakery.sweets.Sweets;
@@ -63,7 +68,7 @@ public class Order {
             case ADMIN:
                 note.setNoteAdminText(extraText);
                 return true;
-            case EMPLOEE:
+            case EMPLOYEE:
                 note.setNoteEmployeeText(extraText);
                 return true;
         }

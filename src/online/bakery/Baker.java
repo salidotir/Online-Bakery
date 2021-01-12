@@ -1,14 +1,16 @@
 package online.bakery;
 
-import javafx.util.Pair;
+import online.bakery.Confectioner.Confectioner;
+import online.bakery.Discount.Discount;
+import online.bakery.Status.ConfectionerStatus;
+import online.bakery.Confectioner.SweetType;
 import online.bakery.Post.Post;
+import online.bakery.Status.OrderStatus;
 import online.bakery.decorators.Decorator;
 import online.bakery.decorators.DecoratorToBuild;
 import online.bakery.sweets.*;
 
 import java.math.BigDecimal;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -17,7 +19,7 @@ import java.util.*;
 import static online.bakery.Test.BACKGROUNDS;
 import static online.bakery.Test.FOREGROUNDS;
 
-public class Baker extends Account implements Confectioner{
+public class Baker extends Account implements Confectioner {
     private String name;
     private String description;
 
@@ -203,7 +205,7 @@ public class Baker extends Account implements Confectioner{
     }
 
 
-    public List<ConfectionerStatus> acceptOrder(Order order,List<SweetType> st){
+    public List<ConfectionerStatus> acceptOrder(Order order, List<SweetType> st){
 
         System.out.println(BACKGROUNDS[1] + FOREGROUNDS[0]+"___________________________Baker: " + this.name + "  terminal______________________________");
         System.out.println("                           accept Order                           ");
@@ -305,7 +307,7 @@ public class Baker extends Account implements Confectioner{
     }
 
     public  BigDecimal getProfit(Date start , Date end){
-        List <Order> orders = Admin.getInstance().getOrderDate(this,start,end,OrderStatus.DELIVERED);
+        List <Order> orders = Admin.getInstance().getOrderDate(this,start,end, OrderStatus.DELIVERED);
         BigDecimal profit = new BigDecimal("0");
         for (Order o : orders){
             System.out.println(o.getOrderId());
