@@ -43,6 +43,27 @@ public class Admin extends Account{
         }
         return INSTANCE;
     }
+
+    public boolean newComplaint(Complaint complaint) {
+        // save new complaint in dbms
+        return DBMS.getDBMS(this).addNewComplaint(complaint);
+    }
+    
+    public boolean setComplantRespondTrue(Complaint complaint) {
+        return DBMS.getDBMS(this).responceComplaint(complaint);
+    }
+    
+    public List<Complaint> viewNotRespondComplaints() {
+        return DBMS.getDBMS(this).getNotRespondComplaints();
+    }
+    
+    public List<Complaint> viewAllComplaints() {
+        return DBMS.getDBMS(this).getAllComplaints();        
+    }
+    
+    public List<Complaint> getUserComplaints(int userId) {
+        return DBMS.getDBMS(this).getUserComplaints(userId);
+    }    
     
     public boolean createDiscount(String name , int percent,Date start , Date end, int max) {
         if(percent<= 100 && percent > 0){
