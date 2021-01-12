@@ -120,7 +120,10 @@ public class Test {
         Customer cu = (Customer) this.ScenarioLogin();
         this.ScenarioOrder(cu);
 
-
+        System.out.println(BACKGROUNDS[15] + FOREGROUNDS[2] + "Test for creating a complaint.");
+        System.out.println(BACKGROUNDS[15] + FOREGROUNDS[2] + "In testComplaint() function in 'main.java'");
+        main.testComplaint();
+        
     }
 
     void AddEmployees() {
