@@ -3,6 +3,8 @@
  */
 package online.bakery;
 
+import online.bakery.Type.VehicleType;
+
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**

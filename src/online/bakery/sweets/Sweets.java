@@ -1,6 +1,8 @@
 package online.bakery.sweets;
 
 
+import online.bakery.Type.TypeOfSweets;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;

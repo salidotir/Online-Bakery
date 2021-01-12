@@ -1,4 +1,4 @@
-package online.bakery.Confectioner;
+package online.bakery.Type;
 
 public enum SweetType {
     READY,

@@ -1,5 +1,6 @@
 package online.bakery.sweets;
 
+import online.bakery.Type.TypeOfSweets;
 import online.bakery.decorators.*;
 
 import java.math.BigDecimal;

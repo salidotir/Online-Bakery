@@ -1,4 +1,4 @@
-package online.bakery.sweets;
+package online.bakery.Type;
 
 public enum TypeOfSweets {
     CAKE,

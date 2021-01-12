@@ -2,10 +2,12 @@ package online.bakery;
 
 import online.bakery.Confectioner.Confectioner;
 import online.bakery.Status.ConfectionerStatus;
-import online.bakery.Confectioner.SweetType;
+import online.bakery.Type.Role;
+import online.bakery.Type.SweetType;
 import online.bakery.Post.Comment;
 import online.bakery.Post.Post;
 import online.bakery.Status.OrderStatus;
+import online.bakery.Type.VehicleType;
 import online.bakery.birthdayItems.BirthdayItems;
 import online.bakery.birthdayItems.Candle;
 import online.bakery.decorators.Decorator;

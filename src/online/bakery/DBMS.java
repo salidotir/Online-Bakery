@@ -21,9 +21,10 @@ import online.bakery.Post.Comment;
 import online.bakery.Post.Post;
 import online.bakery.Status.OrderStatus;
 import online.bakery.Status.PaymentStatus;
+import online.bakery.Type.Role;
 import online.bakery.birthdayItems.BirthdayItems;
 import online.bakery.sweets.Rate;
-import online.bakery.sweets.TypeOfSweets;
+import online.bakery.Type.TypeOfSweets;
 import online.bakery.sweets.Sweets;
 
 import static online.bakery.Test.BACKGROUNDS;

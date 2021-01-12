@@ -4,6 +4,7 @@
 package online.bakery;
 
 import online.bakery.Status.PaymentStatus;
+import online.bakery.Type.PaymentType;
 
 import java.math.BigDecimal;
 import java.util.Date;

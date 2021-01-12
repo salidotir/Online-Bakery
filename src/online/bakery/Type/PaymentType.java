@@ -3,16 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package online.bakery;
+package online.bakery.Type;
 
 /**
  *
- * @author melika
+ * @author salidotir
  */
-public enum Role {
-    CUSTOMER,
-    BAKERY,
-    BAKER,
-    EMPLOYEE,
-    ADMIN
+public enum PaymentType {
+    FROM_WALLET,        // pay the order from wallet
+    PAY_ONLINE          // pay the order online
 }

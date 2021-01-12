@@ -6,6 +6,7 @@ import java.util.Date;
 import online.bakery.Order;
 import online.bakery.Post.Post;
 import online.bakery.Status.ConfectionerStatus;
+import online.bakery.Type.SweetType;
 import online.bakery.sweets.Rate;
 import online.bakery.sweets.Sweets;
 

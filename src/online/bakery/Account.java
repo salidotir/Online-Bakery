@@ -5,8 +5,7 @@
  */
 package online.bakery;
 
-import online.bakery.Post.Comment;
-import online.bakery.Post.Post;
+import online.bakery.Type.Role;
 
 import java.util.AbstractMap;
 import java.util.ArrayList;

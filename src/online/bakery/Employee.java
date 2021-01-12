@@ -4,6 +4,8 @@
 package online.bakery;
 
 import java.util.Date;
+
+import online.bakery.Type.Role;
 import online.bakery.sweets.Rate;
 
 /**

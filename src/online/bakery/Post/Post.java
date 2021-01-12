@@ -2,7 +2,7 @@ package online.bakery.Post;
 
 import online.bakery.Account;
 import online.bakery.Admin;
-import online.bakery.Role;
+import online.bakery.Type.Role;
 
 import java.util.ArrayList;
 import java.util.List;

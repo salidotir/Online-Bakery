@@ -1,6 +1,7 @@
 package online.bakery.sweets;
 
 import com.sun.istack.internal.NotNull;
+import online.bakery.Type.TypeOfSweets;
 import online.bakery.decorators.Design;
 import online.bakery.decorators.DesignDecoration;
 
