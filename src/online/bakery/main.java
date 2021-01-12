@@ -23,11 +23,52 @@ public class main {
 //        test_GiftCard();
 //        test1();
         Test test =new Test();
+//        testComplaint();
         //testPost();
         //test3();
 //        test2();
     }
 
+    public static void testComplaint() { 
+        // create a customer
+        Customer c = new Customer("sara","4434");
+        c.setFirstname("Sara");
+        c.setLastname("Limooee");
+        c.setContactNo("09170213754");
+        c.setAddress("Shiraz, Iran");
+
+        // create a complaint
+        Complaint.createComplaint(c, new Date(), "bad cake!!", "The cake was not delicious.");
+        Complaint.createComplaint(c, new Date(), "my complaint", "Your employee shouted a me!");
+        
+        List<Complaint> complaints = Admin.getInstance().viewAllComplaints();
+        for(Complaint com:complaints) {
+            System.out.println(com);
+        }
+        
+        System.out.println("___________________________");
+        
+        // set the first complaint respond true
+        Admin.getInstance().setComplantRespondTrue(complaints.get(0));
+        for(Complaint com:complaints) {
+            System.out.println(com);
+        }
+        
+        System.out.println("___________________________");
+        
+        complaints = Admin.getInstance().viewNotRespondComplaints();
+        for(Complaint com:complaints) {
+            System.out.println(com);
+        }
+        
+        System.out.println("___________________________");
+        
+        complaints = Admin.getInstance().getUserComplaints(c.ID);
+        for(Complaint com:complaints) {
+            System.out.println(com);
+        }
+    }
+    
     private static void testPost() {
         ArrayList conf = new ArrayList<Confectioner>();
         Bakery b1 = new Bakery("شب شیرینی","username","pass","لحظات زندگی خود را با کمک ما شیرین کنید" , "07131111111" , "تاچارا");
