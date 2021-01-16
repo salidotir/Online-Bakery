@@ -26,17 +26,13 @@ import online.bakery.sweets.Sweets;
  * @author melika
  */
 public class Admin extends Account{
-    private String username, password;
     
     //Lazy Initialization with Double Lock
     private static Admin INSTANCE = null;
     private Admin() {
-        super();
-        super.role = Role.ADMIN;
-        this.username = "admin";
-        this.password = "admin123";
-        DBMS.addNewAdmin(this, username, password);        
-        Login.SignUp(username, password, Role.ADMIN); // for seting lastLoginDate and isLogedIn
+        super();             
+        super.SignUp("admin", "admin123", Role.ADMIN); // for seting lastLoginDate and isLogedIn
+        DBMS.addNewAdmin(this, "admin", "admin123");  
     }
     
     public static Admin getInstance() {
@@ -113,10 +109,7 @@ public class Admin extends Account{
     boolean changePassword(String username, String password){
         if( DBMS.getDBMS(this).hasEntry(username, password)){
             String result = DBMS.getDBMS(this).addEntry(username, password);
-            if (result != null){ // say there was password before this event 
-                return true;
-            }else
-                return false;
+            return result != null; // result wasn't null shows that there was password before this event
         }else
             return false;
     }
@@ -385,7 +378,7 @@ public class Admin extends Account{
     }
 
     public Post createPost(){
-        List<String> images = new ArrayList<String>();
+        List<String> images = new ArrayList<>();
         Scanner scan = new Scanner(System.in);
         System.out.println("Enter caption post");
         String caption = scan.nextLine();

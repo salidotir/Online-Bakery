@@ -119,15 +119,27 @@ abstract public class Account {
     }
     
     public boolean SignUp(String username, String password, Role role){
-        if(!isLogedIn && Login.SignUp(username, password, role)){
-            this.username = username;
-            this.password = password;
-            this.role = role;
-            this.isLogedIn = true;
-            this.lastLoginTime = new Date();
-            return true;
-        }else
-            return false;
+        if(role != Role.ADMIN){
+            if(!isLogedIn && Login.SignUp(username, password, role)){
+                this.username = username;
+                this.password = password;
+                this.role = role;
+                this.isLogedIn = true;
+                this.lastLoginTime = new Date();
+                return true;
+            }else
+                return false;
+        }else{
+            if(!isLogedIn){
+                this.username = username;
+                this.password = password;
+                this.role = role;
+                this.isLogedIn = true;
+                this.lastLoginTime = new Date();
+                return true;
+            }else
+                return false;
+        }
     }
 
     public boolean isIsLogedIn() {

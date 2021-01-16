@@ -123,6 +123,7 @@ public class Test {
         //System.out.println(BACKGROUNDS[15] + FOREGROUNDS[2] + "Add Like (Prev post /Melika)");
         //this.AddLike(prevPost);
         System.out.println(BACKGROUNDS[15] + FOREGROUNDS[2] + "ScenarioLogin");
+        System.out.println("Please login to customer.");
         Customer cu = (Customer) this.ScenarioLogin();
         this.ScenarioOrder(cu);
 
@@ -529,7 +530,7 @@ public class Test {
                         //Employee e1 = new Employee("salidotir12", "4444", "Sara", "Limooee");
                         //e1.deliverOrder(o1);
                         //System.out.println(e1.getProfile());
-                        
+                        System.out.println("Please login to employee.");
                         // employee login to say if it has deivered th eorder or not
                         Employee e1 = (Employee)this.ScenarioLogin();
                         System.out.println("What did tou do with the order? ");
@@ -709,6 +710,7 @@ public class Test {
                         //e1.deliverOrder(o1);
                         //System.out.println(e1.getProfile());
                         
+                        System.out.println("Please login to employee.");
                         // employee login to say if it has deivered th eorder or not
                         Employee e1 = (Employee)this.ScenarioLogin();
                         System.out.println("What did tou do with the order? ");
@@ -834,7 +836,11 @@ public class Test {
                 System.out.println("Login Admin_________");
                 AbstractMap.SimpleEntry result4 = Account.Login(username, pass, Role.ADMIN);
                 if( result4.getValue() != null){
-                    Admin a1= (Admin) result4.getValue();
+                    Admin a1 = (Admin) result4.getValue();
+                    a1.setFirstname("ali");
+                    a1.setLastname("admin");
+                    a1.setAddress("address ali");
+                    a1.setContactNo("09100000");
                     System.out.println(a1.getProfile());
                     return a1;
                 }

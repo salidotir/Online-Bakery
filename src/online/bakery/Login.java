@@ -19,38 +19,38 @@ import java.util.Scanner;
 public class Login {   
     
     public static boolean SignUp(String username, String password, Role role){
-        if (role == Role.ADMIN){
-            return false;
-        }
-        else if(role == Role.EMPLOYEE) {
-            if (Admin.getInstance().hasEntry(username, password)){
+        switch (role) {
+            case ADMIN:    //which never called from here.
                 return false;
-            }
-            System.out.print("Hello ");
-            System.out.println(username);
-            Admin.getInstance().addEntry(username, password);
-            return true;
-        } else{
-            if (Admin.getInstance().hasEntry(username, password)){
-                return false;
-            }
-            else{
+            case EMPLOYEE:
+                if (Admin.getInstance().hasEntry(username, password)){
+                    return false;
+                }
                 System.out.print("Hello ");
                 System.out.println(username);
-                System.out.println("Please answer these security questions.");
                 Admin.getInstance().addEntry(username, password);
-                List<String> answers = new ArrayList<>();
-                Admin.getInstance().getQuestions().stream().map((q) -> {
-                    Scanner scan = new Scanner(System.in);
-                    System.out.printf(q);
-                    String ans = scan.nextLine();
-                    return ans;
-                }).forEachOrdered((ans) -> {
-                    answers.add(ans);
-                });
-                Admin.getInstance().setAnswers(username, answers);
                 return true;
-            }
+            default:
+                if (Admin.getInstance().hasEntry(username, password)){
+                    return false;
+                }
+                else{
+                    System.out.print("Hello ");
+                    System.out.println(username);
+                    System.out.println("Please answer these security questions.");
+                    Admin.getInstance().addEntry(username, password);
+                    List<String> answers = new ArrayList<>();
+                    Admin.getInstance().getQuestions().stream().map((q) -> {
+                        Scanner scan = new Scanner(System.in);
+                        System.out.printf(q);
+                        String ans = scan.nextLine();
+                        return ans;
+                    }).forEachOrdered((ans) -> {
+                        answers.add(ans);
+                    });
+                    Admin.getInstance().setAnswers(username, answers);
+                    return true;
+                }
         }
     }
     
