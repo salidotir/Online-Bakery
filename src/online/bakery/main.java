@@ -252,7 +252,7 @@ public class main {
                 
         List<BirthdayItems> listitem = new ArrayList<BirthdayItems>();
         Candle candle = new Candle("happy",  new BigDecimal(1000), new BigDecimal(700), "3", "red");
-        Order o1 = c.createNewSweet(sList, listitem);
+        Order o1 = c.createNewOrder(sList, listitem);
         o1.ItemaddtoOrder(candle);
         boolean result = true;
         while(result){
@@ -367,7 +367,7 @@ public class main {
         System.out.println(cs1.toString());
         if(cs1 == ConfectionerStatus.ACCEPT){
             List<BirthdayItems> listitem = new ArrayList<BirthdayItems>();
-            Order o1 = c.createNewSweet(sList, listitem);
+            Order o1 = c.createNewOrder(sList, listitem);
             b1.addOrder(o1);
 
         }
@@ -463,7 +463,7 @@ public class main {
         System.out.println(cs1.toString());
         if(cs1 == ConfectionerStatus.ACCEPT){
             List<BirthdayItems> listitem = new ArrayList<BirthdayItems>();
-            Order o1 = c.createNewSweet(sList, listitem);
+            Order o1 = c.createNewOrder(sList, listitem);
             b1.addOrder(o1);
             
             System.out.println(b1.getScore());

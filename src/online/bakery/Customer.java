@@ -228,7 +228,7 @@ public class Customer extends Account {
         return ids;
     }
 
-    public Order createNewSweet(List<Sweets> sweetlist, List<BirthdayItems> items) {
+    public Order createNewOrder(List<Sweets> sweetlist, List<BirthdayItems> items) {
 
         System.out.println("Choose date for order (2020/01/01) : ");
         Scanner scan = new Scanner(System.in);

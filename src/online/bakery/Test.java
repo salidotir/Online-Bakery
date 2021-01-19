@@ -488,7 +488,7 @@ public class Test {
                     return;
                 }
 
-                Order o1 = customer.createNewSweet(sweetsOrder, item);
+                Order o1 = customer.createNewOrder(sweetsOrder, item);
                 System.out.println(o1.getOrderInformation());
 
 
@@ -668,7 +668,7 @@ public class Test {
                     return;
                 }
 
-                Order o1 = customer.createNewSweet(sweetsOrder, item);
+                Order o1 = customer.createNewOrder(sweetsOrder, item);
 
                 System.out.println(o1.getOrderInformation());
 
@@ -930,7 +930,7 @@ public class Test {
 
         List<BirthdayItems> listitem = new ArrayList<>();
         Candle candle = new Candle("happy", new BigDecimal(1000), new BigDecimal(700), "3", "red");
-        Order o1 = c.createNewSweet(sList, listitem);
+        Order o1 = c.createNewOrder(sList, listitem);
         o1.ItemaddtoOrder(candle);
         boolean result = true;
         while (result) {
