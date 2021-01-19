@@ -166,6 +166,20 @@ abstract public class Account {
             return false;
     }
     
+    public boolean Deactivate(){
+        switch (this.role){
+            case CUSTOMER:
+                return Admin.getInstance().deleteCustomer((Customer) this);
+            case BAKER:
+                return Admin.getInstance().deleteBaker((Baker) this);
+            case BAKERY:
+                return Admin.getInstance().deleteBakery((Bakery) this);
+            case EMPLOYEE:
+                return Admin.getInstance().deleteEmployee((Employee) this);          
+        }
+        return false;
+    }
+    
     public Date getLastLogin(){
         return lastLoginTime;
     }

@@ -787,7 +787,12 @@ public class Test {
                     Customer c1= (Customer)result.getValue();
                     System.out.println(c1.getProfile());
                     //ScenarioOrder(c1);
-                    return c1;
+                    if(c1.getActiveness().compareTo("Active") == 0){
+                        return c1;
+                    }else{
+                        System.out.println("Your account is deactivated");
+                        return ScenarioLogin();
+                    }
                 }
                 else {
                     System.out.println("You are not Customer");
@@ -799,7 +804,12 @@ public class Test {
                 if( result1.getValue() != null){
                     Baker b1= (Baker) result1.getValue();
                     System.out.println(b1.getProfile());
-                    return b1;
+                    if(b1.getActiveness().compareTo("Active") == 0){
+                        return b1;
+                    }else{
+                        System.out.println("Your account is deactivated");
+                        return ScenarioLogin();
+                    }
                 }
                 else {
                     System.out.println("You are not Baker");
@@ -812,7 +822,12 @@ public class Test {
                 if( result2.getValue() != null){
                     Bakery b1= (Bakery) result2.getValue();
                     System.out.println(b1.getProfile());
-                    return b1;
+                    if(b1.getActiveness().compareTo("Active") == 0){
+                        return b1;
+                    }else{
+                        System.out.println("Your account is deactivated");
+                        return ScenarioLogin();
+                    }
                 }
                 else {
                     System.out.println("You are not Bakery");
@@ -825,7 +840,12 @@ public class Test {
                 if( result3.getValue() != null){
                     Employee e1= (Employee)result3.getValue();
                     System.out.println(e1.getProfile());
-                    return e1;
+                    if(e1.getActiveness().compareTo("Active") == 0){
+                        return e1;
+                    }else{
+                        System.out.println("Your account is deactivated");
+                        return ScenarioLogin();
+                    }
                 }
                 else {
                     System.out.println("You are not Employee");
@@ -842,7 +862,12 @@ public class Test {
                     a1.setAddress("address ali");
                     a1.setContactNo("09100000");
                     System.out.println(a1.getProfile());
-                    return a1;
+                    if(a1.getActiveness().compareTo("Active") == 0){
+                        return a1;
+                    }else{
+                        System.out.println("Your account is deactivated");
+                        return ScenarioLogin();
+                    }
                 }
                 else {
                     System.out.println("You are not Admin");
