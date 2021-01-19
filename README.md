@@ -9,6 +9,9 @@ Application for Bakers and Bakeries to work online
 
 <img src="https://github.com/salidotir/OnlineBakeryUI/blob/master/Online%20Bakery%20App%20Design/2_Login.png" height="600">
 
+## Classes' Design
+The complete design and relation of classes used in this project is in "[OnlineBakryDesign.png](https://github.com/salidotir/Online-Bakery/blob/main/OnlineBakeryDesign.png)"
+
 ## Running the tests
 You can run the "[main.java](https://github.com/salidotir/Online-Bakery/blob/main/src/online/bakery/main.java)" that creates a Test for you to illustrate how this project works. "[Test.java](https://github.com/salidotir/Online-Bakery/blob/main/src/online/bakery/Test.java)" has multiple methods including ScenarioLogin, Scenario1(that tests the ordering process from beginning to end and shows all the details about creating order, delivery system, etc), testComplaint, ForgetPass,...
 
