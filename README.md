@@ -9,6 +9,9 @@ Application for Bakers and Bakeries to work online
 
 <img src="https://github.com/salidotir/OnlineBakeryUI/blob/master/Online%20Bakery%20App%20Design/2_Login.png" height="600">
 
+## Report
+The complete report of project and classes' implementaion and use is in the [document](https://github.com/salidotir/Online-Bakery/blob/main/Online%20Bakery%20Report.pdf) file.
+
 ## Classes' Design
 The complete design and relation of classes used in this project is in "[OnlineBakryDesign.png](https://github.com/salidotir/Online-Bakery/blob/main/OnlineBakeryDesign.png)"
 
