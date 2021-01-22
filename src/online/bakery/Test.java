@@ -85,48 +85,88 @@ public class Test {
                 , new Date(todayy.getYear() - 1900, todayy.getMonthValue() - 1, todayy.getDayOfMonth())
                 , new Date(tomorrow.getYear() - 1900, tomorrow.getMonthValue() - 1, tomorrow.getDayOfMonth()), 20000);
 
+
+        //test1
         System.out.println(BACKGROUNDS[15] + FOREGROUNDS[2] + "Add 3 Delivery Employees");
         this.AddEmployees();
+
+        //test2
         System.out.println(BACKGROUNDS[15] + FOREGROUNDS[2] + "Add 3 Delivery Vehicles");
         this.AddVehicles();
+
+        //test3
         System.out.println(BACKGROUNDS[15] + FOREGROUNDS[2] + "Add 4 Confectioners");
         this.AddConfectioner();
+
+        //test4
         System.out.println(BACKGROUNDS[15] + FOREGROUNDS[2] + "Show All Bakeries");
         this.ShowAllBakeries();
+
+        //test5
         System.out.println(BACKGROUNDS[15] + FOREGROUNDS[2] + "Show All Bakers");
         this.ShowAllBakers();
+
+        //test6
         System.out.println(BACKGROUNDS[15] + FOREGROUNDS[2] + "Search By Name for Bakeries:(substring='baker2')");
         this.SearchByNameBakeries();
+
+        //test7
         System.out.println(BACKGROUNDS[15] + FOREGROUNDS[2] + "Search By Name for Bakers:(substring='reza')");
         this.SearchByNameBakers();
+
+        //test8
         System.out.println(BACKGROUNDS[15] + FOREGROUNDS[2] + "Add 4 Customers");
         this.AddCustomers();
+
+        //test9
         //////System.out.println(BACKGROUNDS[15] + FOREGROUNDS[2] + "Senario Forgot password");
         //////this.ForgetPass();
+
+        //test10
         //System.out.println(BACKGROUNDS[15] + FOREGROUNDS[2] + "Add 3 Emploee");
         //this.AddCustomers();
+
+        //test11
         //System.out.println(BACKGROUNDS[15] + FOREGROUNDS[2] + "Buy a Gift Card (negin to sara)");
         //this.BuyGiftCard();
+
+        //test12
         //System.out.println(BACKGROUNDS[15] + FOREGROUNDS[2] + "Order Multi Tiered Cake By Melika to Bakery2");
         //this.CreateMultiTieredCake();
+
+        //test13
         //System.out.println(BACKGROUNDS[15] + FOREGROUNDS[2] + "Make Sweets by Confectioners (By Baker1)");
         //this.MakeSweetByBaker();
+
+        //test14
         //System.out.println(BACKGROUNDS[15] + FOREGROUNDS[2] + "Add discount by Confectioners (By Bakery2)");
         //this.AddDiscountByBakery();
+
+        //test15
         //System.out.println(BACKGROUNDS[15] + FOREGROUNDS[2] + "Add BirthDay Item to Bakery (By Bakery2)");
         //this.AddBirthDayItemBakery();
+
+        //test16
         //System.out.println(BACKGROUNDS[15] + FOREGROUNDS[2] + "Add Post By Bakery (By Bakery2)");
         //Post prevPost = this.AddCreatePostByBakery();
 
+        //test17
         //System.out.println(BACKGROUNDS[15] + FOREGROUNDS[2] + "Add Comment (Prev post /Melika)");
         //this.AddComment(prevPost);
+
+        //test18
         //System.out.println(BACKGROUNDS[15] + FOREGROUNDS[2] + "Add Like (Prev post /Melika)");
         //this.AddLike(prevPost);
+
+        //test19
         System.out.println(BACKGROUNDS[15] + FOREGROUNDS[2] + "ScenarioLogin");
         System.out.println("Please login to customer.");
         Customer cu = (Customer) this.ScenarioLogin();
+
+        //test20
         this.ScenarioOrder(cu);
 
+        //test21
         System.out.println(BACKGROUNDS[15] + FOREGROUNDS[2] + "Test for creating a complaint.");
         System.out.println(BACKGROUNDS[15] + FOREGROUNDS[2] + "In testComplaint() function in 'main.java'");
         main.testComplaint();
